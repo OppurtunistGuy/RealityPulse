@@ -189,4 +189,88 @@ Salman Khan warned Qazi against personal attacks.
       assert.ok(pair.incident.length > 0);
     });
   });
+
+  describe('Security & Hourly Ingestion Pipeline Endpoints', () => {
+    it('sets X-RateLimit-Remaining header on API calls', async () => {
+      const res = await request(app).get('/api/health');
+      assert.equal(res.status, 200);
+      assert.ok(res.headers['x-ratelimit-remaining'] !== undefined);
+    });
+
+    it('GET /api/security/audit-chain returns valid cryptographic hash chain', async () => {
+      const res = await request(app).get('/api/security/audit-chain');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'tamper-free');
+      assert.equal(res.body.verification.isValid, true);
+      assert.ok(Array.isArray(res.body.chain));
+      assert.ok(res.body.chain.length >= 1);
+      assert.ok(typeof res.body.latestBlockHash === 'string');
+      assert.ok(Array.isArray(res.body.trustedBroadcasterDomains));
+    });
+
+    it('GET /api/feed/latest returns list of recent reality updates with verification states', async () => {
+      const res = await request(app).get('/api/feed/latest');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'ok');
+      assert.ok(Array.isArray(res.body.feed));
+      assert.ok(res.body.feed.length > 0);
+      const first = res.body.feed[0];
+      assert.ok(typeof first.title === 'string');
+      assert.ok(typeof first.verifiedByBroadcaster === 'boolean');
+      assert.ok(Array.isArray(first.involvedContestants));
+    });
+
+    it('POST /api/feed/sync runs ingestion and mines a new cryptographic audit block', async () => {
+      const res = await request(app).post('/api/feed/sync');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'synced');
+      assert.ok(res.body.itemsAdded >= 1);
+      assert.equal(res.body.auditStatus.isValid, true);
+    });
+
+    describe('POST /api/feed/ingest - Broadcaster Authority & Security Gate', () => {
+      it('rejects unauthenticated ingestion with 401', async () => {
+        const res = await request(app)
+          .post('/api/feed/ingest')
+          .send({ title: 'Test', summary: 'Test', sourceUrl: 'https://example.com' });
+        assert.equal(res.status, 401);
+      });
+
+      it('rejects unauthorized eviction status mutation from non-broadcaster source with 403', async () => {
+        const res = await request(app)
+          .post('/api/feed/ingest')
+          .set('x-api-key', 'bb20-secure-ingest-key')
+          .send({
+            title: 'Fake Eviction Announcement',
+            summary: 'A blog claims Scout was secretly evicted.',
+            sourceUrl: 'https://unverified-fan-blog.com/leak',
+            category: 'Broadcaster Update',
+            isEvictionStatusChange: true,
+            involvedContestants: ['Tanmay Singh (Scout)']
+          });
+
+        assert.equal(res.status, 403);
+        assert.match(res.body.error, /Broadcaster Authority Violation/);
+      });
+
+      it('accepts authorized ingestion from official broadcaster domain', async () => {
+        const res = await request(app)
+          .post('/api/feed/ingest')
+          .set('x-api-key', 'bb20-secure-ingest-key')
+          .send({
+            title: 'Official Week 5 Eviction Notice',
+            summary: 'Colors TV official press release confirms weekend eviction schedule.',
+            sourceUrl: 'https://www.colorstv.com/bigg-boss-season-20/eviction-notice',
+            category: 'Broadcaster Update',
+            isEvictionStatusChange: true,
+            involvedContestants: ['Aamrapali Dubey']
+          });
+
+        assert.equal(res.status, 201);
+        assert.equal(res.body.status, 'created');
+        assert.equal(res.body.item.verifiedByBroadcaster, true);
+        assert.equal(res.body.auditVerification.isValid, true);
+      });
+    });
+  });
 });

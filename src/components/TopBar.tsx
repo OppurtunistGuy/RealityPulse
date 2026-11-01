@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, Sparkles, Globe, Layers, Languages } from 'lucide-react';
+import { ShieldAlert, Sparkles, Globe, Layers, Languages, ShieldCheck } from 'lucide-react';
 import { Language } from '../types';
 
 interface TopBarProps {
@@ -7,6 +7,7 @@ interface TopBarProps {
   onTabChange: (tab: 'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio') => void;
   onOpenLiveQuery: () => void;
   onOpenSources: () => void;
+  onOpenSecurityAndFeed: () => void;
   isNominationOnly: boolean;
   onToggleNominationOnly: () => void;
   language: Language;
@@ -18,6 +19,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   onTabChange,
   onOpenLiveQuery,
   onOpenSources,
+  onOpenSecurityAndFeed,
   isNominationOnly,
   onToggleNominationOnly,
   language,
@@ -122,6 +124,16 @@ export const TopBar: React.FC<TopBarProps> = ({
               Hinglish
             </button>
           </div>
+
+          <button
+            onClick={onOpenSecurityAndFeed}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md border border-emerald-500/30 bg-emerald-950/30 text-emerald-300 hover:text-white hover:border-emerald-500/60 transition-colors whitespace-nowrap shrink-0"
+            title="Inspect Hourly Ingestion Feed, SHA-256 Block Ledger, and Anti-Manipulation Defense"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden sm:inline">{isHinglish ? 'Live Feed & Security' : 'Live Sync & Security'}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>
+          </button>
 
           <button
             onClick={onOpenSources}

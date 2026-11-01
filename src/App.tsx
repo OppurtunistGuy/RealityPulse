@@ -7,6 +7,7 @@ import { LiveSearchGroundingView } from './components/LiveSearchGroundingView';
 import { CustomDiscourseStudioView } from './components/CustomDiscourseStudioView';
 import { ContestantDetailModal } from './components/ContestantDetailModal';
 import { SourceProvenanceModal } from './components/SourceProvenanceModal';
+import { SecurityAndFeedModal } from './components/SecurityAndFeedModal';
 import { INITIAL_CONTESTANTS } from './data/mockRealityData';
 import { Contestant, PlatformWeightConfig, Language } from './types';
 import { DEFAULT_PLATFORM_WEIGHTS } from './utils/analyticsEngine';
@@ -16,6 +17,7 @@ export default function App() {
   const [contestants, setContestants] = useState<Contestant[]>(INITIAL_CONTESTANTS);
   const [selectedContestant, setSelectedContestant] = useState<Contestant | null>(null);
   const [isSourcesOpen, setIsSourcesOpen] = useState(false);
+  const [isSecurityOpen, setIsSecurityOpen] = useState(false);
   const [weights, setWeights] = useState<PlatformWeightConfig>(DEFAULT_PLATFORM_WEIGHTS);
   const [isNominationOnly, setIsNominationOnly] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
@@ -28,6 +30,7 @@ export default function App() {
         onTabChange={setActiveTab}
         onOpenLiveQuery={() => setActiveTab('grounding')}
         onOpenSources={() => setIsSourcesOpen(true)}
+        onOpenSecurityAndFeed={() => setIsSecurityOpen(true)}
         isNominationOnly={isNominationOnly}
         onToggleNominationOnly={() => setIsNominationOnly(!isNominationOnly)}
         language={language}
@@ -79,6 +82,13 @@ export default function App() {
       <SourceProvenanceModal
         isOpen={isSourcesOpen}
         onClose={() => setIsSourcesOpen(false)}
+      />
+
+      {/* Live Feed & Anti-Manipulation Security Ledger Modal */}
+      <SecurityAndFeedModal
+        isOpen={isSecurityOpen}
+        onClose={() => setIsSecurityOpen(false)}
+        language={language}
       />
 
       {/* Clean Footer adhering to Anti-Slop Discipline */}
