@@ -17,12 +17,16 @@ interface EvictionTimelineViewProps {
   timeline: EvictedContestantTimelineItem[];
   language: Language;
   onSelectContestantById: (id: string) => void;
+  currentWeek?: number;
+  currentDay?: number;
 }
 
 export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
   timeline,
   language,
-  onSelectContestantById
+  onSelectContestantById,
+  currentWeek = 8,
+  currentDay = 52
 }) => {
   const isHinglish = language === 'hinglish';
 
@@ -52,7 +56,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
               {timeline.length} {isHinglish ? 'Evictions Done' : 'Housemates Evicted'}
             </span>
             <span className="px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
-              Week 5 Live
+              Week {currentWeek} Live (Day {currentDay})
             </span>
           </div>
         </div>
@@ -189,7 +193,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
           <div className="p-4 bg-gradient-to-r from-[#11233d] to-[#0c1626] border border-cyan-500/40 rounded-xl text-xs space-y-1">
             <div className="flex items-center justify-between">
               <span className="font-bold text-cyan-300 text-sm">
-                {isHinglish ? '🔴 Week 5: Live Voting Chalu Hai' : '🔴 Week 5: Live Voting In Progress'}
+                {isHinglish ? `🔴 Week ${currentWeek} (Day ${currentDay}): Live Voting Chalu Hai` : `🔴 Week ${currentWeek} (Day ${currentDay}): Live Voting In Progress`}
               </span>
               <span className="font-mono text-cyan-400 text-[11px] font-semibold">Tathas-two Phase</span>
             </div>

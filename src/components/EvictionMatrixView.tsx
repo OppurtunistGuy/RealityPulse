@@ -28,6 +28,12 @@ interface EvictionMatrixViewProps {
   onOpenSources?: () => void;
   isNominationOnly: boolean;
   language?: Language;
+  currentWeek?: number;
+  currentDay?: number;
+  capturedAt?: string;
+  isHistorical?: boolean;
+  selectedWeek?: number | null;
+  onSelectWeek?: (week: number) => void;
 }
 
 export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
@@ -37,7 +43,13 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
   onWeightsChange,
   onOpenSources,
   isNominationOnly,
-  language = 'en'
+  language = 'en',
+  currentWeek = 8,
+  currentDay = 52,
+  capturedAt,
+  isHistorical = false,
+  selectedWeek,
+  onSelectWeek
 }) => {
   const isHinglish = language === 'hinglish';
   const [viewMode, setViewMode] = useState<'matrix' | 'timeline'>('matrix');
@@ -130,7 +142,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
           >
             <Users className="w-3.5 h-3.5" />
             <span>
-              {isHinglish ? 'Active Housemates (Week 5 Live)' : 'Active Housemates (Week 5 Live)'}
+              {isHinglish ? `Active Housemates (Week ${currentWeek} Live)` : `Active Housemates (Week ${currentWeek} Live)`}
             </span>
             <span className="px-1.5 py-0.2 text-[10px] bg-slate-800 rounded text-slate-300 font-mono">
               {activeContestants.length}
@@ -156,13 +168,53 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         </div>
 
         <div className="flex items-center gap-3 text-xs text-slate-400 pr-2">
+          {/* Historical Week Picker */}
+          {onSelectWeek && (
+            <div className="flex items-center gap-1.5 bg-[#090f1c] px-2 py-1 rounded-lg border border-slate-800">
+              <span className="text-[11px] text-slate-400 font-mono">Snapshot:</span>
+              <select
+                value={selectedWeek ?? currentWeek}
+                onChange={(e) => onSelectWeek(Number(e.target.value))}
+                className="bg-transparent text-cyan-300 text-xs font-mono font-semibold focus:outline-none cursor-pointer"
+              >
+                {Array.from({ length: currentWeek }, (_, i) => i + 1).map((w) => (
+                  <option key={w} value={w} className="bg-slate-900 text-slate-200">
+                    Week {w} {w === currentWeek ? '(Live)' : '(Historical)'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <span className="font-mono text-cyan-400">
-            {isHinglish ? 'Voting Status: LIVE' : 'Voting Window: LIVE'}
+            {isHistorical ? 'HISTORICAL SNAPSHOT' : (isHinglish ? 'Voting Status: LIVE' : 'Voting Window: LIVE')}
           </span>
           <span>·</span>
-          <span>{isHinglish ? 'Week 5 Tathas-two Phase' : 'Week 5 Tathas-two Phase'}</span>
+          <span>{isHinglish ? `Week ${currentWeek} (Day ${currentDay}) Phase` : `Week ${currentWeek} (Day ${currentDay}) Phase`}</span>
         </div>
       </div>
+
+      {/* Historical Lookback Notice Banner */}
+      {isHistorical && (
+        <div className="p-3 bg-amber-950/30 border border-amber-600/40 rounded-xl flex items-center justify-between text-xs text-amber-300">
+          <div className="flex items-center gap-2">
+            <span className="font-bold uppercase tracking-wider text-[11px] px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40">
+              Historical Lookback
+            </span>
+            <span>
+              Viewing snapshot for <strong>Week {selectedWeek}</strong>. Live voting and hourly ingestion are paused in this historical view.
+            </span>
+          </div>
+          {onSelectWeek && (
+            <button
+              onClick={() => onSelectWeek(currentWeek)}
+              className="px-2.5 py-1 text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white rounded-md transition-colors"
+            >
+              Return to Live Week {currentWeek}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Broadcaster Authority & Zero-Hallucination Evidence Notice */}
       <div className="p-3 bg-[#0d1627] border border-cyan-900/40 rounded-xl flex items-center justify-between gap-4 text-xs">
@@ -185,6 +237,8 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         <EvictionTimelineView
           timeline={EVICTED_CONTESTANTS_TIMELINE}
           language={language}
+          currentWeek={currentWeek}
+          currentDay={currentDay}
           onSelectContestantById={(id) => {
             const match = contestants.find((c) => c.id === id);
             if (match) onSelectContestant(match);
@@ -197,7 +251,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
             <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
               <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
                 <span>{isHinglish ? 'Eviction Khatre Mein' : 'Nominated for Eviction'}</span>
-                <span className="font-mono text-cyan-400">Week 5</span>
+                <span className="font-mono text-cyan-400">Week {currentWeek}</span>
               </div>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold font-mono text-white tabular-nums">

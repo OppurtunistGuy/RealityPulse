@@ -273,4 +273,60 @@ Salman Khan warned Qazi against personal attacks.
       });
     });
   });
+
+  describe('Phase 1 & 2 RealityPulse Architecture Endpoints', () => {
+    it('GET /api/contestants returns latest snapshot with dynamic timeline', async () => {
+      const res = await request(app).get('/api/contestants');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'ok');
+      assert.ok(Array.isArray(res.body.contestants));
+      assert.equal(res.body.contestants.length, 18);
+      assert.ok(res.body.timeline);
+      assert.equal(typeof res.body.timeline.currentDay, 'number');
+      assert.equal(typeof res.body.timeline.currentWeek, 'number');
+      // On Nov 1, 2026, premiere Sept 11, 2026 gives Day 52 and Week 8
+      assert.equal(res.body.timeline.currentDay, 52);
+      assert.equal(res.body.timeline.currentWeek, 8);
+    });
+
+    it('GET /api/snapshot?week=4 returns historical snapshot clearly labeled as past', async () => {
+      const res = await request(app).get('/api/snapshot?week=4');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'ok');
+      assert.equal(res.body.week, 4);
+      assert.equal(res.body.isHistorical, true);
+      assert.ok(Array.isArray(res.body.contestants));
+    });
+
+    it('GET /api/eviction-timeline returns verified chronological eviction list', async () => {
+      const res = await request(app).get('/api/eviction-timeline');
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'ok');
+      assert.ok(Array.isArray(res.body.timeline));
+      assert.equal(res.body.timeline.length, 4);
+      assert.equal(res.body.timeline[0].name, 'Rohed Khan');
+      assert.equal(res.body.timeline[1].name, 'Isha Rikhi');
+      assert.equal(res.body.timeline[2].name, 'Rhiti Tiwari');
+      assert.equal(res.body.timeline[3].name, 'Neelam Giri');
+    });
+
+    describe('POST /api/cron/ingest', () => {
+      it('rejects call when secret header does not match CRON_SECRET if configured', async () => {
+        process.env.CRON_SECRET = 'super-secret-cron-key';
+        const res = await request(app)
+          .post('/api/cron/ingest')
+          .set('x-cron-secret', 'wrong-key');
+        assert.equal(res.status, 401);
+        delete process.env.CRON_SECRET;
+      });
+
+      it('executes real Google News RSS fetch and records snapshot in test/dev mode', async () => {
+        const res = await request(app).post('/api/cron/ingest');
+        assert.equal(res.status, 200);
+        assert.equal(res.body.status, 'ok');
+        assert.ok(res.body.result.success);
+        assert.equal(typeof res.body.result.articlesFetched, 'number');
+      });
+    });
+  });
 });

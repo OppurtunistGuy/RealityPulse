@@ -4,6 +4,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
 import { securityManager, TRUSTED_BROADCASTER_DOMAINS } from './src/services/securityAndFeedService.js';
+import { dbService, calculateShowTimeline } from './src/services/dbService.js';
+import { runIngestionPipeline } from './src/services/ingestService.js';
 
 dotenv.config();
 
@@ -38,12 +40,91 @@ const getGenAIClient = () => {
 
 // Health Check
 app.get('/api/health', (req, res) => {
+  const timeline = calculateShowTimeline();
   res.json({
     status: 'ok',
     hasApiKey: Boolean(process.env.GEMINI_API_KEY),
+    isUsingSupabase: dbService.isUsingSupabase(),
     model: GEMINI_MODEL,
+    timeline,
     timestamp: new Date().toISOString()
   });
+});
+
+// 1. GET /api/contestants: Returns latest snapshot per contestant + dynamic timeline
+app.get('/api/contestants', async (req, res) => {
+  try {
+    const data = await dbService.getLatestContestants();
+    res.json({
+      status: 'ok',
+      total: data.contestants.length,
+      capturedAt: data.capturedAt,
+      timeline: data.timeline,
+      dataSource: data.source,
+      contestants: data.contestants
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to load contestants', details: err.message });
+  }
+});
+
+// 2. GET /api/snapshot?week=N: Historical lookback
+app.get('/api/snapshot', async (req, res) => {
+  const week = Number(req.query.week) || 1;
+  try {
+    const snapshot = await dbService.getHistoricalSnapshot(week);
+    res.json({
+      status: 'ok',
+      ...snapshot
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to load historical snapshot', details: err.message });
+  }
+});
+
+// 3. GET /api/eviction-timeline: Chronological eviction timeline
+app.get('/api/eviction-timeline', async (req, res) => {
+  try {
+    const timeline = await dbService.getEvictionTimeline();
+    res.json({
+      status: 'ok',
+      total: timeline.length,
+      timeline
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to load eviction timeline', details: err.message });
+  }
+});
+
+// 4. POST /api/cron/ingest: Scheduled ingestion job called by GitHub Actions
+app.post('/api/cron/ingest', async (req, res) => {
+  const cronSecret = process.env.CRON_SECRET;
+  const providedSecret = req.headers['x-cron-secret'] || req.headers['authorization']?.replace(/^Bearer\s+/, '');
+
+  // Reject if CRON_SECRET is configured and header does not match
+  if (cronSecret && providedSecret !== cronSecret) {
+    return res.status(401).json({ error: 'Unauthorized: Invalid or missing cron secret' });
+  }
+
+  // If in production and CRON_SECRET is missing, reject for security
+  if (process.env.NODE_ENV === 'production' && !cronSecret) {
+    return res.status(500).json({ error: 'Server misconfiguration: CRON_SECRET environment variable is missing' });
+  }
+
+  try {
+    const result = await runIngestionPipeline({
+      geminiApiKey: process.env.GEMINI_API_KEY,
+      geminiModel: process.env.GEMINI_MODEL
+    });
+
+    res.json({
+      status: 'ok',
+      message: 'Ingestion pipeline executed successfully',
+      result
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Ingestion pipeline failed', details: err.message });
+  }
 });
 
 app.post('/api/grounding-search', async (req, res) => {

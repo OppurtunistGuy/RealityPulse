@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldAlert, Sparkles, Globe, Layers, Languages, ShieldCheck } from 'lucide-react';
 import { Language } from '../types';
+import { timeAgo } from '../utils/timeAgo';
 
 interface TopBarProps {
   activeTab: 'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio';
@@ -12,6 +13,8 @@ interface TopBarProps {
   onToggleNominationOnly: () => void;
   language: Language;
   onToggleLanguage: (lang: Language) => void;
+  capturedAt?: string;
+  timeline?: { currentDay: number; currentWeek: number };
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -23,7 +26,9 @@ export const TopBar: React.FC<TopBarProps> = ({
   isNominationOnly,
   onToggleNominationOnly,
   language,
-  onToggleLanguage
+  onToggleLanguage,
+  capturedAt,
+  timeline
 }) => {
   const isHinglish = language === 'hinglish';
 
@@ -31,7 +36,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     <header className="border-b border-slate-800/80 bg-[#0c1220]/90 backdrop-blur-md sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 sm:gap-6">
         {/* Zone 1: Brand wordmark (single line) */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/40">
             <ShieldAlert className="w-4 h-4 text-white" />
           </div>
@@ -41,6 +46,19 @@ export const TopBar: React.FC<TopBarProps> = ({
               {isHinglish ? 'ASLI JANTA INTEL' : 'TOSS INTEL'}
             </span>
           </span>
+
+          {/* Dynamic Day/Week indicator */}
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-[11px] font-mono text-cyan-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Day {timeline?.currentDay ?? 52} · W{timeline?.currentWeek ?? 8}
+          </span>
+
+          {/* Last updated relative time badge */}
+          {capturedAt && (
+            <span className="hidden md:inline-flex text-[10px] font-mono text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800" title={`Snapshot timestamp: ${capturedAt}`}>
+              Updated {timeAgo(capturedAt)}
+            </span>
+          )}
         </div>
 
         {/* Zone 2: Navigation Links */}
