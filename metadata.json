@@ -1,0 +1,6 @@
+{
+  "name": "Reality TV Organic Audience & Eviction Analytics",
+  "description": "PR-sanitized sentiment intelligence engine for reality TV that eliminates bot farms, anchors episode narratives, and predicts eviction risk via True Organic Sentiment (TOSS).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

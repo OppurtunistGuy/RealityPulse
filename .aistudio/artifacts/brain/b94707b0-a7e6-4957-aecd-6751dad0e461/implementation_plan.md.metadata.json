@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for adding a dedicated 7-day True Organic Sentiment Score (TOSS) trend sparkline chart to the EvictionMatrixView, featuring minimalist monochrome lines with start/end anchor points and 7-day delta indicators.",
+  "updatedAt":  "2026-10-31T16:18:34.970495379Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
