@@ -73,3 +73,4 @@ describe('Sparkline Component Logic - Edge Tests', () => {
     assert.ok(result.endPoint.y > result.startPoint.y);
   });
 });
+

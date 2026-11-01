@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
   Film,
-  Tv,
-  ArrowRight,
   TrendingUp,
   TrendingDown,
   Scale,
-  Swords,
-  AlertCircle,
-  HelpCircle,
-  CheckCircle2
+  AlertCircle
 } from 'lucide-react';
 import { EPISODE_NARRATIVES } from '../data/mockRealityData';
 import { EpisodeNarrative } from '../types';
@@ -167,47 +162,6 @@ export const NarrativeArcDeltaView: React.FC = () => {
           })}
         </div>
       </div>
-
-      {/* Primary Conflict Pairs Analysis */}
-      {currentEpisode.conflictPairs.length > 0 && (
-        <div className="p-5 bg-[#11192a] border border-slate-800 rounded-xl space-y-4">
-          <div>
-            <h4 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-              <Swords className="w-4 h-4 text-amber-400" />
-              <span>Head-to-Head Conflict Sanity Test</span>
-            </h4>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Measures whether online sentiment spikes after an altercation align with authentic viewer consensus or automated PR counter-attacks
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {currentEpisode.conflictPairs.map((pair) => (
-              <div
-                key={pair.id}
-                className="p-4 bg-[#0e1626] border border-slate-800 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4"
-              >
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">{pair.contestantA}</span>
-                    <span className="text-xs font-mono text-rose-400 font-bold">VS</span>
-                    <span className="text-sm font-bold text-white">{pair.contestantB}</span>
-                  </div>
-                  <p className="text-xs text-slate-300">{pair.incident}</p>
-                  <p className="text-[11px] text-slate-500">Framing: {pair.producerFraming}</p>
-                </div>
-
-                <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-lg text-xs md:max-w-xs shrink-0">
-                  <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider block mb-0.5">
-                    Casual Audience Consensus
-                  </span>
-                  <p className="text-slate-200 font-medium">{pair.organicAudienceWinner}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Sanity Test Explainer Card */}
       <div className="p-4 bg-[#0b111e] border border-slate-800 rounded-lg flex items-start gap-3">
