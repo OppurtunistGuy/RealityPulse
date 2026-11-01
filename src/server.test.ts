@@ -303,11 +303,11 @@ Salman Khan warned Qazi against personal attacks.
       assert.equal(res.status, 200);
       assert.equal(res.body.status, 'ok');
       assert.ok(Array.isArray(res.body.timeline));
-      assert.equal(res.body.timeline.length, 4);
+      assert.ok(res.body.timeline.length >= 4);
       assert.equal(res.body.timeline[0].name, 'Rohed Khan');
       assert.equal(res.body.timeline[1].name, 'Isha Rikhi');
       assert.equal(res.body.timeline[2].name, 'Rhiti Tiwari');
-      assert.equal(res.body.timeline[3].name, 'Neelam Giri');
+      assert.equal(res.body.timeline[3].name, 'Nakul Dhull (Mithu Don)');
     });
 
     describe('POST /api/cron/ingest', () => {

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { neon } from '@neondatabase/serverless';
-import { INITIAL_CONTESTANTS } from '../src/data/mockRealityData.js';
+import { BB20_LOCKED_CONTESTANTS } from '../src/data/bb20ContestantsStatic.js';
 import { calculateShowTimeline } from '../src/services/dbService.js';
 
 dotenv.config();
@@ -73,9 +73,9 @@ async function seed() {
 
   const timeline = calculateShowTimeline();
   console.log(`Current Show State: Day ${timeline.currentDay}, Week ${timeline.currentWeek}`);
-  console.log(`Upserting ${INITIAL_CONTESTANTS.length} Season 20 contestants...`);
+  console.log(`Upserting ${BB20_LOCKED_CONTESTANTS.length} Season 20 contestants...`);
 
-  for (const c of INITIAL_CONTESTANTS) {
+  for (const c of BB20_LOCKED_CONTESTANTS) {
     // 1. Upsert Contestant
     await sql`
       INSERT INTO contestants (

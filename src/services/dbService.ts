@@ -1,6 +1,6 @@
 import { neon, NeonQueryFunction } from '@neondatabase/serverless';
 import { Contestant, EvictedContestantTimelineItem } from '../types.js';
-import { INITIAL_CONTESTANTS, EVICTED_CONTESTANTS_TIMELINE } from '../data/mockRealityData.js';
+import { BB20_LOCKED_CONTESTANTS, BB20_LOCKED_EVICTED_TIMELINE } from '../data/bb20ContestantsStatic.js';
 
 // Show Premiere Date: Bigg Boss 20 (Tathas-two) premiered September 11, 2026 IST
 // Yields Day 52 and Week 8 on November 1, 2026 IST
@@ -36,7 +36,7 @@ export function calculateShowTimeline(referenceDate: Date = new Date()): {
 
 class DatabaseService {
   private sql: NeonQueryFunction<false, false> | null = null;
-  private memoryContestants: Contestant[] = [...INITIAL_CONTESTANTS];
+  private memoryContestants: Contestant[] = [...BB20_LOCKED_CONTESTANTS];
   private lastCapturedAt: string = new Date().toISOString();
 
   private getSql(): NeonQueryFunction<false, false> | null {
@@ -161,7 +161,7 @@ class DatabaseService {
   }
 
   public async getEvictionTimeline(): Promise<EvictedContestantTimelineItem[]> {
-    return EVICTED_CONTESTANTS_TIMELINE;
+    return BB20_LOCKED_EVICTED_TIMELINE;
   }
 }
 
