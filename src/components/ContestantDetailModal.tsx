@@ -143,53 +143,64 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
 
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-6">
-          {/* Key Metrics Strip */}
+          {/* Key Metrics Strip: Plain words above coined terms */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {/* Real fan support */}
             <div className="p-3 bg-[#18233c] rounded-lg border border-slate-800">
-              <span className="text-[11px] font-medium text-slate-400 block">
-                {isHinglish ? 'Raw Sentiment' : 'Raw Sentiment'}
-              </span>
-              <span className="text-xl font-bold font-mono tabular-nums text-slate-100">
-                {contestant.rawSentiment}%
-              </span>
-              <span className="text-[10px] text-slate-500 block mt-0.5">
-                {isHinglish ? 'Social media volume' : 'Unfiltered volume'}
-              </span>
-            </div>
-            <div className="p-3 bg-[#18233c] rounded-lg border border-slate-800">
-              <span className="text-[11px] font-medium text-slate-400 block">
-                {isHinglish ? 'TOSS (Asli Janta)' : 'True Organic (TOSS)'}
+              <span className="text-xs font-bold text-white block">
+                {isHinglish ? 'Asli Fan Support' : 'Real fan support'}
               </span>
               <span className="text-xl font-bold font-mono tabular-nums text-cyan-300">
                 {contestant.trueOrganicSentiment}%
               </span>
-              <span className="text-[10px] text-cyan-500/80 block mt-0.5">
-                {isHinglish ? 'Bot-sanitized score' : 'Bot-sanitized core'}
+              <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                TOSS Score
               </span>
             </div>
+
+            {/* Unfiltered hype */}
             <div className="p-3 bg-[#18233c] rounded-lg border border-slate-800">
-              <span className="text-[11px] font-medium text-slate-400 block">
-                {isHinglish ? 'PR Hype Delta' : 'PR Inflation Delta'}
+              <span className="text-xs font-bold text-slate-200 block">
+                {isHinglish ? 'Unfiltered Hype' : 'Unfiltered hype'}
+              </span>
+              <span className="text-xl font-bold font-mono tabular-nums text-slate-100">
+                {contestant.rawSentiment}%
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                Raw Sentiment
+              </span>
+            </div>
+
+            {/* PR manipulation */}
+            <div className="p-3 bg-[#18233c] rounded-lg border border-slate-800">
+              <span className="text-xs font-bold text-slate-200 block">
+                {isHinglish ? 'PR Hype Gap' : 'PR manipulation'}
               </span>
               <span
                 className={`text-xl font-bold font-mono tabular-nums ${
-                  contestant.prInflationDelta > 20 ? 'text-rose-400' : 'text-slate-200'
+                  contestant.prInflationDelta > 15 ? 'text-rose-400' : 'text-slate-200'
                 }`}
               >
                 {contestant.prInflationDelta > 0 ? `+${contestant.prInflationDelta}` : contestant.prInflationDelta}%
               </span>
-              <span className="text-[10px] text-slate-500 block mt-0.5">
-                {isHinglish ? 'Manufactured PR' : 'Manufactured lift'}
+              <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                PR Delta Gap
               </span>
             </div>
+
+            {/* Eviction risk */}
             <div className="p-3 bg-[#18233c] rounded-lg border border-slate-800">
-              <span className="text-[11px] font-medium text-slate-400 block">
-                {isHinglish ? 'Eviction Khatra' : 'Eviction Risk'}
+              <span className="text-xs font-bold text-rose-300 block">
+                {isHinglish ? 'Eviction Khatra' : 'Eviction risk'}
               </span>
               <span className="text-xl font-bold font-mono tabular-nums text-rose-300">
-                {contestant.evictionProbability}%
+                {contestant.insufficientData || contestant.evictionProbability === null
+                  ? 'Insufficient data'
+                  : `${contestant.evictionProbability}%`}
               </span>
-              <span className="text-[10px] text-slate-500 block mt-0.5">{contestant.evictionRiskTier}</span>
+              <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                {contestant.evictionRiskTier ?? 'Immediate Risk'}
+              </span>
             </div>
           </div>
 

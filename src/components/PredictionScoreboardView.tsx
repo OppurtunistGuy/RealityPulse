@@ -248,3 +248,4 @@ export const PredictionScoreboardView: React.FC = () => {
     </div>
   );
 };
+

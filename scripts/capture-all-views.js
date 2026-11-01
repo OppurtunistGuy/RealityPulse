@@ -7,7 +7,7 @@ const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 const TARGET_URL = 'https://realitypulse.vercel.app';
 
 async function runCapture() {
-  const port = 9224;
+  const port = 9228;
   const chrome = spawn(CHROME_PATH, [
     '--headless=new',
     '--disable-gpu',
@@ -86,15 +86,38 @@ async function runCapture() {
   console.log('Waiting for content to render on desktop...');
   await new Promise((r) => setTimeout(r, 5000));
 
-  // 1. Capture Desktop View (1280x800) showing horizontal bar chart & cleaned dashboard
+  // 1. Capture Desktop Tonight View (1280x800)
   const { data: desktopData } = await sendSession('Page.captureScreenshot', {
     format: 'png'
   });
   const desktopPath = path.join(ARTIFACT_DIR, 'desktop_1280x800.png');
   fs.writeFileSync(desktopPath, Buffer.from(desktopData, 'base64'));
-  console.log(`Saved updated desktop screenshot to ${desktopPath}`);
+  console.log(`Saved updated desktop screenshot (Tonight view) to ${desktopPath}`);
 
-  // 2. Click on "Prediction Scoreboard" tab
+  // 2. Click on "Housemates" tab
+  console.log('Switching to Housemates tab...');
+  await sendSession('Runtime.evaluate', {
+    expression: `(() => {
+      const buttons = Array.from(document.querySelectorAll('button'));
+      const housematesBtn = buttons.find(b => b.textContent && b.textContent.includes('Housemates'));
+      if (housematesBtn) {
+        housematesBtn.click();
+        return true;
+      }
+      return false;
+    })()`
+  });
+
+  await new Promise((r) => setTimeout(r, 1500));
+
+  const { data: housematesData } = await sendSession('Page.captureScreenshot', {
+    format: 'png'
+  });
+  const housematesPath = path.join(ARTIFACT_DIR, 'housemates_view.png');
+  fs.writeFileSync(housematesPath, Buffer.from(housematesData, 'base64'));
+  console.log(`Saved housemates view screenshot to ${housematesPath}`);
+
+  // 3. Click on "Prediction Scoreboard" tab
   console.log('Switching to Prediction Scoreboard tab...');
   await sendSession('Runtime.evaluate', {
     expression: `(() => {
@@ -117,19 +140,19 @@ async function runCapture() {
   fs.writeFileSync(scoreboardPath, Buffer.from(scoreboardData, 'base64'));
   console.log(`Saved prediction scoreboard screenshot to ${scoreboardPath}`);
 
-  // 3. Switch back to eviction matrix tab for mobile view
+  // 4. Switch back to Tonight tab for mobile view
   await sendSession('Runtime.evaluate', {
     expression: `(() => {
       const buttons = Array.from(document.querySelectorAll('button'));
-      const overviewBtn = buttons.find(b => b.textContent && b.textContent.includes('Eviction Matrix'));
-      if (overviewBtn) {
-        overviewBtn.click();
+      const tonightBtn = buttons.find(b => b.textContent && b.textContent.includes("Who's going home"));
+      if (tonightBtn) {
+        tonightBtn.click();
       }
     })()`
   });
   await new Promise((r) => setTimeout(r, 1000));
 
-  // 4. Capture Mobile 390x844
+  // 5. Capture Mobile 390x844
   console.log('Capturing mobile 390x844...');
   await sendSession('Emulation.setDeviceMetricsOverride', {
     width: 390,

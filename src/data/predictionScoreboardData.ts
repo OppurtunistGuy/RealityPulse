@@ -150,3 +150,4 @@ export const PREDICTION_SCOREBOARD_SUMMARY: PredictionScoreboardSummary = {
     ]
   }
 };
+

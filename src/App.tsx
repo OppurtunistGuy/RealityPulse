@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { TopBar } from './components/TopBar';
-import { EvictionMatrixView } from './components/EvictionMatrixView';
+import React, { useState, useEffect, useMemo } from 'react';
+import { TopBar, ActiveTab } from './components/TopBar';
+import { TonightView } from './components/TonightView';
+import { HousematesView } from './components/HousematesView';
+import { IsTheHypeRealView } from './components/IsTheHypeRealView';
+import { WhatHappenedThisWeekView } from './components/WhatHappenedThisWeekView';
 import { PredictionScoreboardView } from './components/PredictionScoreboardView';
-import { AstroturfNetworkView } from './components/AstroturfNetworkView';
-import { NarrativeArcDeltaView } from './components/NarrativeArcDeltaView';
-import { LiveSearchGroundingView } from './components/LiveSearchGroundingView';
-import { CustomDiscourseStudioView } from './components/CustomDiscourseStudioView';
 import { ContestantDetailModal } from './components/ContestantDetailModal';
-import { SourceProvenanceModal } from './components/SourceProvenanceModal';
+import { BackstageMachineryModal } from './components/BackstageMachineryModal';
 import { SecurityAndFeedModal } from './components/SecurityAndFeedModal';
 import { Contestant, PlatformWeightConfig, Language } from './types';
-import { DEFAULT_PLATFORM_WEIGHTS } from './utils/analyticsEngine';
+import { DEFAULT_PLATFORM_WEIGHTS, calculateTOSS } from './utils/analyticsEngine';
 import { calculateShowTimeline } from './data/timelineConfig';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'matrix' | 'scoreboard' | 'astroturf' | 'narrative' | 'grounding' | 'studio'>('matrix');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('tonight');
   const [contestants, setContestants] = useState<Contestant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -24,15 +23,12 @@ export default function App() {
     const t = calculateShowTimeline();
     return { currentDay: t.currentDay, currentWeek: t.currentWeek };
   });
-  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
-  const [isHistoricalView, setIsHistoricalView] = useState(false);
 
-  // Unified modal manager to strictly prevent stacked dialogs
-  const [activeModal, setActiveModal] = useState<'none' | 'sources' | 'security' | 'contestant'>('none');
-  const [selectedContestant, setSelectedContestant] = useState<Contestant | null>(null);
+  // Modal manager to prevent stacked dialogs
+  const [activeModal, setActiveModal] = useState<'none' | 'backstage' | 'security' | 'contestant'>('none');
+  const [selectedContestantId, setSelectedContestantId] = useState<string | null>(null);
 
   const [weights, setWeights] = useState<PlatformWeightConfig>(DEFAULT_PLATFORM_WEIGHTS);
-  const [isNominationOnly, setIsNominationOnly] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
 
   // Load contestants from backend API on mount
@@ -50,8 +46,6 @@ export default function App() {
       if (data.timeline) {
         setTimeline(data.timeline);
       }
-      setSelectedWeek(null);
-      setIsHistoricalView(false);
     } catch (err: any) {
       console.warn('API error, displaying connection fallback state:', err);
       setLoadError(err.message || 'Error connecting to database');
@@ -64,32 +58,43 @@ export default function App() {
     fetchContestantsData();
   }, []);
 
-  // Historical snapshot lookback
-  const handleSelectWeek = async (week: number) => {
-    if (week === timeline.currentWeek) {
-      return fetchContestantsData();
-    }
+  // SINGLE SOURCE OF TRUTH: Evaluated contestants computed dynamically from live platform weights
+  const evaluatedContestants: Contestant[] = useMemo(() => {
+    return contestants.map((c) => {
+      const tossResult = calculateTOSS(c, weights);
+      const trend = Array.isArray(c.tossTrend7d) && c.tossTrend7d.length > 0
+        ? [...c.tossTrend7d]
+        : [tossResult.toss];
+      // Keep 7-day trend end aligned with current organic sentiment
+      trend[trend.length - 1] = tossResult.toss;
 
-    setIsLoading(true);
-    try {
-      const res = await fetch(`/api/snapshot?week=${week}`);
-      if (!res.ok) throw new Error('Failed to load snapshot');
-      const data = await res.json();
-      setContestants(data.contestants || []);
-      setSelectedWeek(week);
-      setIsHistoricalView(true);
-      if (data.capturedAt) {
-        setCapturedAt(data.capturedAt);
-      }
-    } catch (err: any) {
-      console.error('Error fetching historical week snapshot:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      return {
+        ...c,
+        rawSentiment: tossResult.raw,
+        trueOrganicSentiment: tossResult.toss,
+        prInflationDelta: tossResult.prDelta,
+        evictionRiskTier: tossResult.riskTier,
+        evictionProbability: tossResult.evictionProbability,
+        insufficientData: tossResult.insufficientData,
+        tossTrend7d: trend,
+        calculatedToss: tossResult.toss,
+        calculatedRaw: tossResult.raw,
+        calculatedPrDelta: tossResult.prDelta,
+        calculatedRiskTier: tossResult.riskTier,
+        calculatedEvictionProbability: tossResult.evictionProbability,
+        calculatedInsufficientData: tossResult.insufficientData
+      };
+    });
+  }, [contestants, weights]);
+
+  // Selected contestant actively synchronized with evaluated contestants
+  const activeSelectedContestant = useMemo(() => {
+    if (!selectedContestantId) return null;
+    return evaluatedContestants.find((c) => c.id === selectedContestantId) || null;
+  }, [selectedContestantId, evaluatedContestants]);
 
   const openContestantModal = (c: Contestant) => {
-    setSelectedContestant(c);
+    setSelectedContestantId(c.id);
     setActiveModal('contestant');
   };
 
@@ -97,31 +102,25 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-hidden">
-      {/* Semantic h1 heading for accessibility and document hierarchy */}
+      {/* Semantic h1 heading for accessibility */}
       <h1 className="sr-only">RealityPulse — Bigg Boss 20 True Organic Audience & Eviction Analytics</h1>
 
-      {/* Top Bar with dynamic Day/Week, relative time, and accessibility tabs */}
+      {/* Top Bar with Question-Based Navigation and Clearly Labeled Actions */}
       <TopBar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        onOpenLiveQuery={() => setActiveTab('grounding')}
-        onOpenSources={() => setActiveModal('sources')}
+        onOpenLiveQuery={() => setActiveTab('story')}
+        onOpenBackstage={() => setActiveModal('backstage')}
         onOpenSecurityAndFeed={() => setActiveModal('security')}
-        isNominationOnly={isNominationOnly}
-        onToggleNominationOnly={() => setIsNominationOnly(!isNominationOnly)}
         language={language}
         onToggleLanguage={setLanguage}
         capturedAt={capturedAt ?? undefined}
-        timeline={
-          isHistoricalView && selectedWeek
-            ? { currentDay: selectedWeek * 7, currentWeek: selectedWeek }
-            : timeline
-        }
+        timeline={timeline}
       />
 
       {/* Main Workspace Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
-        {/* In-place week switch indicator (avoids full-page blank spinner) */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* Subtle in-place indicator during background fetches */}
         {isLoading && contestants.length > 0 && (
           <div className="fixed top-16 left-0 right-0 z-50 h-1 bg-cyan-950 overflow-hidden">
             <div className="h-full bg-cyan-400 animate-pulse w-full"></div>
@@ -157,114 +156,111 @@ export default function App() {
           </div>
         ) : (
           <>
-            {activeTab === 'matrix' && (
-              <div id="panel-matrix" role="tabpanel" aria-labelledby="tab-matrix">
-                <EvictionMatrixView
-                  contestants={contestants}
+            {/* 1. TONIGHT (Default single-screen dominant view) */}
+            {activeTab === 'tonight' && (
+              <div id="panel-tonight" role="tabpanel" aria-labelledby="tab-tonight">
+                <TonightView
+                  contestants={evaluatedContestants}
                   onSelectContestant={openContestantModal}
-                  weights={weights}
-                  onWeightsChange={setWeights}
-                  onOpenSources={() => setActiveModal('sources')}
-                  isNominationOnly={isNominationOnly}
+                  onOpenBackstage={() => setActiveModal('backstage')}
                   language={language}
-                  currentWeek={timeline.currentWeek}
-                  currentDay={timeline.currentDay}
-                  capturedAt={capturedAt ?? undefined}
-                  isHistorical={isHistoricalView}
-                  selectedWeek={selectedWeek}
-                  onSelectWeek={handleSelectWeek}
                 />
               </div>
             )}
 
+            {/* 2. HOUSEMATES (Full sortable & searchable roster) */}
+            {activeTab === 'housemates' && (
+              <div id="panel-housemates" role="tabpanel" aria-labelledby="tab-housemates">
+                <HousematesView
+                  contestants={evaluatedContestants}
+                  onSelectContestant={openContestantModal}
+                  language={language}
+                />
+              </div>
+            )}
+
+            {/* 3. IS THE HYPE REAL (Bot network graph + comment tester) */}
+            {activeTab === 'hype' && (
+              <div id="panel-hype" role="tabpanel" aria-labelledby="tab-hype">
+                <IsTheHypeRealView
+                  contestants={evaluatedContestants}
+                  onSelectContestant={openContestantModal}
+                />
+              </div>
+            )}
+
+            {/* 4. WHAT HAPPENED THIS WEEK (Narrative arc delta + search grounding) */}
+            {activeTab === 'story' && (
+              <div id="panel-story" role="tabpanel" aria-labelledby="tab-story">
+                <WhatHappenedThisWeekView />
+              </div>
+            )}
+
+            {/* 5. PREDICTION SCOREBOARD (Public accuracy scoreboard & audit ledger) */}
             {activeTab === 'scoreboard' && (
               <div id="panel-scoreboard" role="tabpanel" aria-labelledby="tab-scoreboard">
                 <PredictionScoreboardView />
-              </div>
-            )}
-
-            {activeTab === 'astroturf' && (
-              <div id="panel-astroturf" role="tabpanel" aria-labelledby="tab-astroturf">
-                <AstroturfNetworkView
-                  contestants={contestants}
-                  onSelectContestant={openContestantModal}
-                />
-              </div>
-            )}
-
-            {activeTab === 'narrative' && (
-              <div id="panel-narrative" role="tabpanel" aria-labelledby="tab-narrative">
-                <NarrativeArcDeltaView />
-              </div>
-            )}
-
-            {activeTab === 'grounding' && (
-              <div id="panel-grounding" role="tabpanel" aria-labelledby="tab-grounding">
-                <LiveSearchGroundingView />
-              </div>
-            )}
-
-            {activeTab === 'studio' && (
-              <div id="panel-studio" role="tabpanel" aria-labelledby="tab-studio">
-                <CustomDiscourseStudioView />
               </div>
             )}
           </>
         )}
       </main>
 
-      {/* Contestant Detail Overview Modal */}
+      {/* Human-Written Contestant Dossier Modal with 100% matched numbers */}
       <ContestantDetailModal
-        contestant={activeModal === 'contestant' ? selectedContestant : null}
+        contestant={activeModal === 'contestant' ? activeSelectedContestant : null}
         onClose={() => setActiveModal('none')}
         language={language}
       />
 
-      {/* Real Source Provenance Modal */}
-      <SourceProvenanceModal
-        isOpen={activeModal === 'sources'}
+      {/* Backstage Machinery Modal: Evidence policy, nomination audit & platform weights */}
+      <BackstageMachineryModal
+        isOpen={activeModal === 'backstage'}
         onClose={() => setActiveModal('none')}
+        weights={weights}
+        onWeightsChange={setWeights}
+        language={language}
       />
 
-      {/* Live Feed & Anti-Manipulation Security Ledger Modal */}
+      {/* Live Feed & Anti-Manipulation Cryptographic Ledger Modal */}
       <SecurityAndFeedModal
         isOpen={activeModal === 'security'}
         onClose={() => setActiveModal('none')}
         language={language}
       />
 
-      {/* Clean Footer adhering to Anti-Slop Discipline */}
+      {/* Anti-Slop Discipline Clean Footer */}
       <footer className="border-t border-slate-800/80 bg-[#0c1220] py-6 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="font-semibold text-slate-300">
-              Bigg Boss 20 Hindi · Day {isHistoricalView && selectedWeek ? selectedWeek * 7 : timeline.currentDay} (Week {selectedWeek ?? timeline.currentWeek})
+              Bigg Boss 20 Hindi · Day {timeline.currentDay} (Week {timeline.currentWeek})
             </span>
             <span>·</span>
-            <span>TOSS Engine</span>
+            <span>Real Fan Support (TOSS)</span>
             <span>·</span>
-            <span>Grounded via Google Search</span>
+            <span>Grounded via Broadcaster & Google Search</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400 flex-wrap">
             <button
-              onClick={() => setActiveModal('sources')}
+              onClick={() => setActiveModal('backstage')}
               className="hover:text-cyan-300 underline underline-offset-4"
             >
-              View Verified Intelligence Feeds
+              Backstage Methodology & Weights
             </button>
             <span>·</span>
             <button
               onClick={() => setActiveModal('security')}
               className="hover:text-emerald-300 underline underline-offset-4"
             >
-              Inspect Security Audit Ledger
+              Security Audit Ledger
             </button>
             <span>·</span>
             <button
-              onClick={() => setActiveTab('studio')}
-              className="hover:text-slate-200 underline underline-offset-4"
+              onClick={() => setActiveTab('scoreboard')}
+              className="hover:text-amber-300 underline underline-offset-4"
             >
-              Test Comment Studio
+              Prediction Scoreboard (85.7%)
             </button>
           </div>
         </div>
