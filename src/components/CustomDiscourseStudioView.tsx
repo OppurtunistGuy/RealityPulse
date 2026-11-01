@@ -121,12 +121,11 @@ Scout has zero personality in the house, only gaming kids are blindly voting for
           <div className="flex items-center gap-2 mb-1">
             <Cpu className="w-4 h-4 text-cyan-400" />
             <h3 className="text-base font-bold text-white tracking-tight">
-              Forensic Discourse & PR Astroturfing Studio
+              Comment Studio: Real People vs Paid Campaigns
             </h3>
           </div>
-          <p className="text-xs text-slate-400 max-w-3xl leading-relaxed">
-            Test any social media stream, tweet collection, or episode transcript against the sanitization algorithm.
-            Run client-side Levenshtein/MinHash clustering or deep Gemini 3.8 Flash forensic analysis.
+          <p className="text-xs text-slate-300 max-w-3xl leading-relaxed">
+            Paste any batch of comments here. It tells you how many are copy-paste duplicates from a paid campaign and how many are real people writing in their own words.
           </p>
         </div>
 

@@ -133,41 +133,15 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
     }
   };
 
-  // 2D Matrix Plot Coordinates with Anti-Overlap Repulsion
-  // X: Social Buzz & PR Amplification Index (0-100)
-  // Y: True Organic Broadcaster Loyalty TOSS (0-100, inverted for SVG/CSS top)
-  const plotNodes = useMemo(() => {
-    const rawNodes = evaluatedContestants
+  // Sorted Housemates by Eviction Vulnerability (Highest Risk first)
+  const sortedByVulnerability = useMemo(() => {
+    return [...evaluatedContestants]
       .filter((c) => c.status === 'Active')
-      .map((c) => {
-        // Orthogonal metric: Social Echo Chamber vs Mass Broadcaster Voting
-        const socialBuzzPRIndex = Math.round((c.loudMinorityIndex * 0.55) + (c.prInfiltrationRate * 0.45));
-        const x = Math.max(12, Math.min(88, socialBuzzPRIndex));
-        const y = Math.max(14, Math.min(86, 100 - c.calculatedToss));
-        return { c, x, y };
+      .sort((a, b) => {
+        const probA = a.calculatedEvictionProbability ?? -1;
+        const probB = b.calculatedEvictionProbability ?? -1;
+        return probB - probA;
       });
-
-    // 3-pass repulsion relaxation algorithm to prevent avatar stacking
-    for (let pass = 0; pass < 3; pass++) {
-      for (let i = 0; i < rawNodes.length; i++) {
-        for (let j = i + 1; j < rawNodes.length; j++) {
-          const dx = rawNodes[i].x - rawNodes[j].x;
-          const dy = rawNodes[i].y - rawNodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const minDist = 9; // minimum 9% distance between node centers
-          if (dist < minDist && dist > 0) {
-            const overlap = (minDist - dist) / 2;
-            const nx = dx / dist;
-            const ny = dy / dist;
-            rawNodes[i].x = Math.max(10, Math.min(90, rawNodes[i].x + nx * overlap));
-            rawNodes[i].y = Math.max(12, Math.min(88, rawNodes[i].y + ny * overlap));
-            rawNodes[j].x = Math.max(10, Math.min(90, rawNodes[j].x - nx * overlap));
-            rawNodes[j].y = Math.max(12, Math.min(88, rawNodes[j].y - ny * overlap));
-          }
-        }
-      }
-    }
-    return rawNodes;
   }, [evaluatedContestants]);
 
   return (
@@ -280,160 +254,6 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         <span className="font-mono text-xs text-cyan-400 shrink-0">
           Last Verified: 01 Nov 2026 · Day {effectiveDay}
         </span>
-      </div>
-
-      {/* Nominations Panel (SOURCE POLICY: Pinkvilla, FilmiBeat, FilmyGyan, Viral Bhayani, TellyMasala) */}
-      <div id="nominations-panel" className="p-4 sm:p-5 bg-[#0a1222] border border-cyan-500/30 rounded-xl space-y-4 shadow-lg">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-            <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
-              Nomination Intel: Authorized Multi-Source Audit
-            </h4>
-            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
-              Source Policy Enforced
-            </span>
-            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              Source Disagreement
-            </span>
-          </div>
-          <span className="text-xs font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-slate-800">
-            [Official: Withheld — Broadcaster direct page not opened]
-          </span>
-        </div>
-
-        <p className="text-xs text-slate-300 leading-relaxed">
-          {BB20_NOMINATION_AUDIT_DATA.explanation}
-        </p>
-
-        {/* Side-by-Side Authorized Outlet Lists */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-          {BB20_NOMINATION_AUDIT_DATA.sources.map((source) => {
-            const isStale = new Date(source.publishDate) < new Date(BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeDate);
-            return (
-              <div
-                key={source.outletName}
-                className="p-4 bg-[#0f172a] border border-slate-800 rounded-xl space-y-3 flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-white">{source.outletName}</span>
-                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-purple-950/80 border border-purple-700/60 text-purple-300">
-                        [{source.provenanceTag}: {source.outletName}]
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-slate-400">
-                        {source.publishDate}
-                      </span>
-                      {isStale ? (
-                        <span
-                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold"
-                          title={`Published on ${source.publishDate} before latest Episode ${BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeNumber} broadcast on ${BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeDate}`}
-                        >
-                          ⚠️ [Stale: Pre-Ep {BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeNumber}]
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
-                          [Current]
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Exact Article URL */}
-                  <div className="pt-1 pb-1">
-                    <span className="text-[10px] uppercase font-mono text-slate-500 block mb-0.5">
-                      Verified Article URL:
-                    </span>
-                    <a
-                      href={source.articleUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 underline font-mono break-all group"
-                      title={source.articleUrl}
-                    >
-                      <span className="truncate max-w-[280px] sm:max-w-[400px]">{source.articleUrl}</span>
-                      <ExternalLink className="w-3.5 h-3.5 shrink-0 text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
-                    </a>
-                  </div>
-
-                  {/* Verbatim Name List As Printed */}
-                  <div className="space-y-1.5 pt-2 border-t border-slate-800/80">
-                    <span className="text-[10px] uppercase font-mono text-slate-400 block font-bold">
-                      Name List As Printed ({source.namesAsPrinted.length} Nominees):
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                      {source.namesAsPrinted.map((name, idx) => {
-                        const isDisputed = BB20_NOMINATION_AUDIT_DATA.disputedNames.some((d) =>
-                          name.toLowerCase().includes(d.toLowerCase()) || d.toLowerCase().includes(name.toLowerCase())
-                        );
-
-                        return (
-                          <div
-                            key={idx}
-                            className={`px-2.5 py-1.5 text-xs rounded border transition-all ${
-                              isDisputed
-                                ? 'bg-amber-950/60 border-amber-500/40 text-amber-200 font-semibold'
-                                : 'bg-rose-950/50 border-rose-500/30 text-rose-300'
-                            }`}
-                          >
-                            <div className="flex items-center justify-between gap-1.5">
-                              <span className="truncate">
-                                {idx + 1}. {name}
-                              </span>
-                              {isDisputed ? (
-                                <span className="text-[10px] font-mono px-1 rounded bg-amber-500/30 text-amber-300 shrink-0 font-bold">
-                                  [Disputed]
-                                </span>
-                              ) : (
-                                <span className="text-[10px] font-mono text-emerald-400 shrink-0">
-                                  [Consensus]
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-[11px] text-slate-500 italic pt-2 border-t border-slate-800/60 font-mono">
-                  {source.notes}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Source Policy Rules & Quarantined Social Data Notice */}
-        <div className="p-3 bg-[#0c1424] border border-slate-800 rounded-lg space-y-1.5 text-xs text-slate-300">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-cyan-400" />
-              Source Policy Enforcement Checklist:
-            </span>
-            <span className="font-mono text-[11px] text-cyan-400">
-              Only 5 Outlets Permitted (Pinkvilla, FilmiBeat, FilmyGyan, Viral Bhayani, TellyMasala)
-            </span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-400 pt-1">
-            <div>
-              <span className="text-slate-300 font-medium block">Colors TV / JioHotstar [Official]:</span>
-              <span>
-                Direct live voting pages were blocked by geo-fencing/session gates. Per policy, the [Official] tag is withheld unless directly opened.
-              </span>
-            </div>
-            <div>
-              <span className="text-slate-300 font-medium block">Social Media (X, IG, Reddit) [Unverified]:</span>
-              <span>
-                Social speculation is quarantined as [Unverified] and excluded unless corroborated by one of the 5 authorized outlets above.
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Conditionally Render Timeline or Matrix */}
@@ -653,148 +473,142 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
               </div>
             )}
 
-            {/* Redesigned Spacious 2D Quadrant Matrix */}
-            <div className="relative w-full h-[380px] sm:h-[440px] md:h-[480px] bg-[#080d19] border border-slate-800 rounded-xl p-4 overflow-hidden shadow-inner">
-              {/* Quadrant Background Zones with Clear Headers */}
-              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none">
-                {/* Top-Left: Silent Majority Stronghold */}
-                <div className="border-r border-b border-dashed border-slate-700/60 bg-emerald-500/[0.04] p-3 flex flex-col justify-start items-start">
-                  <span className="px-2 py-1 rounded bg-emerald-950/80 border border-emerald-500/40 text-xs font-bold text-emerald-300 font-mono shadow-sm">
-                    [SILENT MAJORITY] High Organic · Low PR Noise
-                  </span>
+            {/* Sorted Horizontal Eviction Vulnerability Bar Chart */}
+            <div className="p-4 sm:p-6 bg-[#0a1222] border border-slate-800 rounded-xl space-y-4 shadow-inner">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+                <div>
+                  <h4 className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-2">
+                    <TrendingDown className="w-4 h-4 text-rose-400" />
+                    <span>Eviction Vulnerability Index (Sorted by Immediate Risk)</span>
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Answering who is most likely going home tonight. Nominated housemates in colored danger bars; exempt housemates in neutral grey. Background bar reveals PR astroturfing noise gap.
+                  </p>
                 </div>
-
-                {/* Top-Right: Consensus Heavyweights */}
-                <div className="border-b border-dashed border-slate-700/60 bg-cyan-500/[0.04] p-3 flex flex-col justify-start items-end">
-                  <span className="px-2 py-1 rounded bg-cyan-950/80 border border-cyan-500/40 text-xs font-bold text-cyan-300 font-mono shadow-sm">
-                    [CONSENSUS HEAVYWEIGHTS] High Organic · High Buzz
-                  </span>
-                </div>
-
-                {/* Bottom-Left: Ghost Factor / Elimination Hazard */}
-                <div className="border-r border-dashed border-slate-700/60 bg-rose-500/[0.04] p-3 flex flex-col justify-end items-start">
-                  <span className="px-2 py-1 rounded bg-rose-950/80 border border-rose-500/40 text-xs font-bold text-rose-300 font-mono shadow-sm">
-                    [HIGH HAZARD] Ghost Factor / Low Mass Turnout
-                  </span>
-                </div>
-
-                {/* Bottom-Right: Vocal PR Bubble / Vulnerable */}
-                <div className="bg-amber-500/[0.04] p-3 flex flex-col justify-end items-end">
-                  <span className="px-2 py-1 rounded bg-amber-950/80 border border-amber-500/40 text-xs font-bold text-amber-300 font-mono shadow-sm">
-                    [VOCAL BUBBLE] Heavy PR Hype · Low Organic Loyalty
-                  </span>
+                <div className="flex items-center gap-3 text-[11px] font-mono flex-wrap">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                    <span className="text-rose-300">Nominated / Danger</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
+                    <span className="text-slate-400">Exempt</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/50 border border-amber-500/60 inline-block"></span>
+                    <span className="text-amber-300">PR Noise Gap</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Crosshair Axes */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-700/60 pointer-events-none" />
-              <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-700/60 pointer-events-none" />
+              {/* Responsive Horizontal Bars List */}
+              <div className="space-y-2.5 pt-1">
+                {sortedByVulnerability.map((c, index) => {
+                  const isNominated = c.isNominated;
+                  const prob = c.calculatedEvictionProbability;
+                  const isInsufficient = c.insufficientData || prob == null;
 
-              {/* Axis Labels */}
-              <div className="absolute left-4 top-1/2 -translate-y-6 text-xs font-mono font-bold text-emerald-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 pointer-events-none z-10">
-                ▲ MASS AUDIENCE ORGANIC LOYALTY (TOSS)
-              </div>
-              <div className="absolute left-4 top-1/2 translate-y-2 text-xs font-mono font-bold text-rose-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 pointer-events-none z-10">
-                ▼ HIGH EVICTION VULNERABILITY
-              </div>
-              <div className="absolute right-4 bottom-3 text-xs font-mono font-bold text-amber-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 pointer-events-none z-10">
-                ► SOCIAL FANDOM BUZZ & PR AMPLIFICATION
-              </div>
-
-              {/* Non-overlapping, Color-Blind Accessible Plot Nodes */}
-              {plotNodes.map(({ c, x, y }) => {
-                const isDanger = c.calculatedRiskTier === 'High Danger';
-                const isBubble = c.calculatedRiskTier === 'Vocal Bubble / At Risk';
-
-                return (
-                  <div
-                    key={c.id}
-                    onClick={() => onSelectContestant(c)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        onSelectContestant(c);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${c.name}, ${c.calculatedRiskTier}, True TOSS ${c.calculatedToss} percent`}
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer z-20 focus:outline-none"
-                  >
-                    <div className="flex flex-col items-center">
-                      {/* Avatar node with distinct shape & icon */}
-                      <div
-                        className={`relative p-1.5 transition-transform duration-200 group-hover:scale-125 group-focus:scale-125 ${
-                          isDanger
-                            ? 'rounded-md border-2 border-rose-500 bg-rose-950/90 shadow-lg shadow-rose-950/60'
-                            : isBubble
-                            ? 'rounded-lg rotate-3 border-2 border-amber-500 bg-amber-950/90 shadow-lg shadow-amber-950/60'
-                            : 'rounded-full border-2 border-emerald-500 bg-emerald-950/90 shadow-lg shadow-emerald-950/60'
-                        }`}
-                      >
-                        <img
-                          src={c.avatar}
-                          alt={c.name}
-                          className="w-8 h-8 sm:w-9 sm:h-9 rounded object-cover"
-                        />
-
-                        {/* Shape icon indicator for color-blind accessibility */}
-                        <div className="absolute -top-1.5 -left-1.5 p-0.5 rounded-full bg-slate-900 border border-slate-700">
-                          {isDanger ? (
-                            <AlertOctagon className="w-3 h-3 text-rose-400" />
-                          ) : isBubble ? (
-                            <AlertTriangle className="w-3 h-3 text-amber-400" />
-                          ) : (
-                            <Shield className="w-3 h-3 text-emerald-400" />
-                          )}
+                  return (
+                    <div
+                      key={c.id}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${c.name}, ${isNominated ? 'Nominated' : 'Exempt'}, Eviction Risk ${prob ?? 'insufficient data'} percent`}
+                      onClick={() => onSelectContestant(c)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onSelectContestant(c);
+                        }
+                      }}
+                      className="group p-3 rounded-lg bg-[#0e1626] hover:bg-slate-800/60 border border-slate-800/80 transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-xs font-mono font-bold text-slate-500 w-5">
+                            #{index + 1}
+                          </span>
+                          <img
+                            src={c.avatar}
+                            alt={c.name}
+                            className="w-7 h-7 rounded-lg object-cover border border-slate-700 shrink-0"
+                          />
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                              {c.name}
+                            </span>
+                            {c.role === 'Wildcard' && (
+                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-mono font-bold">
+                                Wildcard
+                              </span>
+                            )}
+                            {isNominated ? (
+                              <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] font-mono font-bold">
+                                Nominated
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-mono">
+                                Exempt
+                              </span>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Nomination status badge */}
-                        {c.isNominated && (
-                          <span
-                            className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-rose-500 border-2 border-[#080d19]"
-                            title="Nominated for Eviction"
+                        {/* Metric readout */}
+                        <div className="flex items-center gap-3 text-xs font-mono self-end sm:self-auto flex-wrap">
+                          <span className="text-slate-400">
+                            TOSS: <strong className="text-cyan-400">{c.calculatedToss}%</strong>
+                          </span>
+                          <span className="text-slate-400">
+                            PR: <strong className="text-amber-400">{c.prInfiltrationRate}%</strong>
+                          </span>
+                          {isInsufficient ? (
+                            <span className="text-xs text-slate-400 italic">Insufficient data</span>
+                          ) : (
+                            <span className="text-xs font-bold">
+                              Risk:{' '}
+                              <span
+                                className={
+                                  isNominated
+                                    ? prob >= 60
+                                      ? 'text-rose-400 font-extrabold'
+                                      : 'text-amber-400'
+                                    : 'text-slate-400'
+                                }
+                              >
+                                {prob}%
+                              </span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Bar Track */}
+                      <div className="relative w-full h-3 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                        {/* Background PR Noise indicator */}
+                        <div
+                          className="absolute top-0 bottom-0 left-0 bg-amber-500/30 border-r border-amber-400"
+                          style={{ width: `${Math.min(100, Math.max(0, c.prInfiltrationRate))}%` }}
+                          title={`PR Astroturfing Noise: ${c.prInfiltrationRate}%`}
+                        />
+                        {/* Foreground Eviction Risk Bar */}
+                        {!isInsufficient && (
+                          <div
+                            className={`absolute top-0 bottom-0 left-0 transition-all duration-500 rounded-full ${
+                              isNominated
+                                ? prob >= 60
+                                  ? 'bg-gradient-to-r from-rose-600 to-rose-400 shadow-sm shadow-rose-950'
+                                  : 'bg-gradient-to-r from-amber-600 to-amber-400'
+                                : 'bg-gradient-to-r from-slate-600 to-slate-400'
+                            }`}
+                            style={{ width: `${Math.min(100, Math.max(4, prob))}%` }}
                           />
                         )}
                       </div>
-
-                      {/* Always-visible Name Pill */}
-                      <span className="mt-1 px-1.5 py-0.5 text-[11px] font-bold text-white bg-slate-900/90 border border-slate-700 rounded whitespace-nowrap shadow-md group-hover:border-cyan-400 transition-colors">
-                        {c.nickname || c.name.split(' ')[0]}
-                      </span>
                     </div>
-
-                    {/* Rich Hover/Focus Tooltip */}
-                    <div className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-52 p-3 bg-slate-900/95 border border-slate-700 rounded-lg shadow-2xl text-left z-30 backdrop-blur-md">
-                      <div className="font-bold text-xs text-white flex items-center justify-between pb-1 border-b border-slate-800">
-                        <span>{c.name}</span>
-                        <span className="font-mono text-cyan-400">{c.calculatedToss}% TOSS</span>
-                      </div>
-                      <div className="text-xs text-slate-300 mt-2 space-y-1">
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Status:</span>
-                          <span className={c.isNominated ? 'text-rose-400 font-bold' : 'text-emerald-400 font-semibold'}>
-                            {c.isNominated ? 'Nominated' : 'Exempt'}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">PR Infiltration:</span>
-                          <span className="font-mono text-amber-300 font-bold">{c.prInfiltrationRate}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Eviction Odds:</span>
-                          <span className="font-mono text-rose-400 font-bold">{c.calculatedEvictionProbability}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Risk Tier:</span>
-                          <span className="text-white font-medium">{c.calculatedRiskTier}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -966,7 +780,11 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                                   <span className="text-xs text-slate-400 font-mono">"{c.nickname}"</span>
                                 )}
                               </div>
-                              <span className="text-xs text-slate-400 block">{c.role}</span>
+                              {c.role === 'Wildcard' && (
+                                <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-mono font-bold">
+                                  Wildcard
+                                </span>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -1094,6 +912,11 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                 </tbody>
               </table>
             </div>
+
+            {/* Quiet Hedging Disclaimer */}
+            <p className="text-xs text-slate-500 font-mono text-center pt-2">
+              Nominations reported, not yet officially confirmed.
+            </p>
           </div>
         </>
       )}

@@ -114,12 +114,11 @@ export const LiveSearchGroundingView: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <h3 className="text-base font-bold text-white tracking-tight">
-              Live Google Search Grounding with Gemini 3.8 Flash
+              Live Google Search Grounding
             </h3>
           </div>
-          <p className="text-xs text-slate-400 max-w-3xl leading-relaxed">
-            Ingests real-time web discourse, breaking entertainment articles, live eviction voting polls,
-            and social chatter directly using Gemini 3.8 Flash with Google Search Grounding tool enabled.
+          <p className="text-xs text-slate-300 max-w-3xl leading-relaxed">
+            Asks Google for the latest news and fan chatter about the show, then summarises what it found. Use it to check whether something changed in the last few hours.
           </p>
         </div>
 

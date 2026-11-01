@@ -119,15 +119,38 @@ describe('Analytics Engine - calculateTOSS (Edge-to-Edge Hard Tests)', () => {
     assert.equal(maxResult.raw, 100);
   });
 
-  it('evaluates non-nominated contestants as Safe with baseline 4% eviction probability', () => {
+  it('computes continuous eviction probability without hardcoded constants, varying with organic sentiment and PR noise', () => {
     const nonNominated = createMockContestant({
       isNominated: false,
       prInfiltrationRate: 85,
-      silentMajorityIndex: 10
+      silentMajorityIndex: 10,
+      platforms: {
+        youtube: { sentiment: 60, organicRatio: 0.8, rawVolume: 10000, botCountEstimate: 500 },
+        xTwitter: { sentiment: 70, organicRatio: 0.5, rawVolume: 15000, botCountEstimate: 5000 },
+        instagram: { sentiment: 65, organicRatio: 0.6, rawVolume: 12000, botCountEstimate: 3000 },
+        threads: { sentiment: 60, organicRatio: 0.8, rawVolume: 5000, botCountEstimate: 200 },
+        googleNews: { sentiment: 60, organicRatio: 0.9, rawVolume: 500, botCountEstimate: 10 }
+      }
     });
     const result = calculateTOSS(nonNominated);
-    assert.equal(result.riskTier, 'Safe');
-    assert.equal(result.evictionProbability, 4);
+    assert.notEqual(result.evictionProbability, 4, 'Must not be a flat 4% constant');
+    assert.ok(typeof result.evictionProbability === 'number');
+    assert.equal(result.insufficientData, false);
+  });
+
+  it('flags insufficientData and sets evictionProbability to null when platform volume is below threshold', () => {
+    const lowVolume = createMockContestant({
+      platforms: {
+        youtube: { sentiment: 80, organicRatio: 0.9, rawVolume: 100, botCountEstimate: 5 },
+        xTwitter: { sentiment: 75, organicRatio: 0.8, rawVolume: 50, botCountEstimate: 2 },
+        instagram: { sentiment: 70, organicRatio: 0.7, rawVolume: 80, botCountEstimate: 4 },
+        threads: { sentiment: 65, organicRatio: 0.8, rawVolume: 40, botCountEstimate: 1 },
+        googleNews: { sentiment: 70, organicRatio: 0.9, rawVolume: 10, botCountEstimate: 0 }
+      }
+    });
+    const result = calculateTOSS(lowVolume);
+    assert.equal(result.insufficientData, true);
+    assert.equal(result.evictionProbability, null);
   });
 
   it('triggers High Danger tier when TOSS < 35 or silentMajority < 20', () => {

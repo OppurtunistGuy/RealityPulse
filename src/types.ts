@@ -108,7 +108,7 @@ export interface Contestant {
   name: string;
   nickname: string;
   avatar: string;
-  role: 'Frontrunner' | 'Challenger' | 'Underdog' | 'Wildcard' | 'Polarizing';
+  role?: 'Wildcard' | string;
   status: 'Active' | 'Evicted';
   isNominated: boolean;
   evictionWeek?: number;            // 1, 2, 3, 4, etc. if evicted
@@ -117,7 +117,8 @@ export interface Contestant {
   prInflationDelta: number;         // raw - TOSS (positive = inflated by PR)
   prInfiltrationRate: number;       // 0 - 100%
   evictionRiskTier: RiskTier;
-  evictionProbability: number;      // 0 - 100%
+  evictionProbability: number | null; // 0 - 100%, or null if insufficient data
+  insufficientData?: boolean;       // true if volume < threshold
   silentMajorityIndex: number;      // Casual viewer support indicator (0 - 100)
   loudMinorityIndex: number;        // Vocal echo chamber ratio (0 - 100)
   platforms: {
@@ -268,4 +269,37 @@ export interface SourceProvenanceItem {
   }[];
   samplingMethodology: string;
   prRiskProfile: string;
+}
+
+export interface PredictionScorecardEntry {
+  week: number;
+  weekLabel: string;
+  episodeNumber: number;
+  date: string;
+  contestantId: string;
+  contestantName: string;
+  avatar: string;
+  predictedRiskPercentage: number | null;
+  predictedToss: number;
+  predictedRiskTier: RiskTier;
+  actualOutcome: 'Evicted' | 'Saved' | 'Disqualified';
+  outcomeDetail: string;
+  verdict: 'HIT' | 'MISSED' | 'EXCLUDED';
+  notes: string;
+}
+
+export interface PredictionScoreboardSummary {
+  totalEvaluated: number;
+  verifiedHits: number;
+  documentedMisses: number;
+  excludedExits: number;
+  empiricalAccuracyPercentage: number;
+  lastMissAudit: {
+    week: number;
+    contestantName: string;
+    date: string;
+    predictedRisk: string;
+    actualResult: string;
+    rootCauses: string[];
+  };
 }

@@ -5,8 +5,8 @@ import { timeAgo } from '../utils/timeAgo';
 import { calculateShowTimeline } from '../data/timelineConfig';
 
 interface TopBarProps {
-  activeTab: 'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio';
-  onTabChange: (tab: 'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio') => void;
+  activeTab: 'matrix' | 'scoreboard' | 'astroturf' | 'narrative' | 'grounding' | 'studio';
+  onTabChange: (tab: 'matrix' | 'scoreboard' | 'astroturf' | 'narrative' | 'grounding' | 'studio') => void;
   onOpenLiveQuery: () => void;
   onOpenSources: () => void;
   onOpenSecurityAndFeed: () => void;
@@ -81,7 +81,24 @@ export const TopBar: React.FC<TopBarProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            {isHinglish ? 'Eviction Khatra Matrix' : 'Eviction Matrix'}
+            {isHinglish ? 'Eviction Khatra' : 'Eviction Risk'}
+          </button>
+          <button
+            role="tab"
+            id="tab-scoreboard"
+            aria-selected={activeTab === 'scoreboard'}
+            aria-controls="panel-scoreboard"
+            onClick={() => onTabChange('scoreboard')}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+              activeTab === 'scoreboard'
+                ? 'bg-slate-800 text-amber-300 border border-amber-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <span>{isHinglish ? 'Prediction Scoreboard' : 'Prediction Scoreboard'}</span>
+            <span className="px-1.5 py-0.2 text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 rounded border border-amber-500/40">
+              85.7%
+            </span>
           </button>
           <button
             role="tab"
@@ -246,7 +263,19 @@ export const TopBar: React.FC<TopBarProps> = ({
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          {isHinglish ? 'Matrix' : 'Matrix'}
+          {isHinglish ? 'Eviction Risk' : 'Eviction Risk'}
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === 'scoreboard'}
+          onClick={() => onTabChange('scoreboard')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'scoreboard'
+              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Scoreboard' : 'Scoreboard'}
         </button>
         <button
           role="tab"

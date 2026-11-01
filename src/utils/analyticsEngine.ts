@@ -15,8 +15,34 @@ export const DEFAULT_PLATFORM_WEIGHTS: PlatformWeightConfig = {
 export function calculateTOSS(
   contestant: Contestant,
   weights: PlatformWeightConfig = DEFAULT_PLATFORM_WEIGHTS
-): { toss: number; raw: number; prDelta: number; riskTier: RiskTier; evictionProbability: number } {
+): {
+  toss: number;
+  raw: number;
+  prDelta: number;
+  riskTier: RiskTier;
+  evictionProbability: number | null;
+  insufficientData?: boolean;
+} {
   const p = contestant.platforms;
+
+  // Ingested platform volume verification
+  const totalSocialVolume =
+    (p.youtube?.rawVolume || 0) +
+    (p.xTwitter?.rawVolume || 0) +
+    (p.instagram?.rawVolume || 0) +
+    (p.threads?.rawVolume || 0);
+
+  // If social sample volume is below statistical confidence threshold (< 1000 comments)
+  if (totalSocialVolume < 1000) {
+    return {
+      toss: 50,
+      raw: 50,
+      prDelta: 0,
+      riskTier: 'Safe',
+      evictionProbability: null,
+      insufficientData: true
+    };
+  }
 
   // Raw weighted sentiment (what naive dashboards report)
   const rawWeighted =
@@ -50,36 +76,45 @@ export function calculateTOSS(
 
   const prDelta = raw - toss;
 
-  // Determine Risk Tier
+  // Continuous Eviction Vulnerability Model (NO HARDCODED CONSTANTS):
+  // Driven strictly by organic sentiment deficit, PR bubble inflation delta, and silent majority vote bank.
+  const prInfiltration = contestant.prInfiltrationRate ?? 20;
+  const silentMajority = contestant.silentMajorityIndex ?? 50;
+
+  // PR Bubble Risk: high PR noise without mass casual voting backing
+  const bubbleRisk = Math.max(0, prInfiltration - silentMajority);
+
+  // Continuous baseline vulnerability:
+  // Primary driver in voting eviction is lack of casual silent majority turnout + low organic sentiment + hollow PR bubble
+  const voteDeficit = (100 - silentMajority) * 0.50;
+  const organicDeficit = (100 - toss) * 0.35;
+  const bubbleDeficit = bubbleRisk * 0.25;
+  const continuousBase = voteDeficit + organicDeficit + bubbleDeficit;
+
+  // Nomination multiplier: active voting window amplifies immediate eviction hazard
+  const activeMultiplier = contestant.isNominated ? 1.15 : 0.70;
+  const computedProbability = Math.min(98, Math.max(5, Math.round(continuousBase * activeMultiplier)));
+
+  // Risk Tier classification derived dynamically from computed probability
   let riskTier: RiskTier = 'Safe';
-  let evictionProbability = 10;
-
-  if (!contestant.isNominated) {
-    riskTier = 'Safe';
-    evictionProbability = 4;
+  if (toss < 35 || silentMajority < 20 || computedProbability >= 70) {
+    riskTier = 'High Danger';
+  } else if (prInfiltration >= 48 && silentMajority < 45) {
+    riskTier = 'Vocal Bubble / At Risk';
+  } else if (computedProbability >= 35) {
+    riskTier = 'Vocal Bubble / At Risk';
   } else {
-    // Nominated risk analysis
-    const prInfiltration = contestant.prInfiltrationRate;
-    const silentMajority = contestant.silentMajorityIndex;
-
-    if (toss < 35 || silentMajority < 20) {
-      riskTier = 'High Danger';
-      evictionProbability = Math.min(95, Math.max(70, Math.round(100 - toss * 0.8)));
-    } else if (prInfiltration >= 48 && silentMajority < 45) {
-      // Classic "Vocal Bubble" syndrome: looks dominant on Twitter, but empty votes
-      riskTier = 'Vocal Bubble / At Risk';
-      evictionProbability = Math.min(75, Math.max(50, Math.round(prInfiltration * 0.9)));
-    } else if (toss >= 70 && silentMajority >= 60) {
-      riskTier = 'Safe';
-      evictionProbability = Math.max(8, Math.round(100 - toss));
-    } else {
-      // Mid-tier battle
-      riskTier = 'Vocal Bubble / At Risk';
-      evictionProbability = Math.round(45 + (100 - toss) * 0.2);
-    }
+    riskTier = 'Safe';
   }
 
-  return { toss, raw, prDelta, riskTier, evictionProbability };
+  return {
+    toss,
+    raw,
+    prDelta,
+    riskTier,
+    evictionProbability: computedProbability,
+    insufficientData: false
+  };
 }
 
 /**

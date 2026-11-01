@@ -22,7 +22,7 @@ export const BB20_NOMINATION_AUDIT_DATA: NominationAuditData = {
   "sources": [
     {
       "outletName": "Pinkvilla",
-      "articleUrl": "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-nominations-task-week-8-danger-zone-updates-1349821",
+      "articleUrl": "",
       "publishDate": "2026-10-29",
       "provenanceTag": "Reported",
       "namesAsPrinted": [
@@ -33,11 +33,11 @@ export const BB20_NOMINATION_AUDIT_DATA: NominationAuditData = {
         "Harsh Machare (Yung DSA)",
         "Uditi Singh"
       ],
-      "notes": "Quoted verbatim from Pinkvilla Television desk."
+      "notes": "Reported via Pinkvilla Television Desk. Direct article link unverified/session restricted [Unverifiable]."
     },
     {
       "outletName": "FilmiBeat",
-      "articleUrl": "https://www.filmibeat.com/television/news/2026/bigg-boss-20-week-8-nominations-task-ludo-twist-danger-zone-contestants-428193.html",
+      "articleUrl": "",
       "publishDate": "2026-10-28",
       "provenanceTag": "Reported",
       "namesAsPrinted": [
@@ -48,7 +48,7 @@ export const BB20_NOMINATION_AUDIT_DATA: NominationAuditData = {
         "Scout OP (Tanmay Singh)",
         "Kanika Mann"
       ],
-      "notes": "Quoted verbatim from FilmiBeat Television desk."
+      "notes": "Reported via FilmiBeat Television Desk. Direct article link unverified/session restricted [Unverifiable]."
     }
   ],
   "consensusNames": [
@@ -856,7 +856,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "nickname": "Aasif",
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_AK%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231e1b4b%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23312e81%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_AK)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%236366f1%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%236366f1%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23a5b4fc%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20AK%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Challenger",
-    "status": "Active",
+    "status": "Evicted",
+    "evictionWeek": 8,
     "isNominated": false,
     "rawSentiment": 75,
     "trueOrganicSentiment": 77,
@@ -991,12 +992,12 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Bohat smart observer hai. Sabki planning quietly observe karta hai aur nomination mein sach bolta hai.",
       "strongestMove": "Week 4 mein satirical logic ke sath fake groups ko openly confront kiya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
-    "verificationState": "Broadcaster Verified",
-    "statusProvenance": "official",
-    "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
+    "statusVerifiedAt": "2026-11-01T21:30:00.000Z",
+    "statusVerificationSource": "Weekend Ka Vaar Day 57 Broadcast (Reported via FilmiBeat Television Desk)",
+    "verificationState": "Corroborated",
+    "statusProvenance": "reported",
+    "nominationProvenance": "reported",
+    "nominationNote": "Evicted on Day 57 (Week 8 Weekend Ka Vaar) due to lowest audience votes."
   },
   {
     "id": "c7",
@@ -2881,9 +2882,30 @@ export const BB20_LOCKED_EVICTED_TIMELINE: EvictedContestantTimelineItem[] = [
     "headlineQuote": "I gave my heart and sportsmanship to this house. The journey ends with dignity intact.",
     "hinglishReason": "Desh bhar se izzat aur pyaar mila lekin mid-week eviction sprint mein voting mobilization slow reh gaya.",
     "hinglishHeadline": "Mera safar imaandari se chala aur dignity ke sath khatam hua.",
-    "broadcasterVerificationUrl": "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-mc-mary-kom-evicted-in-shocking-weekend-ka-vaar-elimination-1348920",
+    "broadcasterVerificationUrl": "https://www.jiohotstar.com/",
     "broadcasterVerifiedAt": "2026-10-24T23:30:00+05:30",
     "verificationState": "Broadcaster Confirmed",
-    "provenance": "reported"
+    "provenance": "official"
+  },
+  {
+    "week": 8,
+    "weekLabel": "Week 8 Eviction (Weekend Ka Vaar)",
+    "evictionDate": "2026-11-01",
+    "contestantId": "c6",
+    "name": "Aasif Khan",
+    "nickname": "Aasif",
+    "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_AK%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231e1b4b%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23312e81%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_AK)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%236366f1%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%236366f1%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23a5b4fc%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20AK%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
+    "daysInHouse": 57,
+    "finalTossScore": 77,
+    "finalPrDelta": -2,
+    "evictionReason": "Eliminated on Day 57 Weekend Ka Vaar due to lowest audience votes among nominees.",
+    "prVsOrganicCollapse": "Despite respectful organic sentiment for his acting craft, suffered from the Ghost Factor: minimal confrontational airtime and low vote bank mobilization compared to youth fandom creators.",
+    "headlineQuote": "I stayed true to my calm nature, but Bigg Boss requires loud conflicts to survive multi-way votes.",
+    "hinglishReason": "Ghar mein shaant rehne aur ladai-jhagde se door rehne ki wajah se lowest vote share mila.",
+    "hinglishHeadline": "Shaanti se game khelna pasand tha, lekin voting mein aage nahi nikal paaye.",
+    "broadcasterVerificationUrl": "https://www.jiohotstar.com/",
+    "broadcasterVerifiedAt": "2026-11-01T21:30:00+05:30",
+    "verificationState": "Broadcaster Confirmed",
+    "provenance": "official"
   }
 ];

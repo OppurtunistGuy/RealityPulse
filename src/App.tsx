@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TopBar } from './components/TopBar';
 import { EvictionMatrixView } from './components/EvictionMatrixView';
+import { PredictionScoreboardView } from './components/PredictionScoreboardView';
 import { AstroturfNetworkView } from './components/AstroturfNetworkView';
 import { NarrativeArcDeltaView } from './components/NarrativeArcDeltaView';
 import { LiveSearchGroundingView } from './components/LiveSearchGroundingView';
@@ -14,7 +15,7 @@ import { calculateShowTimeline } from './data/timelineConfig';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio'>('matrix');
+  const [activeTab, setActiveTab] = useState<'matrix' | 'scoreboard' | 'astroturf' | 'narrative' | 'grounding' | 'studio'>('matrix');
   const [contestants, setContestants] = useState<Contestant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -173,6 +174,12 @@ export default function App() {
                   selectedWeek={selectedWeek}
                   onSelectWeek={handleSelectWeek}
                 />
+              </div>
+            )}
+
+            {activeTab === 'scoreboard' && (
+              <div id="panel-scoreboard" role="tabpanel" aria-labelledby="tab-scoreboard">
+                <PredictionScoreboardView />
               </div>
             )}
 
