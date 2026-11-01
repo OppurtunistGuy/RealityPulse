@@ -199,8 +199,8 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
             </div>
             <p className="text-slate-300">
               {isHinglish
-                ? 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill, Avinash Mishra aur Kashish Kapoor current danger zone mein hain. Asli janta ke TOSS trends Eviction Matrix mein live track ho rahe hain.'
-                : 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill, Avinash Mishra, and Kashish Kapoor are in the nomination danger zone. Track their real-time TOSS scores in the Eviction Matrix.'}
+                ? 'Scout, Arshifa Khan, Kushal Tanwar (Gullu), Love Gill, Harsh Machare (Yung DSA), aur Uditi Singh Week 8 nomination zone mein hain. Asli janta ke TOSS trends Eviction Matrix mein live track ho rahe hain.'
+                : 'Scout, Arshifa Khan, Kushal Tanwar (Gullu), Love Gill, Harsh Machare (Yung DSA), and Uditi Singh are in the Week 8 nomination danger zone. Track their real-time TOSS scores in the Eviction Matrix.'}
             </p>
           </div>
         </div>

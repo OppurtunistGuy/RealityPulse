@@ -229,7 +229,7 @@ export const SecurityAndFeedModal: React.FC<SecurityAndFeedModalProps> = ({
                 </div>
               </div>
 
-              <div className="space-y-3 mt-4">
+              <div className="space-y-3 mt-4" role="region" aria-live="polite" aria-label="Real-time news and broadcaster ingestion feed">
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   {isHinglish ? 'Latest Verified Updates (Newest First)' : 'Chronological Live Ingestion Feed'}
                 </h3>

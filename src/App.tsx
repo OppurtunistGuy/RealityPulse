@@ -25,9 +25,10 @@ export default function App() {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [isHistoricalView, setIsHistoricalView] = useState(false);
 
+  // Unified modal manager to strictly prevent stacked dialogs
+  const [activeModal, setActiveModal] = useState<'none' | 'sources' | 'security' | 'contestant'>('none');
   const [selectedContestant, setSelectedContestant] = useState<Contestant | null>(null);
-  const [isSourcesOpen, setIsSourcesOpen] = useState(false);
-  const [isSecurityOpen, setIsSecurityOpen] = useState(false);
+
   const [weights, setWeights] = useState<PlatformWeightConfig>(DEFAULT_PLATFORM_WEIGHTS);
   const [isNominationOnly, setIsNominationOnly] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
@@ -85,15 +86,25 @@ export default function App() {
     }
   };
 
+  const openContestantModal = (c: Contestant) => {
+    setSelectedContestant(c);
+    setActiveModal('contestant');
+  };
+
+  const isInitialLoading = isLoading && contestants.length === 0;
+
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans">
-      {/* Top Bar with dynamic Day/Week and relative time */}
+    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-hidden">
+      {/* Semantic h1 heading for accessibility and document hierarchy */}
+      <h1 className="sr-only">RealityPulse — Bigg Boss 20 True Organic Audience & Eviction Analytics</h1>
+
+      {/* Top Bar with dynamic Day/Week, relative time, and accessibility tabs */}
       <TopBar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onOpenLiveQuery={() => setActiveTab('grounding')}
-        onOpenSources={() => setIsSourcesOpen(true)}
-        onOpenSecurityAndFeed={() => setIsSecurityOpen(true)}
+        onOpenSources={() => setActiveModal('sources')}
+        onOpenSecurityAndFeed={() => setActiveModal('security')}
         isNominationOnly={isNominationOnly}
         onToggleNominationOnly={() => setIsNominationOnly(!isNominationOnly)}
         language={language}
@@ -104,14 +115,21 @@ export default function App() {
 
       {/* Main Workspace Viewport */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
-        {isLoading ? (
+        {/* In-place week switch indicator (avoids full-page blank spinner) */}
+        {isLoading && contestants.length > 0 && (
+          <div className="fixed top-16 left-0 right-0 z-50 h-1 bg-cyan-950 overflow-hidden">
+            <div className="h-full bg-cyan-400 animate-pulse w-full"></div>
+          </div>
+        )}
+
+        {isInitialLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
             <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center animate-spin">
               <Loader2 className="w-6 h-6 text-cyan-400" />
             </div>
             <div className="text-center space-y-1">
-              <h3 className="text-sm font-semibold text-white">Loading Reality TV Intelligence...</h3>
-              <p className="text-xs text-slate-400 font-mono">Fetching latest Season 20 snapshot from database</p>
+              <h2 className="text-sm font-semibold text-white">Loading Reality TV Intelligence...</h2>
+              <p className="text-xs text-slate-400 font-mono">Connecting to Bigg Boss 20 database</p>
             </div>
           </div>
         ) : loadError && contestants.length === 0 ? (
@@ -120,7 +138,7 @@ export default function App() {
               <AlertCircle className="w-5 h-5" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-bold text-white">Connection to Reality Database Interrupted</h3>
+              <h2 className="text-sm font-bold text-white">Connection to Reality Database Interrupted</h2>
               <p className="text-xs text-rose-300">{loadError}</p>
             </div>
             <button
@@ -134,40 +152,50 @@ export default function App() {
         ) : (
           <>
             {activeTab === 'matrix' && (
-              <EvictionMatrixView
-                contestants={contestants}
-                onSelectContestant={setSelectedContestant}
-                weights={weights}
-                onWeightsChange={setWeights}
-                onOpenSources={() => setIsSourcesOpen(true)}
-                isNominationOnly={isNominationOnly}
-                language={language}
-                currentWeek={timeline.currentWeek}
-                currentDay={timeline.currentDay}
-                capturedAt={capturedAt ?? undefined}
-                isHistorical={isHistoricalView}
-                selectedWeek={selectedWeek}
-                onSelectWeek={handleSelectWeek}
-              />
+              <div id="panel-matrix" role="tabpanel" aria-labelledby="tab-matrix">
+                <EvictionMatrixView
+                  contestants={contestants}
+                  onSelectContestant={openContestantModal}
+                  weights={weights}
+                  onWeightsChange={setWeights}
+                  onOpenSources={() => setActiveModal('sources')}
+                  isNominationOnly={isNominationOnly}
+                  language={language}
+                  currentWeek={timeline.currentWeek}
+                  currentDay={timeline.currentDay}
+                  capturedAt={capturedAt ?? undefined}
+                  isHistorical={isHistoricalView}
+                  selectedWeek={selectedWeek}
+                  onSelectWeek={handleSelectWeek}
+                />
+              </div>
             )}
 
             {activeTab === 'astroturf' && (
-              <AstroturfNetworkView
-                contestants={contestants}
-                onSelectContestant={setSelectedContestant}
-              />
+              <div id="panel-astroturf" role="tabpanel" aria-labelledby="tab-astroturf">
+                <AstroturfNetworkView
+                  contestants={contestants}
+                  onSelectContestant={openContestantModal}
+                />
+              </div>
             )}
 
             {activeTab === 'narrative' && (
-              <NarrativeArcDeltaView />
+              <div id="panel-narrative" role="tabpanel" aria-labelledby="tab-narrative">
+                <NarrativeArcDeltaView />
+              </div>
             )}
 
             {activeTab === 'grounding' && (
-              <LiveSearchGroundingView />
+              <div id="panel-grounding" role="tabpanel" aria-labelledby="tab-grounding">
+                <LiveSearchGroundingView />
+              </div>
             )}
 
             {activeTab === 'studio' && (
-              <CustomDiscourseStudioView />
+              <div id="panel-studio" role="tabpanel" aria-labelledby="tab-studio">
+                <CustomDiscourseStudioView />
+              </div>
             )}
           </>
         )}
@@ -175,21 +203,21 @@ export default function App() {
 
       {/* Contestant Detail Overview Modal */}
       <ContestantDetailModal
-        contestant={selectedContestant}
-        onClose={() => setSelectedContestant(null)}
+        contestant={activeModal === 'contestant' ? selectedContestant : null}
+        onClose={() => setActiveModal('none')}
         language={language}
       />
 
       {/* Real Source Provenance Modal */}
       <SourceProvenanceModal
-        isOpen={isSourcesOpen}
-        onClose={() => setIsSourcesOpen(false)}
+        isOpen={activeModal === 'sources'}
+        onClose={() => setActiveModal('none')}
       />
 
       {/* Live Feed & Anti-Manipulation Security Ledger Modal */}
       <SecurityAndFeedModal
-        isOpen={isSecurityOpen}
-        onClose={() => setIsSecurityOpen(false)}
+        isOpen={activeModal === 'security'}
+        onClose={() => setActiveModal('none')}
         language={language}
       />
 
@@ -197,22 +225,24 @@ export default function App() {
       <footer className="border-t border-slate-800/80 bg-[#0c1220] py-6 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-300">Bigg Boss 20 Hindi · Day {timeline.currentDay} (Week {timeline.currentWeek})</span>
+            <span className="font-semibold text-slate-300">
+              Bigg Boss 20 Hindi · Day {isHistoricalView && selectedWeek ? selectedWeek * 7 : timeline.currentDay} (Week {selectedWeek ?? timeline.currentWeek})
+            </span>
             <span>·</span>
             <span>TOSS Engine</span>
             <span>·</span>
             <span>Grounded via Google Search</span>
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-slate-400 flex-wrap">
             <button
-              onClick={() => setIsSourcesOpen(true)}
+              onClick={() => setActiveModal('sources')}
               className="hover:text-cyan-300 underline underline-offset-4"
             >
-              View All 5 Intelligence Feeds
+              View Verified Intelligence Feeds
             </button>
             <span>·</span>
             <button
-              onClick={() => setIsSecurityOpen(true)}
+              onClick={() => setActiveModal('security')}
               className="hover:text-emerald-300 underline underline-offset-4"
             >
               Inspect Security Audit Ledger

@@ -87,16 +87,20 @@ export const Sparkline: React.FC<SparklineProps> = ({
         />
       </svg>
 
-      {/* Net 7-day delta tag */}
+      {/* Scale & Net 7-day delta tag */}
       {showDelta && (
-        <span
-          className={`font-mono tabular-nums text-[10px] font-semibold w-8 text-right shrink-0 ${
-            isRising ? 'text-emerald-400' : isFalling ? 'text-rose-400' : 'text-slate-400'
-          }`}
-          title={`Day 1: ${startPoint.val} → Day 7: ${endPoint.val}`}
-        >
-          {delta > 0 ? `+${delta}` : delta}
-        </span>
+        <div className="flex flex-col text-right shrink-0 min-w-10">
+          <span
+            className={`font-mono tabular-nums text-xs font-bold ${
+              isRising ? 'text-emerald-400' : isFalling ? 'text-rose-400' : 'text-slate-400'
+            }`}
+          >
+            {delta > 0 ? `+${delta}` : delta}
+          </span>
+          <span className="font-mono text-[10px] text-slate-500 tabular-nums leading-none mt-0.5" title={`Day 1: ${startPoint.val} to Day 7: ${endPoint.val}`}>
+            {startPoint.val}→{endPoint.val}
+          </span>
+        </div>
       )}
     </div>
   );

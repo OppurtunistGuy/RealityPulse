@@ -97,6 +97,8 @@ export interface Contestant {
   statusVerifiedAt?: string;
   statusVerificationSource?: string;
   verificationState?: 'Broadcaster Verified' | 'Corroborated' | 'Unconfirmed';
+  statusProvenance?: 'official' | 'reported';
+  nominationProvenance?: 'official' | 'reported';
   primarySourceUrls?: SourceCitation[];
   structuredControversies?: StructuredControversy[];
 }
@@ -122,6 +124,7 @@ export interface EvictedContestantTimelineItem {
   broadcasterVerificationUrl?: string;
   broadcasterVerifiedAt?: string;
   verificationState?: 'Broadcaster Confirmed' | 'Corroborated' | 'Unconfirmed';
+  provenance?: 'official' | 'reported';
 }
 
 export interface AstroturfCluster {

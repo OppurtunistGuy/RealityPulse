@@ -43,11 +43,13 @@ export const AstroturfNetworkView: React.FC<AstroturfNetworkViewProps> = ({
 
     targets.forEach((node, i) => {
       const y = targets.length > 1 ? 65 + i * (290 / (targets.length - 1)) : 200;
-      coords[node.id] = { x: 520, y: Math.round(y), label: node.label, type: node.type, risk: node.riskWeight };
+      const matched = contestants.find((c) => c.id === node.id);
+      const effectiveRisk = matched ? matched.prInfiltrationRate / 100 : node.riskWeight;
+      coords[node.id] = { x: 520, y: Math.round(y), label: matched ? matched.name : node.label, type: node.type, risk: effectiveRisk };
     });
 
     return coords;
-  }, []);
+  }, [contestants]);
 
   return (
     <div className="space-y-6">
@@ -211,7 +213,7 @@ export const AstroturfNetworkView: React.FC<AstroturfNetworkViewProps> = ({
                     cy={coord.y}
                     r={isSelected ? 18 : 14}
                     fill="#1e293b"
-                    stroke={node.riskWeight > 0.5 ? '#f43f5e' : node.riskWeight > 0.2 ? '#f59e0b' : '#10b981'}
+                    stroke={coord.risk > 0.4 ? '#f43f5e' : coord.risk > 0.2 ? '#f59e0b' : '#10b981'}
                     strokeWidth={isSelected ? 3 : 2}
                     className="transition-all duration-200"
                   />
@@ -220,21 +222,21 @@ export const AstroturfNetworkView: React.FC<AstroturfNetworkViewProps> = ({
                     y={coord.y + 4}
                     textAnchor="start"
                     fill="#f1f5f9"
-                    fontSize="12"
+                    fontSize="13"
                     fontFamily="var(--font-sans)"
                     fontWeight="600"
                   >
-                    {node.label}
+                    {coord.label}
                   </text>
                   <text
                     x={coord.x + 22}
-                    y={coord.y + 17}
+                    y={coord.y + 19}
                     textAnchor="start"
-                    fill="#64748b"
-                    fontSize="10"
+                    fill="#94a3b8"
+                    fontSize="12"
                     fontFamily="var(--font-mono)"
                   >
-                    PR Risk: {(node.riskWeight * 100).toFixed(0)}%
+                    PR Risk: {(coord.risk * 100).toFixed(0)}%
                   </text>
                 </g>
               );

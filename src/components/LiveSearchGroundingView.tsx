@@ -37,9 +37,9 @@ const INITIAL_GROUNDED_REPORT = {
 - **High Danger:** Contestants suffering from the "Ghost Factor" (minimal broadcast airtime combined with no organic casual fanbase, such as Aasif Khan or Aamrapali Dubey in the danger zone) or acute audience fatigue remain at highest risk of elimination.
 - **Audience Verdict:** Casual voters are actively rejecting forced producer edits, creating a negative reception delta for manufactured heroic narratives.`,
   groundingChunks: [
-    { web: { title: "Bigg Boss 20 Hindi Official Live Voting Portal & Rules", uri: "https://www.google.com/search?q=bigg+boss+20+hindi+voting+trends" } },
-    { web: { title: "Entertainment Weekly: Episode Breakdown & Fandom Controversies", uri: "https://www.google.com/search?q=bigg+boss+20+episode+fandom+breakdown" } },
-    { web: { title: "Digital Fandom Watch: Analysis of Paid PR Campaigns in Reality Shows", uri: "https://www.google.com/search?q=reality+tv+paid+pr+bot+clusters" } }
+    { web: { title: "The Indian Express: Bigg Boss 20 Voting Trends & Elimination Coverage", uri: "https://indianexpress.com/section/entertainment/" } },
+    { web: { title: "Hindustan Times Entertainment: Bigg Boss Season 20 Eviction News & Analysis", uri: "https://www.hindustantimes.com/entertainment/" } },
+    { web: { title: "JioHotstar Official: Bigg Boss 20 Broadcast Stream & Public Polls", uri: "https://www.jiohotstar.com/" } }
   ],
   webSearchQueries: [
     "Bigg Boss 20 Hindi latest eviction voting poll results",

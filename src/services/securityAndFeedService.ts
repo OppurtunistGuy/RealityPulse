@@ -101,12 +101,12 @@ class SecurityAndFeedManager {
         id: 'feed-2',
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         category: 'Nomination Alert',
-        title: 'Week 5 Public Voting Window Active on JioHotstar',
-        summary: 'Official voting lines opened on JioHotstar app. Nominated housemates facing public ballot confirmed by broadcaster desk.',
+        title: 'Week 8 Public Voting Window Active on JioHotstar (Day 52)',
+        summary: 'Official voting lines opened on JioHotstar app. Nominated housemates facing public ballot confirmed: Scout, Arshifa, Gullu, Love Gill, Harsh Machare, and Uditi Singh.',
         sourceUrl: 'https://www.jiohotstar.com/reality',
         sourceDomain: 'jiohotstar.com',
         verifiedByBroadcaster: true,
-        involvedContestants: ['Tanmay Singh (Scout)', 'Kanika Mann', 'Aamrapali Dubey', 'Arishfa Khan', 'Love Gill']
+        involvedContestants: ['Tanmay Singh (Scout)', 'Arshifa Khan', 'Kushal Tanwar (Gullu)', 'Love Gill', 'Harsh Machare (Yung DSA)', 'Uditi Singh']
       },
       {
         id: 'feed-3',

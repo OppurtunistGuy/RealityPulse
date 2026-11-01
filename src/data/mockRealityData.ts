@@ -99,111 +99,214 @@ export const BIPARTITE_NODES: BipartiteNetworkNode[] = [
     "id": "c1",
     "label": "Tanmay Singh (Scout)",
     "type": "contestant",
-    "volume": 220000,
-    "riskWeight": 0.11
+    "volume": 240000,
+    "riskWeight": 0.10
   },
   {
     "id": "c2",
-    "label": "Kanika Mann",
-    "type": "contestant",
-    "volume": 245000,
-    "riskWeight": 0.61
-  },
-  {
-    "id": "c8",
-    "label": "Arishfa Khan",
-    "type": "contestant",
-    "volume": 220000,
-    "riskWeight": 0.72
-  },
-  {
-    "id": "c7",
-    "label": "Kushal Tanwar (Gullu)",
-    "type": "contestant",
-    "volume": 79000,
-    "riskWeight": 0.1
-  },
-  {
-    "id": "c3",
     "label": "Aamrapali Dubey",
     "type": "contestant",
-    "volume": 76000,
+    "volume": 120000,
     "riskWeight": 0.08
   },
   {
-    "id": "c11",
-    "label": "MC Mary Kom",
+    "id": "c3",
+    "label": "Kanika Mann",
     "type": "contestant",
-    "volume": 180000,
-    "riskWeight": 0.06
+    "volume": 160000,
+    "riskWeight": 0.15
   },
   {
-    "id": "c12",
+    "id": "c4",
     "label": "Mahhi Vij",
     "type": "contestant",
-    "volume": 92000,
+    "volume": 110000,
     "riskWeight": 0.14
   },
   {
-    "id": "c5",
+    "id": "c7",
     "label": "Qazi Ahmad Tauqeer",
     "type": "contestant",
-    "volume": 98000,
-    "riskWeight": 0.46
+    "volume": 85000,
+    "riskWeight": 0.28
+  },
+  {
+    "id": "c8",
+    "label": "Arshifa Khan",
+    "type": "contestant",
+    "volume": 210000,
+    "riskWeight": 0.33
   },
   {
     "id": "c9",
-    "label": "Love Gill (Lovepreet Kaur Gill)",
+    "label": "Kushal Tanwar (Gullu)",
     "type": "contestant",
-    "volume": 110000,
+    "volume": 115000,
     "riskWeight": 0.24
+  },
+  {
+    "id": "c10",
+    "label": "Love Gill",
+    "type": "contestant",
+    "volume": 190000,
+    "riskWeight": 0.45
   }
 ];
 
 export const BIPARTITE_LINKS: BipartiteNetworkLink[] = [
   {
     "source": "ring-1",
-    "target": "c2",
-    "weight": 4820,
+    "target": "c3",
+    "weight": 2400,
     "isAstroturf": true
   },
   {
     "source": "ring-2",
     "target": "c8",
-    "weight": 5400,
+    "weight": 4200,
     "isAstroturf": true
   },
   {
     "source": "ring-3",
-    "target": "c5",
-    "weight": 2600,
+    "target": "c7",
+    "weight": 2100,
     "isAstroturf": true
   },
   {
     "source": "ring-4",
-    "target": "c9",
-    "weight": 1400,
+    "target": "c10",
+    "weight": 3800,
     "isAstroturf": true
   },
   {
     "source": "c1",
-    "target": "c7",
+    "target": "c9",
     "weight": 8900,
     "isAstroturf": false
   },
   {
-    "source": "c3",
-    "target": "c11",
-    "weight": 9200,
+    "source": "c2",
+    "target": "c4",
+    "weight": 7600,
     "isAstroturf": false
   }
 ];
 
 export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
   {
+    "episodeNumber": 52,
+    "title": "Weekend Ka Vaar: Week 8 Nominations & The Asli Janta Verdict",
+    "airDate": "Day 52 · November 1, 2026",
+    "hostFocus": "Salman Khan grills the house on manufactured PR bubbles and reviews the high-stakes Week 8 nominations.",
+    "broadcastThemes": [
+      "Week 8 Nomination Shockwaves",
+      "PR Echo Chamber Reality Check",
+      "Captain Aamrapali's Immunity Privilege"
+    ],
+    "contestantEdits": [
+      {
+        "contestantId": "c1",
+        "contestantName": "Tanmay Singh (Scout)",
+        "editType": "Hero Edit",
+        "airtimeMinutes": 32,
+        "intendedPerception": "Unshakeable organic titan carrying the calm maturity of an athlete against mass nomination targeting.",
+        "organicPublicVerdict": "Universal support across YouTube polls and esports grassroots; 94% approval rating.",
+        "receptionDelta": 36
+      },
+      {
+        "contestantId": "c8",
+        "contestantName": "Arshifa Khan",
+        "editType": "Villain Edit",
+        "airtimeMinutes": 24,
+        "intendedPerception": "Vocal instigator sparking friction over ration distribution and alliance shifts.",
+        "organicPublicVerdict": "Audience fatigue over repetitive kitchen disputes; high vulnerability on voting polls.",
+        "receptionDelta": -38
+      },
+      {
+        "contestantId": "c9",
+        "contestantName": "Kushal Tanwar (Gullu)",
+        "editType": "Hero Edit",
+        "airtimeMinutes": 22,
+        "intendedPerception": "Witty street-smart fighter who stands his ground without scripted PR diplomacy.",
+        "organicPublicVerdict": "High regional engagement and strong organic retention on Instagram Reels and YouTube.",
+        "receptionDelta": 26
+      },
+      {
+        "contestantId": "c10",
+        "contestantName": "Love Gill",
+        "editType": "Ghost Edit",
+        "airtimeMinutes": 16,
+        "intendedPerception": "Loud Twitter trending favorite struggling to convert online buzz into on-screen narrative impact.",
+        "organicPublicVerdict": "Disconnection between high hashtag numbers and low casual viewer engagement.",
+        "receptionDelta": -22
+      }
+    ],
+    "conflictPairs": [
+      {
+        "id": "cp-52-1",
+        "contestantA": "Tanmay Singh (Scout)",
+        "contestantB": "Love Gill",
+        "incident": "Nomination Face-Off: Love challenged Scout on being too silent in house arguments; Scout pointed to task execution and team loyalty.",
+        "producerFraming": "Aggressive vocal strategy vs disciplined composure.",
+        "organicAudienceWinner": "Tanmay Singh (Scout) (89% approval)"
+      },
+      {
+        "id": "cp-52-2",
+        "contestantA": "Kushal Tanwar (Gullu)",
+        "contestantB": "Arshifa Khan",
+        "incident": "Ration Allotment Dispute: Gullu used satirical humor to defuse Arshifa's claim of unfair house management.",
+        "producerFraming": "Relatable humor vs high-decibel confrontation.",
+        "organicAudienceWinner": "Kushal Tanwar (Gullu) (92% approval)"
+      }
+    ],
+    "organicDriftSummary": "Scout and Gullu maintain massive organic grounding on Day 52, while Arshifa and Love Gill experience audience skepticism over PR amplification."
+  },
+  {
+    "episodeNumber": 49,
+    "title": "Weekend Ka Vaar: MC Mary Kom's Farewell & The Tathas-two Crucible",
+    "airDate": "Day 49 · October 24, 2026",
+    "hostFocus": "Salman Khan salutes sports legend MC Mary Kom in an emotional farewell after 7 weeks in the house.",
+    "broadcastThemes": [
+      "Mary Kom 7-Week Journey Retrospective",
+      "Task Composure under Pressure",
+      "Mid-Season Shakeup"
+    ],
+    "contestantEdits": [
+      {
+        "contestantId": "c5",
+        "contestantName": "MC Mary Kom",
+        "editType": "Hero Edit",
+        "airtimeMinutes": 35,
+        "intendedPerception": "Dignified champion leaving with head held high, celebrated by housemates and viewers alike.",
+        "organicPublicVerdict": "Overwhelming national affection and respect; 97% positive organic sentiment.",
+        "receptionDelta": 44
+      },
+      {
+        "contestantId": "c2",
+        "contestantName": "Aamrapali Dubey",
+        "editType": "Hero Edit",
+        "airtimeMinutes": 20,
+        "intendedPerception": "Empathetic house elder showing authentic grief and stepping into house leadership.",
+        "organicPublicVerdict": "Grassroots family audiences resonated deeply with her emotional grounding.",
+        "receptionDelta": 28
+      }
+    ],
+    "conflictPairs": [
+      {
+        "id": "cp-49-1",
+        "contestantA": "MC Mary Kom",
+        "contestantB": "Aamrapali Dubey",
+        "incident": "Emotional Send-off: Mary Kom passes her lucky boxing glove talisman to Aamrapali before stepping out.",
+        "producerFraming": "Heartfelt sportsmanship and elder solidarity.",
+        "organicAudienceWinner": "MC Mary Kom & Aamrapali Dubey (Mutual Acclaim)"
+      }
+    ],
+    "organicDriftSummary": "Day 49 was marked by profound national respect for Mary Kom's 7-week run, establishing a dignified benchmark for Bigg Boss 20."
+  },
+  {
     "episodeNumber": 26,
     "title": "The Tathas-two Shield Standoff & The Luggage Room Stash",
-    "airDate": "Day 26 · October 26, 2026",
+    "airDate": "Day 26 · October 06, 2026",
     "hostFocus": "Salman Khan reprimands theatrical crying and rewards task composure in the immunity arena.",
     "broadcastThemes": [
       "Tathas-two Immunity Shield",
@@ -222,51 +325,25 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
       },
       {
         "contestantId": "c8",
-        "contestantName": "Arishfa Khan",
+        "contestantName": "Arshifa Khan",
         "editType": "Villain Edit",
         "airtimeMinutes": 26,
-        "intendedPerception": "Volatile, entitled housemate instigating unnecessary kitchen drama and weaponizing tears.",
+        "intendedPerception": "Volatile housemate instigating unnecessary kitchen drama and weaponizing tears.",
         "organicPublicVerdict": "Severe backlash across YouTube comments and family audiences; branded as theatrical sympathy seeking.",
         "receptionDelta": -42
-      },
-      {
-        "contestantId": "c7",
-        "contestantName": "Kushal Tanwar (Gullu)",
-        "editType": "Hero Edit",
-        "airtimeMinutes": 19,
-        "intendedPerception": "Sharp, comedic voice of reason exposing fake behavior with effortless humor.",
-        "organicPublicVerdict": "High organic acclaim; widely celebrated across Instagram Reels for disarming Arshifa’s tantrums.",
-        "receptionDelta": 28
-      },
-      {
-        "contestantId": "c11",
-        "contestantName": "MC Mary Kom",
-        "editType": "Hero Edit",
-        "airtimeMinutes": 21,
-        "intendedPerception": "Legendary discipline and fair play leader commanding absolute respect.",
-        "organicPublicVerdict": "Revered nationwide; 97% positive organic sentiment across all platforms.",
-        "receptionDelta": 38
       }
     ],
     "conflictPairs": [
       {
-        "id": "cp-1",
+        "id": "cp-26-1",
         "contestantA": "Tanmay Singh (Scout)",
         "contestantB": "Qazi Ahmad Tauqeer",
-        "incident": "Tathas-two Immunity Shield Dispute: Qazi tried to provoke Scout with personal legacy sarcasm; Scout remained stoic and protected the shield.",
+        "incident": "Tathas-two Immunity Shield Dispute: Qazi tried to provoke Scout; Scout remained stoic and protected the shield.",
         "producerFraming": "New-age gaming champion vs nostalgic reality icon.",
         "organicAudienceWinner": "Tanmay Singh (Scout) (91% approval)"
-      },
-      {
-        "id": "cp-2",
-        "contestantA": "Kushal Tanwar (Gullu)",
-        "contestantB": "Arishfa Khan",
-        "incident": "Kitchen Chore Melodrama: Gullu gave live cricket commentary during Arshifa’s crying fit.",
-        "producerFraming": "Comedic realism vs weaponized tears.",
-        "organicAudienceWinner": "Kushal Tanwar (Gullu) (94% approval)"
       }
     ],
-    "organicDriftSummary": "Scout, Gullu, and Mary Kom generated massive authentic goodwill, while Arshifa’s crying routine met severe audience rejection."
+    "organicDriftSummary": "Scout generated massive authentic goodwill, while theatrical arguments met severe audience rejection."
   }
 ];
 

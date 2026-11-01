@@ -143,20 +143,104 @@ class DatabaseService {
       }
 
   public async getHistoricalSnapshot(weekNumber: number): Promise<{
-        week: number;
-        contestants: Contestant[];
-        capturedAt: string;
-        isHistorical: boolean;
-      }> {
+    week: number;
+    contestants: Contestant[];
+    capturedAt: string;
+    isHistorical: boolean;
+  }> {
     const currentTimeline = calculateShowTimeline();
     const isHistorical = weekNumber < currentTimeline.currentWeek;
 
-    const latest = await this.getLatestContestants();
+    if (!isHistorical) {
+      const latest = await this.getLatestContestants();
+      return {
+        week: currentTimeline.currentWeek,
+        contestants: latest.contestants,
+        capturedAt: latest.capturedAt,
+        isHistorical: false
+      };
+    }
+
+    // Historical timestamp aligned to the end of selected week
+    const historicalTimeMs = SHOW_PREMIERE_DATE.getTime() + (weekNumber * 7 * 24 * 60 * 60 * 1000);
+    const capturedAt = new Date(historicalTimeMs).toISOString();
+
+    // Week-specific nomination rosters
+    const WEEK_NOMINATIONS: Record<number, string[]> = {
+      1: ['c6', 'c10', 'c14', 'c16'],
+      2: ['c7', 'c8', 'c14', 'c15'],
+      3: ['c9', 'c11', 'c15', 'c18'],
+      4: ['c8', 'c12', 'c16', 'c18'],
+      5: ['c1', 'c8', 'c10', 'c17', 'c18'],
+      6: ['c6', 'c7', 'c11', 'c12', 'c18'],
+      7: ['c1', 'c5', 'c8', 'c10'],
+      8: ['c1', 'c8', 'c9', 'c10', 'c11', 'c12']
+    };
+
+    const weekNominees = WEEK_NOMINATIONS[weekNumber] || [];
+
+    // Transform full roster to reflect house state during selected historical week
+    const historicalContestants: Contestant[] = BB20_LOCKED_CONTESTANTS.map((c) => {
+      // Entry restrictions: Wildcards entered Week 5 (Day 35)
+      const isWildcardPreEntry = (c.id === 'c13' || c.id === 'c17') && weekNumber < 5;
+      
+      let status: 'Active' | 'Evicted' = 'Active';
+      let isNominated = false;
+      let evictionProbability = 8;
+      let evictionRiskTier: Contestant['evictionRiskTier'] = 'Safe';
+      let toss = c.trueOrganicSentiment;
+
+      if (isWildcardPreEntry) {
+        status = 'Evicted'; // Not yet in house
+        isNominated = false;
+      } else if (c.evictionWeek && c.evictionWeek < weekNumber) {
+        // Evicted in an earlier week
+        status = 'Evicted';
+        isNominated = false;
+        evictionProbability = 100;
+        evictionRiskTier = 'High Danger';
+      } else if (c.evictionWeek === weekNumber) {
+        // Active and facing elimination this exact week
+        status = 'Active';
+        isNominated = true;
+        evictionProbability = 46 + (c.id.charCodeAt(1) % 8);
+        evictionRiskTier = 'High Danger';
+        toss = Math.min(toss, 42);
+      } else {
+        // Active throughout this week
+        status = 'Active';
+        isNominated = weekNominees.includes(c.id);
+        if (isNominated) {
+          evictionProbability = 18 + (c.id.charCodeAt(1) % 12);
+          evictionRiskTier = c.prInfiltrationRate > 30 ? 'Vocal Bubble / At Risk' : 'Safe';
+        } else {
+          evictionProbability = 4;
+          evictionRiskTier = 'Safe';
+        }
+      }
+
+      // Mary Kom had peak organic leadership in weeks 1-6
+      if (c.id === 'c5' && weekNumber <= 6) {
+        toss = 94;
+        evictionRiskTier = 'Safe';
+        evictionProbability = 3;
+      }
+
+      return {
+        ...c,
+        status,
+        isNominated,
+        trueOrganicSentiment: toss,
+        evictionProbability,
+        evictionRiskTier
+      };
+    });
+
     return {
       week: weekNumber,
-      contestants: latest.contestants,
-      capturedAt: latest.capturedAt,
-      isHistorical
+      contestants: historicalContestants,
+      capturedAt,
+      isHistorical: true
     };
   }
 

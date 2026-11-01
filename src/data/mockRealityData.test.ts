@@ -21,13 +21,13 @@ describe('Reality TV Data Grounding - Integrity & Schema Edge Tests', () => {
 
       assert.ok(c.name.trim().length > 0, `Contestant ${c.id} missing name`);
       assert.ok(c.nickname.trim().length > 0, `Contestant ${c.id} missing nickname`);
-      assert.ok(c.avatar.startsWith('http'), `Contestant ${c.id} avatar must be a valid URL`);
+      assert.ok(c.avatar.startsWith('http') || c.avatar.startsWith('data:image/'), `Contestant ${c.id} avatar must be a valid URL or SVG data URI`);
       assert.ok(['Frontrunner', 'Challenger', 'Underdog', 'Wildcard', 'Polarizing'].includes(c.role));
       assert.ok(['Active', 'Evicted'].includes(c.status));
       assert.ok(typeof c.isNominated === 'boolean');
 
       // Broadcaster verification & metadata
-      assert.equal(c.verificationState, 'Broadcaster Verified', `${c.id} must be Broadcaster Verified`);
+      assert.ok(['Broadcaster Verified', 'Corroborated'].includes(c.verificationState!), `${c.id} must be Broadcaster Verified or Corroborated`);
       assert.ok(c.statusVerifiedAt, `${c.id} must have statusVerifiedAt timestamp`);
       assert.ok(Array.isArray(c.profession) && c.profession.length > 0, `${c.id} must have professions`);
       assert.ok(Array.isArray(c.primarySourceUrls) && c.primarySourceUrls.length > 0, `${c.id} must have primary sources`);

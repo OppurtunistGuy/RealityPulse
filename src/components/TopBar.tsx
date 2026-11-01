@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, Sparkles, Globe, Layers, Languages, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, Sparkles, Globe, Layers, ShieldCheck } from 'lucide-react';
 import { Language } from '../types';
 import { timeAgo } from '../utils/timeAgo';
 
@@ -33,196 +33,269 @@ export const TopBar: React.FC<TopBarProps> = ({
   const isHinglish = language === 'hinglish';
 
   return (
-    <header className="border-b border-slate-800/80 bg-[#0c1220]/90 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 sm:gap-6">
-        {/* Zone 1: Brand wordmark (single line) */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/40">
-              <ShieldAlert className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-base font-bold tracking-tight text-white whitespace-nowrap">
-              Bigg Boss 20{' '}
-              <span className="text-cyan-400 font-normal text-xs ml-1 font-mono">
-                {isHinglish ? 'ASLI JANTA INTEL' : 'TOSS INTEL'}
-              </span>
-            </span>
-
-            {/* Dynamic Day/Week indicator */}
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-[11px] font-mono text-cyan-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Day {timeline?.currentDay ?? 52} · W{timeline?.currentWeek ?? 8}
-            </span>
-
-            {/* Last updated relative time badge */}
-            {capturedAt && (
-              <span className="hidden md:inline-flex text-[10px] font-mono text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800" title={`Snapshot timestamp: ${capturedAt}`}>
-                Updated {timeAgo(capturedAt)}
-              </span>
-            )}
+    <header className="border-b border-slate-800/80 bg-[#0c1220]/95 backdrop-blur-md sticky top-0 z-40 w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+        {/* Zone 1: Brand wordmark & Dynamic Timeline Status */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink min-w-0">
+          <div className="w-9 h-9 min-w-9 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-950/40 shrink-0">
+            <ShieldAlert className="w-5 h-5 text-white" />
           </div>
-
-          {/* Zone 2: Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 sm:gap-2">
-            <button
-              onClick={() => onTabChange('matrix')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${activeTab === 'matrix'
-                  ? 'bg-slate-800 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-            >
-              {isHinglish ? 'Eviction Khatra Matrix' : 'Eviction Matrix'}
-            </button>
-            <button
-              onClick={() => onTabChange('astroturf')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${activeTab === 'astroturf'
-                  ? 'bg-slate-800 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-            >
-              {isHinglish ? 'PR & Bot Swarms' : 'Bot & PR Network'}
-            </button>
-            <button
-              onClick={() => onTabChange('narrative')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${activeTab === 'narrative'
-                  ? 'bg-slate-800 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-            >
-              {isHinglish ? 'Episode Edit vs Public' : 'Narrative Arc Delta'}
-            </button>
-            <button
-              onClick={() => onTabChange('grounding')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${activeTab === 'grounding'
-                  ? 'bg-slate-800 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-            >
-              {isHinglish ? 'Live Google Search' : 'Google Search Grounding'}
-            </button>
-            <button
-              onClick={() => onTabChange('studio')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 ${activeTab === 'studio'
-                  ? 'bg-slate-800 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-            >
-              {isHinglish ? 'Comment Test Studio' : 'Forensic Studio'}
-            </button>
-          </nav>
-
-          {/* Zone 3: Language Toggle & Actions */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* Language Switcher: EN vs Hinglish */}
-            <div className="flex items-center rounded-lg border border-slate-700 bg-slate-900/90 p-0.5 text-xs">
-              <button
-                onClick={() => onToggleLanguage('en')}
-                className={`px-2 py-1 rounded-md text-[11px] font-semibold transition-all ${!isHinglish
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                  }`}
-                title="English"
-              >
-                EN
-              </button>
-              <button
-                onClick={() => onToggleLanguage('hinglish')}
-                className={`px-2 py-1 rounded-md text-[11px] font-semibold transition-all ${isHinglish
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                  }`}
-                title="Hinglish (Hindi + English)"
-              >
-                Hinglish
-              </button>
-            </div>
-
-            <button
-              onClick={onOpenSecurityAndFeed}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md border border-emerald-500/30 bg-emerald-950/30 text-emerald-300 hover:text-white hover:border-emerald-500/60 transition-colors whitespace-nowrap shrink-0"
-              title="Inspect Hourly Ingestion Feed, SHA-256 Block Ledger, and Anti-Manipulation Defense"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden sm:inline">{isHinglish ? 'Live Feed & Security' : 'Live Sync & Security'}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>
-            </button>
-
-            <button
-              onClick={onOpenSources}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-colors whitespace-nowrap shrink-0"
-              title="View verified real sources across YouTube, X, Instagram, Threads and News"
-            >
-              <Globe className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">{isHinglish ? 'Data Feeds' : 'Data Sources'}</span>
-            </button>
-
-            <button
-              onClick={onToggleNominationOnly}
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md border transition-colors whitespace-nowrap shrink-0 ${isNominationOnly
-                  ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                  : 'bg-slate-900 border-slate-700/80 text-slate-300 hover:border-slate-600'
-                }`}
-              title="Filter by housemates currently up for public voting"
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>
-                {isNominationOnly
-                  ? isHinglish
-                    ? 'Sirf Nominated'
-                    : 'Nominated Only'
-                  : isHinglish
-                    ? 'Sabhi Sadasya'
-                    : 'All Housemates'}
+          <div className="flex flex-col shrink min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-sm sm:text-base font-extrabold tracking-tight text-white whitespace-nowrap">
+                Bigg Boss 20
               </span>
-            </button>
-
-            <button
-              onClick={onOpenLiveQuery}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-white bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 rounded-md transition-all shadow-sm shadow-cyan-950 whitespace-nowrap shrink-0"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{isHinglish ? 'Live Grounding' : 'Search Grounding'}</span>
-            </button>
+              <span className="text-cyan-400 font-mono text-xs hidden xs:inline">
+                {isHinglish ? 'ASLI JANTA' : 'TOSS INTEL'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
+              <span className="text-cyan-300 font-semibold whitespace-nowrap">
+                Day {timeline?.currentDay ?? 52} · W{timeline?.currentWeek ?? 8}
+              </span>
+              {capturedAt && (
+                <span className="hidden md:inline text-slate-500 whitespace-nowrap" title={`Snapshot: ${capturedAt}`}>
+                  · Updated {timeAgo(capturedAt)}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Mobile nav bar */}
-        <div className="lg:hidden flex items-center justify-around px-2 py-2 border-t border-slate-800/60 overflow-x-auto text-xs bg-[#0a0f1d]">
+        {/* Zone 2: Desktop Navigation Tabs (Tabs role for a11y) */}
+        <nav
+          role="tablist"
+          aria-label="Main Reality TV Intelligence Views"
+          className="hidden lg:flex items-center gap-1.5"
+        >
           <button
+            role="tab"
+            id="tab-matrix"
+            aria-selected={activeTab === 'matrix'}
+            aria-controls="panel-matrix"
             onClick={() => onTabChange('matrix')}
-            className={`px-2 py-1 rounded whitespace-nowrap ${activeTab === 'matrix' ? 'text-cyan-400 font-semibold' : 'text-slate-400'
-              }`}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              activeTab === 'matrix'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
           >
-            {isHinglish ? 'Matrix & Timeline' : 'Eviction Matrix'}
+            {isHinglish ? 'Eviction Khatra Matrix' : 'Eviction Matrix'}
           </button>
           <button
+            role="tab"
+            id="tab-astroturf"
+            aria-selected={activeTab === 'astroturf'}
+            aria-controls="panel-astroturf"
             onClick={() => onTabChange('astroturf')}
-            className={`px-2 py-1 rounded whitespace-nowrap ${activeTab === 'astroturf' ? 'text-cyan-400 font-semibold' : 'text-slate-400'
-              }`}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              activeTab === 'astroturf'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
           >
-            {isHinglish ? 'PR Swarms' : 'Bot Network'}
+            {isHinglish ? 'PR & Bot Swarms' : 'Bot & PR Network'}
           </button>
           <button
+            role="tab"
+            id="tab-narrative"
+            aria-selected={activeTab === 'narrative'}
+            aria-controls="panel-narrative"
             onClick={() => onTabChange('narrative')}
-            className={`px-2 py-1 rounded whitespace-nowrap ${activeTab === 'narrative' ? 'text-cyan-400 font-semibold' : 'text-slate-400'
-              }`}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              activeTab === 'narrative'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
           >
-            {isHinglish ? 'Narrative' : 'Narrative Delta'}
+            {isHinglish ? 'Episode Edit vs Public' : 'Narrative Arc Delta'}
           </button>
           <button
+            role="tab"
+            id="tab-grounding"
+            aria-selected={activeTab === 'grounding'}
+            aria-controls="panel-grounding"
             onClick={() => onTabChange('grounding')}
-            className={`px-2 py-1 rounded whitespace-nowrap ${activeTab === 'grounding' ? 'text-cyan-400 font-semibold' : 'text-slate-400'
-              }`}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              activeTab === 'grounding'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
           >
-            Live Search
+            {isHinglish ? 'Live Google Search' : 'Search Grounding'}
           </button>
           <button
+            role="tab"
+            id="tab-studio"
+            aria-selected={activeTab === 'studio'}
+            aria-controls="panel-studio"
             onClick={() => onTabChange('studio')}
-            className={`px-2 py-1 rounded whitespace-nowrap ${activeTab === 'studio' ? 'text-cyan-400 font-semibold' : 'text-slate-400'
-              }`}
+            className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              activeTab === 'studio'
+                ? 'bg-slate-800 text-cyan-300 border border-cyan-500/30 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
           >
-            Studio
+            {isHinglish ? 'Comment Test Studio' : 'Forensic Studio'}
+          </button>
+        </nav>
+
+        {/* Zone 3: Actions & Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Language Switcher */}
+          <div className="flex items-center rounded-lg border border-slate-700 bg-slate-900/90 p-0.5 text-xs">
+            <button
+              onClick={() => onToggleLanguage('en')}
+              className={`min-h-[36px] px-2.5 py-1 rounded-md text-xs font-bold transition-all ${
+                !isHinglish
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="English interface"
+              aria-label="Switch language to English"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => onToggleLanguage('hinglish')}
+              className={`min-h-[36px] px-2.5 py-1 rounded-md text-xs font-bold transition-all ${
+                isHinglish
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="Hinglish interface"
+              aria-label="Switch language to Hinglish"
+            >
+              HI
+            </button>
+          </div>
+
+          {/* Live Feed & Ingestion Audit Button */}
+          <button
+            onClick={onOpenSecurityAndFeed}
+            className="min-h-[44px] flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 hover:text-white hover:border-emerald-500/70 transition-colors whitespace-nowrap"
+            title="Inspect Live Feed and Cryptographic Security Ledger"
+            aria-label="Open Live Sync and Security Ledger"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span className="hidden xl:inline">{isHinglish ? 'Live Feed' : 'Live Sync'}</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          </button>
+
+          {/* Data Sources Button */}
+          <button
+            onClick={onOpenSources}
+            className="min-h-[44px] flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-colors whitespace-nowrap"
+            title="Inspect Grounded Data Sources & Provenance"
+            aria-label="Open Data Sources and Provenance"
+          >
+            <Globe className="w-4 h-4 text-cyan-400" />
+            <span className="hidden xl:inline">{isHinglish ? 'Data Feeds' : 'Sources'}</span>
+          </button>
+
+          {/* Nominated Filter Toggle */}
+          <button
+            onClick={onToggleNominationOnly}
+            className={`min-h-[44px] hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap ${
+              isNominationOnly
+                ? 'bg-amber-500/15 border-amber-500/50 text-amber-300'
+                : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-600'
+            }`}
+            title="Filter by nominated housemates"
+            aria-label={isNominationOnly ? 'Showing nominated only' : 'Showing all housemates'}
+          >
+            <Layers className="w-4 h-4" />
+            <span className="hidden md:inline">
+              {isNominationOnly
+                ? isHinglish
+                  ? 'Nominated'
+                  : 'Nominated Only'
+                : isHinglish
+                  ? 'All Roster'
+                  : 'All Housemates'}
+            </span>
+          </button>
+
+          {/* Live Search Grounding Action */}
+          <button
+            onClick={onOpenLiveQuery}
+            className="min-h-[44px] flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 rounded-lg transition-all shadow-sm shadow-cyan-950 whitespace-nowrap"
+            title="Run Google Search Grounded Reality Intelligence"
+            aria-label="Open Live Search Grounding"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span className="hidden sm:inline">{isHinglish ? 'Grounding' : 'Search AI'}</span>
           </button>
         </div>
+      </div>
+
+      {/* Mobile Tab Navigation Bar with full touch targets and clear active states */}
+      <div
+        role="tablist"
+        aria-label="Mobile Navigation"
+        className="lg:hidden flex items-center justify-start gap-1 px-3 py-2 border-t border-slate-800/80 overflow-x-auto text-xs bg-[#0a0f1d] no-scrollbar"
+      >
+        <button
+          role="tab"
+          aria-selected={activeTab === 'matrix'}
+          onClick={() => onTabChange('matrix')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'matrix'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Matrix' : 'Matrix'}
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === 'astroturf'}
+          onClick={() => onTabChange('astroturf')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'astroturf'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Bot Swarms' : 'Bot Network'}
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === 'narrative'}
+          onClick={() => onTabChange('narrative')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'narrative'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Narrative' : 'Narrative Delta'}
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === 'grounding'}
+          onClick={() => onTabChange('grounding')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'grounding'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Live Search' : 'Search AI'}
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === 'studio'}
+          onClick={() => onTabChange('studio')}
+          className={`min-h-[44px] px-3 py-2 rounded-md font-semibold whitespace-nowrap shrink-0 transition-colors ${
+            activeTab === 'studio'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          {isHinglish ? 'Studio' : 'Forensic Studio'}
+        </button>
+      </div>
     </header>
   );
 };
