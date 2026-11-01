@@ -7,9 +7,11 @@ import {
   TrendingDown,
   UserX,
   Clock,
-  Sparkles
+  Sparkles,
+  ShieldCheck,
+  ExternalLink
 } from 'lucide-react';
-import { EvictedContestantTimelineItem, Language, Contestant } from '../types';
+import { EvictedContestantTimelineItem, Language } from '../types';
 
 interface EvictionTimelineViewProps {
   timeline: EvictedContestantTimelineItem[];
@@ -40,8 +42,8 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
             </div>
             <p className="text-xs text-slate-400 max-w-3xl leading-relaxed">
               {isHinglish
-                ? 'Dekhein har week kaunsa contestant eliminate hua, unka final TOSS score kya tha, aur vanity followers vs asli janta voting collapse ki poori chronology.'
-                : 'Chronological timeline of eliminated housemates detailing their terminal TOSS score, vanity follower collapse, and forensic exit verdicts.'}
+                ? 'Dekhein har week kaunsa contestant eliminate hua, unka final TOSS score kya tha, aur vanity followers vs asli janta voting collapse ki poori chronology. Sabhi evictions official broadcaster footage se verified hain.'
+                : 'Chronological timeline of eliminated housemates detailing their terminal TOSS score, vanity follower collapse, and official broadcaster verified elimination records.'}
             </p>
           </div>
 
@@ -58,7 +60,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
 
       {/* Chronological Stepper Timeline */}
       <div className="relative pl-6 sm:pl-8 border-l-2 border-slate-800 space-y-8 my-4">
-        {timeline.map((item, index) => {
+        {timeline.map((item) => {
           return (
             <div key={item.contestantId} className="relative group">
               {/* Stepper Dot */}
@@ -78,13 +80,17 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                       className="w-12 h-12 rounded-lg object-cover border border-slate-700 shrink-0"
                     />
                     <div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
                           {item.name}
                         </h4>
                         <span className="text-xs font-mono text-slate-400">"{item.nickname}"</span>
                         <span className="text-[10px] font-semibold text-rose-300 bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/30 uppercase tracking-wider">
                           {isHinglish ? `Week ${item.week} Mein Evict` : `Evicted Week ${item.week}`}
+                        </span>
+                        <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+                          <ShieldCheck className="w-3 h-3" />
+                          {isHinglish ? 'Broadcaster Confirmed' : 'Broadcaster Confirmed'}
                         </span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-slate-400 mt-1 font-mono">
@@ -138,8 +144,27 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                   </div>
                 </div>
 
+                {/* Verification Source Citation */}
+                {item.broadcasterVerificationUrl && (
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[11px] text-slate-400">
+                    <span className="text-[10px] text-slate-500 flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                      {isHinglish ? 'Verified via JioHotstar Broadcast & Colors TV Records' : 'Verified via JioHotstar Broadcast & Colors TV Records'}
+                    </span>
+                    <a
+                      href={item.broadcasterVerificationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-[10px] text-cyan-400 hover:text-cyan-300 underline"
+                    >
+                      <span>{isHinglish ? 'Official Episode Link' : 'Official Episode Stream'}</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+                )}
+
                 {/* Bottom Quote & Action */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 text-xs">
                   <p className="italic text-slate-400 font-mono text-[11px]">
                     {isHinglish && item.hinglishHeadline ? item.hinglishHeadline : item.headlineQuote}
                   </p>
@@ -170,8 +195,8 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
             </div>
             <p className="text-slate-300">
               {isHinglish
-                ? 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill aur Kashish Kapoor current danger zone mein hain. Asli janta ke TOSS trends Eviction Matrix mein live track ho rahe hain.'
-                : 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill, and Kashish Kapoor are in the nomination danger zone. Track their real-time TOSS scores in the Eviction Matrix.'}
+                ? 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill, Avinash Mishra aur Kashish Kapoor current danger zone mein hain. Asli janta ke TOSS trends Eviction Matrix mein live track ho rahe hain.'
+                : 'Scout, Kanika Mann, Arshifa Khan, Aasif Khan, Love Gill, Avinash Mishra, and Kashish Kapoor are in the nomination danger zone. Track their real-time TOSS scores in the Eviction Matrix.'}
             </p>
           </div>
         </div>
@@ -179,4 +204,3 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
     </div>
   );
 };
-

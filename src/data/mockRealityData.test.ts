@@ -12,7 +12,7 @@ import {
 
 describe('Reality TV Data Grounding - Integrity & Schema Edge Tests', () => {
   it('validates all contestants have unique IDs, valid names, and valid platform metrics', () => {
-    assert.equal(INITIAL_CONTESTANTS.length, 14, 'Should have exactly 14 contestants loaded (10 active, 4 evicted)');
+    assert.equal(INITIAL_CONTESTANTS.length, 18, 'Should have exactly 18 contestants loaded (14 active, 4 evicted)');
     const ids = new Set<string>();
 
     for (const c of INITIAL_CONTESTANTS) {
@@ -25,6 +25,12 @@ describe('Reality TV Data Grounding - Integrity & Schema Edge Tests', () => {
       assert.ok(['Frontrunner', 'Challenger', 'Underdog', 'Wildcard', 'Polarizing'].includes(c.role));
       assert.ok(['Active', 'Evicted'].includes(c.status));
       assert.ok(typeof c.isNominated === 'boolean');
+
+      // Broadcaster verification & metadata
+      assert.equal(c.verificationState, 'Broadcaster Verified', `${c.id} must be Broadcaster Verified`);
+      assert.ok(c.statusVerifiedAt, `${c.id} must have statusVerifiedAt timestamp`);
+      assert.ok(Array.isArray(c.profession) && c.profession.length > 0, `${c.id} must have professions`);
+      assert.ok(Array.isArray(c.primarySourceUrls) && c.primarySourceUrls.length > 0, `${c.id} must have primary sources`);
 
       // Dossier fields
       assert.ok(c.pastDetails && c.pastDetails.length > 20, `${c.id} must have rich past details`);
@@ -89,6 +95,8 @@ describe('Reality TV Data Grounding - Integrity & Schema Edge Tests', () => {
       assert.ok(item.headlineQuote.length > 5);
       assert.ok(item.hinglishReason && item.hinglishReason.length > 15);
       assert.ok(item.hinglishHeadline && item.hinglishHeadline.length > 5);
+      assert.ok(item.broadcasterVerificationUrl && item.broadcasterVerificationUrl.startsWith('http'));
+      assert.equal(item.verificationState, 'Broadcaster Confirmed');
     }
   });
 

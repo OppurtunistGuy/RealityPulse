@@ -43,15 +43,16 @@ app.post('/api/grounding-search', async (req, res) => {
   const ai = getGenAIClient();
   if (ai) {
     try {
-      const systemPrompt = `You are an elite Reality TV Intelligence & PR Astroturfing Detection Analyst.
-Your task is to analyze real-world audience discourse, recent news, official voting trends, and social media reactions for reality TV shows (such as ${showName}).
-Always search for the latest public reception, voting nominations, controversies, PR campaigns, and audience sentiment.
-Return a structured, analytical breakdown including:
-1. Executive Summary of the latest voting cycle and audience chatter.
-2. Contestants currently nominated or in the spotlight.
+      const systemPrompt = `You are a Bigg Boss Hindi Season 20 evidence-based research agent and PR Astroturfing Detection Analyst.
+Prioritize official JioStar/JioHotstar/Colors sources for show events and contestant status. Use established publishers (The Indian Express, India Today, Hindustan Times, Pinkvilla) for corroboration, authorized APIs for careers and social discussions, and community sites for leads only.
+Never invent episode details, contestants, vote counts, career claims, or controversies. Every factual claim must retain a source URL, event date, publication date, retrieval time, and verification state. When sources disagree, display the conflict and mark the outcome unresolved.
+Keep audience sentiment and prediction models clearly separate from official show results (eliminations/nominations).
+Analyze real-world audience discourse, recent news, official voting trends, and social media reactions for ${showName}.
+Return a structured breakdown with headings and bullet points:
+1. Executive Summary of the latest voting cycle and audience chatter (grounded with URLs).
+2. Contestants currently nominated or in the spotlight, noting verification status.
 3. Astroturfing / PR campaign indicators observed (repetitive hashtags, coordinated defense, sudden sentiment spikes).
-4. Eviction risk forecast separating casual viewer sentiment (YouTube/mass polls) from vocal PR bubbles (X/Instagram fan clubs).
-Format your response clearly with headings and bullet points.`;
+4. Eviction risk forecast separating casual viewer sentiment (YouTube/mass polls) from vocal PR bubbles (X/Instagram fan clubs).`;
 
       const response = await ai.models.generateContent({
         model: GEMINI_MODEL,

@@ -22,6 +22,37 @@ export interface ContestantHinglish {
   strongestMove: string;
 }
 
+export type ControversyClassification =
+  | 'On-Screen House Event'
+  | 'External Allegation'
+  | 'Direct Quote'
+  | 'Official Broadcaster Penalty'
+  | 'Public Denial';
+
+export interface StructuredControversy {
+  title: string;
+  classification: ControversyClassification;
+  detail: string;
+  sourceUrl?: string;
+  sourceName?: string;
+  verifiedAt?: string;
+  verificationStatus: 'Verified by Broadcaster' | 'Corroborated by News' | 'Unconfirmed Claim';
+}
+
+export interface VerifiedSocialHandle {
+  platform: 'Instagram' | 'X (Twitter)' | 'YouTube' | 'Threads';
+  handle: string;
+  url: string;
+  followerCount?: string;
+}
+
+export interface SourceCitation {
+  label: string;
+  url: string;
+  tier: 'Tier 1: Broadcaster' | 'Tier 2: API / Credits' | 'Tier 3: News' | 'Tier 4: Community';
+  verifiedAt: string;
+}
+
 export interface Contestant {
   id: string;
   name: string;
@@ -58,6 +89,16 @@ export interface Contestant {
   houseGameplay?: string;           // Strategy in BB house (alliances, habits, conflicts)
   strongestMove?: string;           // Defining strongest move / task performance in house
   hinglishProfile?: ContestantHinglish;
+
+  // Verification & Provenance (Bigg Boss 20 Trusted Sources Guide)
+  profession?: string[];
+  careerCredits?: string[];
+  verifiedSocialHandles?: VerifiedSocialHandle[];
+  statusVerifiedAt?: string;
+  statusVerificationSource?: string;
+  verificationState?: 'Broadcaster Verified' | 'Corroborated' | 'Unconfirmed';
+  primarySourceUrls?: SourceCitation[];
+  structuredControversies?: StructuredControversy[];
 }
 
 export interface EvictedContestantTimelineItem {
@@ -76,6 +117,11 @@ export interface EvictedContestantTimelineItem {
   headlineQuote: string;
   hinglishReason?: string;
   hinglishHeadline?: string;
+
+  // Broadcaster Verification (Bigg Boss 20 Trusted Sources Guide)
+  broadcasterVerificationUrl?: string;
+  broadcasterVerifiedAt?: string;
+  verificationState?: 'Broadcaster Confirmed' | 'Corroborated' | 'Unconfirmed';
 }
 
 export interface AstroturfCluster {

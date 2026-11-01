@@ -13,7 +13,12 @@ import {
   Swords,
   Trophy,
   Award,
-  Zap
+  Zap,
+  ShieldCheck,
+  ExternalLink,
+  Link2,
+  CheckCircle2,
+  FileCheck2
 } from 'lucide-react';
 import { Contestant, Language } from '../types';
 import { Sparkline } from './Sparkline';
@@ -40,22 +45,40 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
   const gameplayText = isHinglish && hinglish?.houseGameplay ? hinglish.houseGameplay : contestant.houseGameplay;
   const strongestText = isHinglish && hinglish?.strongestMove ? hinglish.strongestMove : contestant.strongestMove;
 
+  const getClassificationBadgeClass = (classification: string) => {
+    switch (classification) {
+      case 'On-Screen House Event':
+        return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
+      case 'Official Broadcaster Penalty':
+        return 'bg-rose-500/20 text-rose-300 border-rose-500/40';
+      case 'External Allegation':
+        return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+      case 'Direct Quote':
+        return 'bg-purple-500/20 text-purple-300 border-purple-500/40';
+      case 'Public Denial':
+        return 'bg-blue-500/20 text-blue-300 border-blue-500/40';
+      default:
+        return 'bg-slate-700 text-slate-300 border-slate-600';
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-3xl bg-[#0f172a] border border-slate-700/80 rounded-xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#131d33]">
-          <div className="flex items-center gap-3">
+        <div className="flex items-start justify-between px-6 py-4 border-b border-slate-800 bg-[#131d33] gap-4">
+          <div className="flex items-start gap-4">
             <img
               src={contestant.avatar}
               alt={contestant.name}
               referrerPolicy="no-referrer"
-              className="w-14 h-14 rounded-lg object-cover border border-slate-700 shrink-0"
+              className="w-16 h-16 rounded-lg object-cover border border-slate-700 shrink-0 mt-0.5"
             />
-            <div>
+            <div className="space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-lg font-bold text-white tracking-tight">{contestant.name}</h3>
                 <span className="text-xs font-mono text-slate-400">"{contestant.nickname}"</span>
+                
                 {contestant.status === 'Evicted' ? (
                   <span className="text-[11px] font-semibold text-rose-300 bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/30">
                     {isHinglish ? `Week ${contestant.evictionWeek ?? ''} Mein Evicted` : `Evicted (Week ${contestant.evictionWeek ?? ''})`}
@@ -69,11 +92,45 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
                     {isHinglish ? 'Surakshit (Safe)' : 'Safe'}
                   </span>
                 )}
+
+                {/* Broadcaster Verified Pill */}
+                <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  {isHinglish ? 'Broadcaster Verified' : 'Broadcaster Verified'}
+                </span>
               </div>
-              <p className="text-xs text-slate-400 mt-1">
-                {contestant.role} · {isHinglish ? 'Broadcast Edit' : 'Edit'}: {contestant.recentNarrativeEdit} ·{' '}
-                {isHinglish ? 'Trajectory' : 'Trajectory'}: {contestant.votingTrajectory}
-              </p>
+
+              {/* Profession Tags */}
+              {contestant.profession && contestant.profession.length > 0 && (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {contestant.profession.map((prof, idx) => (
+                    <span key={idx} className="text-[10px] font-medium text-slate-300 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
+                      {prof}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Verified Social Handles */}
+              {contestant.verifiedSocialHandles && contestant.verifiedSocialHandles.length > 0 && (
+                <div className="flex items-center gap-3 pt-0.5 text-xs text-slate-400">
+                  {contestant.verifiedSocialHandles.map((handle, idx) => (
+                    <a
+                      key={idx}
+                      href={handle.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-[11px] text-cyan-400 hover:text-cyan-300 hover:underline"
+                    >
+                      {handle.platform === 'Instagram' && <Instagram className="w-3 h-3 text-pink-400" />}
+                      {handle.platform === 'YouTube' && <Youtube className="w-3 h-3 text-red-400" />}
+                      {handle.platform === 'X (Twitter)' && <Twitter className="w-3 h-3 text-sky-400" />}
+                      <span>{handle.handle}</span>
+                      {handle.followerCount && <span className="text-slate-500 font-mono">({handle.followerCount})</span>}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <button
@@ -192,7 +249,7 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
             <p className="text-xs text-amber-100/90 leading-relaxed font-sans">{strongestText}</p>
           </div>
 
-          {/* SECTION 3: Past Details & Origins */}
+          {/* SECTION 3: Past Details & Career Background */}
           <div className="p-4 bg-[#141d30] border border-slate-800 rounded-xl space-y-2">
             <div className="flex items-center gap-2 text-slate-300">
               <History className="w-4 h-4 text-indigo-400" />
@@ -201,25 +258,121 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
               </h4>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed font-sans">{pastText}</p>
+            {contestant.careerCredits && contestant.careerCredits.length > 0 && (
+              <div className="pt-2 border-t border-slate-800/80">
+                <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold mb-1">
+                  {isHinglish ? 'Verified Career Credits:' : 'Verified Career Credits:'}
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {contestant.careerCredits.map((credit, idx) => (
+                    <span key={idx} className="text-[10px] font-medium text-indigo-300 bg-indigo-950/50 border border-indigo-500/30 px-2 py-0.5 rounded">
+                      {credit}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* SECTION 4: Past Controversies & PR Baggage */}
-          {controversiesList && controversiesList.length > 0 && (
-            <div className="p-4 bg-rose-950/20 border border-rose-500/20 rounded-xl space-y-2.5">
-              <div className="flex items-center gap-2 text-rose-300">
-                <Flame className="w-4 h-4 text-rose-400" />
-                <h4 className="text-xs font-bold uppercase tracking-wider">
-                  {isHinglish ? 'Past Controversies & Viral Lafde' : 'Past Controversies & Viral Baggage'}
-                </h4>
+          {((contestant.structuredControversies && contestant.structuredControversies.length > 0) || (controversiesList && controversiesList.length > 0)) && (
+            <div className="p-4 bg-rose-950/20 border border-rose-500/20 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-rose-300">
+                  <Flame className="w-4 h-4 text-rose-400" />
+                  <h4 className="text-xs font-bold uppercase tracking-wider">
+                    {isHinglish ? 'Past Controversies & Evidence Classification' : 'Controversy Timeline & Evidence Classification'}
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-slate-400">
+                  {isHinglish ? 'Verified vs Allegation' : 'Verified vs Allegation'}
+                </span>
               </div>
-              <ul className="space-y-1.5">
-                {controversiesList.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
-                    <span>{item}</span>
-                  </li>
+
+              {contestant.structuredControversies && contestant.structuredControversies.length > 0 ? (
+                <div className="space-y-2.5">
+                  {contestant.structuredControversies.map((sc, idx) => (
+                    <div key={idx} className="p-3 bg-[#0d1527] border border-slate-800 rounded-lg space-y-1.5">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded border ${getClassificationBadgeClass(sc.classification)}`}>
+                            {sc.classification}
+                          </span>
+                          <span className="text-xs font-bold text-white">{sc.title}</span>
+                        </div>
+                        <span className="text-[10px] font-medium text-emerald-400 bg-emerald-950/50 border border-emerald-500/20 px-1.5 py-0.2 rounded">
+                          {sc.verificationStatus}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 font-sans leading-relaxed">{sc.detail}</p>
+                      {sc.sourceUrl && (
+                        <div className="flex items-center justify-between pt-1 text-[11px] text-slate-400">
+                          <span className="text-[10px] text-slate-500">Source: {sc.sourceName}</span>
+                          <a
+                            href={sc.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-[10px] text-cyan-400 hover:text-cyan-300 underline"
+                          >
+                            <span>Verify Source</span>
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <ul className="space-y-1.5">
+                  {controversiesList?.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {/* SECTION 5: Verified Primary Sources & Provenance */}
+          {contestant.primarySourceUrls && contestant.primarySourceUrls.length > 0 && (
+            <div className="p-4 bg-[#11192b] border border-slate-800 rounded-xl space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-cyan-300">
+                  <FileCheck2 className="w-4 h-4 text-cyan-400" />
+                  <h4 className="text-xs font-bold uppercase tracking-wider">
+                    {isHinglish ? 'Official Sources & Broadcaster Provenance' : 'Verified Primary Sources & Broadcaster Provenance'}
+                  </h4>
+                </div>
+                <span className="text-[10px] text-emerald-400 font-medium">
+                  {contestant.statusVerifiedAt ? `Last Checked: ${contestant.statusVerifiedAt.slice(0, 10)}` : 'Verified'}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {contestant.primarySourceUrls.map((source, idx) => (
+                  <a
+                    key={idx}
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 bg-[#090f1d] hover:bg-[#0c152a] border border-slate-800 hover:border-cyan-500/40 rounded-lg transition-colors group flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="text-[9px] font-semibold text-cyan-400 uppercase tracking-wider block">
+                        {source.tier}
+                      </span>
+                      <span className="text-xs text-slate-200 font-medium group-hover:text-cyan-300 line-clamp-2 mt-0.5">
+                        {source.label}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-800/80 text-[10px] text-slate-500">
+                      <span>Live Reference</span>
+                      <ExternalLink className="w-3 h-3 text-cyan-400" />
+                    </div>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
@@ -386,6 +539,16 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
               </div>
             </div>
           )}
+
+          {/* Broadcaster Authority Disclaimer Notice */}
+          <div className="p-3 bg-[#0a101d] border border-slate-800/80 rounded-lg text-[10px] text-slate-400 leading-relaxed font-mono">
+            <span className="text-cyan-400 font-bold block mb-0.5">
+              {isHinglish ? '⚠ Broadcaster Authority & Evidence Policy' : '⚠ Broadcaster Authority & Evidence Policy'}
+            </span>
+            {isHinglish
+              ? 'House status, task outcomes, aur evictions JioHotstar aur Colors TV ke official episodes se verified hain. TOSS score aur PR inflation independent algorithmic models hain, ye official voting count nahi hai.'
+              : 'House status, nominations, and eviction results are verified directly via JioHotstar and Colors TV broadcast streams. TOSS metrics and PR deltas are independent analytical intelligence and do not represent broadcaster voting totals.'}
+          </div>
         </div>
 
         {/* Footer */}

@@ -1,0 +1,107 @@
+# BIGG BOSS 20 — REAL-TIME CONTESTANT INTELLIGENCE AGENT
+
+## Objective
+
+Build and maintain a verified, continuously updated intelligence database for Bigg Boss Hindi Season 20 (2026).
+
+**Research all 18 currently identified contestants**, including active, eliminated, wildcard and re-entered participants. Do not assume that a fan website's roster is authoritative.
+
+## Core requirements
+
+### 1. Verify the contestant roster
+- Establish the complete contestant list from the premiere onward.
+- Determine who is currently inside the house.
+- Record evictions, wildcards, re-entries and changes to contestant status.
+- Cross-check official JioHotstar and Colors TV content against established entertainment journalism.
+- Attach sources and last-verified timestamps to every status.
+
+### 2. Build individual contestant dossiers
+
+For each contestant, collect:
+
+- Full legal or publicly documented name and stage name
+- Profession, career history and notable achievements
+- Publicly documented age, hometown and background
+- Television, film, music, sports or digital career
+- Previous reality-show appearances and outcomes
+- Verified social media handles and official photographs
+- Significant pre-show controversies, with evidence
+- Public statements and responses to controversies
+
+### 3. Track Bigg Boss performance
+
+Maintain a chronological episode-by-episode record of:
+
+- Task participation, wins and failures
+- Captaincy nominations and victories
+- Weekly nominations, immunity and eliminations
+- Rule violations and official punishments
+- Arguments, physical confrontations and resolutions
+- Alliances, friendships, rivalries and betrayals
+- Weekend Ka Vaar feedback
+- Positive and negative contributions to the game
+
+Do not substitute social-media popularity for actual task performance.
+
+### 4. Track public sentiment
+
+Collect publicly accessible reactions from:
+
+- Instagram comments and official posts
+- YouTube episode discussions and comments
+- X posts and discussion threads
+- Reddit discussions
+- Facebook public posts
+- Established entertainment news publications
+
+Classify sentiment as positive, negative, neutral or mixed. Capture the volume, source, timestamp and representative themes.
+
+Identify bots, coordinated campaigns, duplicated comments and promotional content where possible.
+
+Never represent an unscientific fan poll as an official voting result.
+
+### 5. Evidence hierarchy
+
+**Primary:** Official episode footage, live feeds, Colors TV and JioHotstar announcements, verified contestant statements.
+
+**Secondary:** India Today, The Indian Express, Hindustan Times, Pinkvilla, Times of India and other established outlets.
+
+**Supplementary:** BiggBoss Pulse, fan communities, Reddit, social-media discussions and entertainment blogs.
+
+BiggBoss Pulse may be used as a reference for features and discovery, but not as the sole source of truth.
+
+### 6. Data quality rules
+
+- No fabricated statistics, votes, rankings or controversies.
+- Distinguish allegations from verified incidents.
+- Preserve conflicting reports and their sources.
+- Record publication date separately from event date.
+- Never treat engagement as an official vote count.
+- Mark unverifiable fields as `unknown`.
+- Keep source URLs and evidence timestamps.
+- Do not use AI-generated contestant images as documentary evidence.
+
+### 7. Refresh frequency
+
+- Official roster and eviction status: after each episode and official announcement.
+- Episode performance: after each broadcast.
+- Social sentiment: every 3–6 hours where platform access permits.
+- Career and biography: when reliable new information appears.
+- Controversies: when new evidence, responses or resolutions emerge.
+
+### 8. Required outputs
+
+1. Current contestant roster
+2. Individual career and biography dossiers
+3. Verified controversy timeline
+4. Episode-by-episode performance history
+5. Contestant relationships and rivalry network
+6. Weekly public sentiment trends
+7. Source reliability and conflict report
+8. Structured JSON/database records with update timestamps
+
+## Acceptance criteria
+
+Every displayed fact must be traceable to evidence. The system must be able to explain why it considers a contestant active, eliminated, controversial, popular or successful in a task.
+
+**Priority: accuracy, evidence and freshness over speed or sensationalism.**

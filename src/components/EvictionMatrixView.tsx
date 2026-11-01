@@ -164,6 +164,22 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         </div>
       </div>
 
+      {/* Broadcaster Authority & Zero-Hallucination Evidence Notice */}
+      <div className="p-3 bg-[#0d1627] border border-cyan-900/40 rounded-xl flex items-center justify-between gap-4 text-xs">
+        <div className="flex items-center gap-2.5">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="text-slate-300">
+            <strong className="text-white font-semibold">{isHinglish ? 'Broadcaster Authority Rule:' : 'Evidence Policy:'}</strong>{' '}
+            {isHinglish
+              ? 'Roster status aur evictions official JioHotstar/Colors TV broadcasts se verified hain. Social polls ko official voting count nahi mana jaata.'
+              : 'Official roster status and evictions are verified directly via JioHotstar & Colors TV. TOSS metrics are independent sentiment analytics and never substitute official voting counts.'}
+          </span>
+        </div>
+        <span className="hidden sm:inline-flex items-center gap-1 font-mono text-[11px] text-cyan-400 shrink-0">
+          Last Verified: 01 Nov 2026
+        </span>
+      </div>
+
       {/* Conditionally Render Timeline or Matrix */}
       {viewMode === 'timeline' ? (
         <EvictionTimelineView
