@@ -39,23 +39,23 @@ class DatabaseService {
   private memoryContestants: Contestant[] = [...INITIAL_CONTESTANTS];
   private lastCapturedAt: string = new Date().toISOString();
 
-  constructor() {
+  private getSql(): NeonQueryFunction<false, false> | null {
+    if (this.sql) return this.sql;
     const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
-      if (databaseUrl) {
-        try {
-          this.sql = neon(databaseUrl);
-          console.log('Connected to Neon PostgreSQL using DATABASE_URL.');
-        } catch (err) {
-          console.warn('Failed to initialize Neon client, using resilient in-memory store:', err);
-        }
-      } else {
-        console.log('Neon DATABASE_URL not set; running with active resilient seed store.');
+    if (databaseUrl) {
+      try {
+        this.sql = neon(databaseUrl);
+        console.log('Connected to Neon PostgreSQL using DATABASE_URL.');
+      } catch (err) {
+        console.warn('Failed to initialize Neon client, using resilient in-memory store:', err);
       }
     }
+    return this.sql;
+  }
 
   public isUsingNeon(): boolean {
-    return this.sql !== null;
+    return this.getSql() !== null;
   }
 
   public async getLatestContestants(): Promise<{
@@ -65,13 +65,14 @@ class DatabaseService {
     source: 'neon' | 'resilient_store';
   }> {
     const timeline = calculateShowTimeline();
+    const sqlClient = this.getSql();
 
-      if (this.sql) {
-        try {
-          const dbContestants = (await this.sql`SELECT * FROM contestants ORDER BY id ASC`) as any[];
+    if (sqlClient) {
+      try {
+        const dbContestants = (await sqlClient`SELECT * FROM contestants ORDER BY id ASC`) as any[];
 
-            if (dbContestants && dbContestants.length > 0) {
-              const dbSnapshots = (await this.sql`SELECT * FROM contestant_snapshots ORDER BY captured_at DESC`) as any[];
+        if (dbContestants && dbContestants.length > 0) {
+          const dbSnapshots = (await sqlClient`SELECT * FROM contestant_snapshots ORDER BY captured_at DESC`) as any[];
 
               const snapshotMap = new Map();
               if (dbSnapshots) {
