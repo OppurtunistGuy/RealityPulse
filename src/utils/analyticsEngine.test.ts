@@ -167,7 +167,7 @@ describe('Analytics Engine - calculateTOSS (Edge-to-Edge Hard Tests)', () => {
     });
     const result = calculateTOSS(lowToss);
     assert.equal(result.riskTier, 'High Danger');
-    assert.ok(result.evictionProbability >= 70 && result.evictionProbability <= 95);
+    assert.ok(result.evictionProbability !== null && result.evictionProbability >= 70 && result.evictionProbability <= 95);
   });
 
   it('triggers Vocal Bubble / At Risk tier when PR infiltration >= 48% and silentMajority < 45%', () => {
@@ -185,7 +185,7 @@ describe('Analytics Engine - calculateTOSS (Edge-to-Edge Hard Tests)', () => {
     });
     const result = calculateTOSS(vocalBubble);
     assert.equal(result.riskTier, 'Vocal Bubble / At Risk');
-    assert.ok(result.evictionProbability >= 50 && result.evictionProbability <= 75);
+    assert.ok(result.evictionProbability !== null && result.evictionProbability >= 50 && result.evictionProbability <= 75);
   });
 
   it('handles custom platform weight configurations (e.g. YouTube heavy vs Twitter heavy)', () => {

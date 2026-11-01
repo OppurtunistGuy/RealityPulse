@@ -12,7 +12,8 @@ import {
   Shield,
   AlertOctagon,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  TrendingDown
 } from 'lucide-react';
 import { Contestant, PlatformWeightConfig, Language } from '../types';
 import { calculateTOSS } from '../utils/analyticsEngine';
@@ -89,7 +90,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         return (
           c.name.toLowerCase().includes(q) ||
           c.nickname.toLowerCase().includes(q) ||
-          c.role.toLowerCase().includes(q)
+          (c.role ? c.role.toLowerCase().includes(q) : false)
         );
       }
       return true;
@@ -107,8 +108,8 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         valA = a.calculatedPrDelta;
         valB = b.calculatedPrDelta;
       } else if (sortField === 'evictionProbability') {
-        valA = a.calculatedEvictionProbability;
-        valB = b.calculatedEvictionProbability;
+        valA = a.calculatedEvictionProbability ?? -1;
+        valB = b.calculatedEvictionProbability ?? -1;
       } else if (sortField === 'trend') {
         const deltaA = (a.tossTrend7d?.[a.tossTrend7d.length - 1] ?? 0) - (a.tossTrend7d?.[0] ?? 0);
         const deltaB = (b.tossTrend7d?.[b.tossTrend7d.length - 1] ?? 0) - (b.tossTrend7d?.[0] ?? 0);
@@ -122,7 +123,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
   const nominatedList = activeContestants.filter((c) => c.isNominated);
   const highestPrInfiltration = [...activeContestants].sort((a, b) => b.prInfiltrationRate - a.prInfiltrationRate)[0];
   const organicFavorite = [...activeContestants].sort((a, b) => b.calculatedToss - a.calculatedToss)[0];
-  const mostVulnerable = [...nominatedList].sort((a, b) => b.calculatedEvictionProbability - a.calculatedEvictionProbability)[0];
+  const mostVulnerable = [...nominatedList].sort((a, b) => (b.calculatedEvictionProbability ?? 0) - (a.calculatedEvictionProbability ?? 0))[0];
 
   const toggleSort = (field: typeof sortField) => {
     if (sortField === field) {
