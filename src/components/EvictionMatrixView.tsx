@@ -18,6 +18,8 @@ import { calculateTOSS } from '../utils/analyticsEngine';
 import { Sparkline } from './Sparkline';
 import { EvictionTimelineView } from './EvictionTimelineView';
 import { EVICTED_CONTESTANTS_TIMELINE } from '../data/mockRealityData';
+import { BB20_NOMINATION_CONFLICTS } from '../data/bb20ContestantsStatic';
+import { calculateShowTimeline } from '../data/timelineConfig';
 
 interface EvictionMatrixViewProps {
   contestants: Contestant[];
@@ -43,8 +45,8 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
   onOpenSources,
   isNominationOnly = false,
   language,
-  currentWeek = 8,
-  currentDay = 52,
+  currentWeek = calculateShowTimeline().currentWeek,
+  currentDay = calculateShowTimeline().currentDay,
   capturedAt,
   isHistorical = false,
   selectedWeek,
@@ -171,7 +173,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
     <div className="space-y-6">
       {/* Top Sub-View Switcher: Matrix vs Eviction Timeline */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-[#0c1322] border border-slate-800 rounded-xl">
-        <div className="flex items-center gap-2 p-1 bg-[#090f1c] border border-slate-800 rounded-lg">
+        <div className="flex flex-wrap items-center gap-2 p-1 bg-[#090f1c] border border-slate-800 rounded-lg">
           <button
             onClick={() => setViewMode('matrix')}
             className={`min-h-[44px] flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold transition-all ${
@@ -180,11 +182,14 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Users className="w-4 h-4 text-cyan-400" />
-            <span>
+            <Users className="w-4 h-4 text-cyan-400 shrink-0" />
+            <span className="hidden sm:inline">
               {isHistorical
                 ? `Active Housemates (Week ${effectiveWeek} Historical)`
                 : `Active Housemates (Week ${effectiveWeek} Live)`}
+            </span>
+            <span className="sm:hidden">
+              Active ({effectiveWeek})
             </span>
             <span className="px-2 py-0.5 text-xs bg-slate-800 rounded text-slate-300 font-mono font-bold">
               {activeContestants.length}
@@ -199,10 +204,11 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Clock className="w-4 h-4 text-rose-400" />
-            <span>
+            <Clock className="w-4 h-4 text-rose-400 shrink-0" />
+            <span className="hidden sm:inline">
               {isHinglish ? 'Eviction Timeline (History)' : 'Eviction Timeline'}
             </span>
+            <span className="sm:hidden">Timeline</span>
             <span className="px-2 py-0.5 text-xs bg-rose-950/60 border border-rose-500/30 rounded text-rose-300 font-mono font-bold">
               {EVICTED_CONTESTANTS_TIMELINE.length}
             </span>
@@ -271,8 +277,93 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
           </span>
         </div>
         <span className="font-mono text-xs text-cyan-400 shrink-0">
-          Last Verified: 01 Nov 2026 · Day 52
+          Last Verified: 01 Nov 2026 · Day {effectiveDay}
         </span>
+      </div>
+
+      {/* Week 8 / 9 Nomination Discrepancy & Evidence Card (Rule 4: Show Both Sources) */}
+      <div className="p-4 bg-[#0a1222] border border-cyan-500/30 rounded-xl space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+            <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight">
+              Nomination Intel: Conflicting Reports Disclosed
+            </h4>
+            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              Source Disagreement
+            </span>
+          </div>
+          <span className="text-xs font-mono text-slate-400">
+            [Official: Pending Broadcaster Webcast]
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-300 leading-relaxed">
+          {BB20_NOMINATION_CONFLICTS.explanation}
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+          {/* Source 1: FilmiBeat */}
+          <div className="p-3 bg-[#0f172a] border border-slate-800 rounded-lg space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-slate-200">
+                Source A: FilmiBeat (6 Nominees)
+              </span>
+              <span className="font-mono text-xs px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">
+                [Reported: FilmiBeat]
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {BB20_NOMINATION_CONFLICTS.sources[0].nominees.map((nom) => (
+                <span
+                  key={nom}
+                  className="px-2 py-0.5 text-[11px] font-medium bg-rose-950/60 border border-rose-500/30 text-rose-300 rounded"
+                >
+                  {nom}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Source 2: Deccan Chronicle */}
+          <div className="p-3 bg-[#0f172a] border border-slate-800 rounded-lg space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-slate-200">
+                Source B: Deccan Chronicle (9 Nominees)
+              </span>
+              <span className="font-mono text-xs px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300">
+                [Reported: Deccan Chronicle]
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {BB20_NOMINATION_CONFLICTS.sources[1].nominees.map((nom) => {
+                const isDisputed = BB20_NOMINATION_CONFLICTS.disputedNominees.includes(nom);
+                return (
+                  <span
+                    key={nom}
+                    className={`px-2 py-0.5 text-[11px] font-medium rounded border ${
+                      isDisputed
+                        ? 'bg-amber-950/60 border-amber-500/40 text-amber-300 font-semibold'
+                        : 'bg-rose-950/60 border-rose-500/30 text-rose-300'
+                    }`}
+                    title={isDisputed ? 'Disputed nominee (absent from FilmiBeat)' : 'Consensus nominee'}
+                  >
+                    {nom} {isDisputed && '⚠️ [Disputed]'}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] text-slate-400 pt-1 border-t border-slate-800/60">
+          <span>
+            Exempt / Safe per both: {BB20_NOMINATION_CONFLICTS.exemptHousemates.join(', ')}
+          </span>
+          <span className="font-mono text-cyan-400">
+            Colors TV/JioHotstar direct portal restricted
+          </span>
+        </div>
       </div>
 
       {/* Conditionally Render Timeline or Matrix */}
@@ -815,17 +906,33 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                           {isEvicted ? (
                             <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-400 bg-slate-800 border border-slate-700 px-2 py-0.5 rounded-md">
                               Evicted (Wk {c.evictionWeek})
-                              <span className="text-[10px] text-slate-500 font-mono">[Confirmed]</span>
+                              <span className="text-[10px] text-slate-400 font-mono">
+                                [{c.statusProvenance === 'official' ? 'Official' : 'Reported'}]
+                              </span>
+                            </span>
+                          ) : c.nominationProvenance === 'disputed' ? (
+                            <span
+                              className="inline-flex items-center gap-1 text-xs font-bold text-amber-300 bg-amber-500/15 border border-amber-500/40 px-2 py-0.5 rounded-md"
+                              title={c.nominationNote}
+                            >
+                              Disputed
+                              <span className="text-[10px] text-amber-400 font-mono">[Reported: DC]</span>
                             </span>
                           ) : c.isNominated ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-300 bg-rose-500/15 border border-rose-500/40 px-2 py-0.5 rounded-md">
+                            <span
+                              className="inline-flex items-center gap-1 text-xs font-bold text-rose-300 bg-rose-500/15 border border-rose-500/40 px-2 py-0.5 rounded-md"
+                              title={c.nominationNote}
+                            >
                               Nominated
-                              <span className="text-[10px] text-rose-400 font-mono">[{c.nominationProvenance || 'Reported'}]</span>
+                              <span className="text-[10px] text-rose-400 font-mono">[Reported]</span>
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-md">
+                            <span
+                              className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-md"
+                              title={c.nominationNote}
+                            >
                               Exempt
-                              <span className="text-[10px] text-emerald-400 font-mono">[{c.statusProvenance || 'Official'}]</span>
+                              <span className="text-[10px] text-emerald-400 font-mono">[{c.statusProvenance === 'official' ? 'Official' : 'Reported'}]</span>
                             </span>
                           )}
                         </td>

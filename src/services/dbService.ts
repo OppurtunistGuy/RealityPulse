@@ -1,38 +1,9 @@
 import { neon, NeonQueryFunction } from '@neondatabase/serverless';
 import { Contestant, EvictedContestantTimelineItem } from '../types.js';
 import { BB20_LOCKED_CONTESTANTS, BB20_LOCKED_EVICTED_TIMELINE } from '../data/bb20ContestantsStatic.js';
+import { SHOW_PREMIERE_DATE, calculateShowTimeline } from '../data/timelineConfig.js';
 
-// Show Premiere Date: Bigg Boss 20 (Tathas-two) premiered September 11, 2026 IST
-// Yields Day 52 and Week 8 on November 1, 2026 IST
-export const SHOW_PREMIERE_DATE = new Date('2026-09-11T00:00:00+05:30');
-
-export function calculateShowTimeline(referenceDate: Date = new Date()): {
-  currentDay: number;
-  currentWeek: number;
-  premiereDate: string;
-  daysRemaining: number;
-} {
-  // Calendar day calculation in Asia/Kolkata (IST) timezone
-  const getISTMidnight = (d: Date) => {
-    const istMs = d.getTime() + (5.5 * 60 * 60 * 1000);
-    const istDate = new Date(istMs);
-    return Date.UTC(istDate.getUTCFullYear(), istDate.getUTCMonth(), istDate.getUTCDate());
-  };
-
-  const premiereMidnight = getISTMidnight(SHOW_PREMIERE_DATE);
-  const refMidnight = getISTMidnight(referenceDate);
-  const diffDays = Math.round((refMidnight - premiereMidnight) / (1000 * 60 * 60 * 24));
-  const currentDay = Math.max(1, diffDays + 1);
-  const currentWeek = Math.floor((currentDay - 1) / 7) + 1;
-  const daysRemaining = Math.max(0, 105 - currentDay); // Standard 15-week (105-day) run
-
-  return {
-    currentDay,
-    currentWeek,
-    premiereDate: SHOW_PREMIERE_DATE.toISOString(),
-    daysRemaining
-  };
-}
+export { SHOW_PREMIERE_DATE, calculateShowTimeline };
 
 class DatabaseService {
   private sql: NeonQueryFunction<false, false> | null = null;

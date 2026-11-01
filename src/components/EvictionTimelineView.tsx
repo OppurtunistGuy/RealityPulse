@@ -12,6 +12,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { EvictedContestantTimelineItem, Language } from '../types';
+import { calculateShowTimeline } from '../data/timelineConfig';
 
 interface EvictionTimelineViewProps {
   timeline: EvictedContestantTimelineItem[];
@@ -25,8 +26,8 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
   timeline,
   language,
   onSelectContestantById,
-  currentWeek = 8,
-  currentDay = 52
+  currentWeek = calculateShowTimeline().currentWeek,
+  currentDay = calculateShowTimeline().currentDay
 }) => {
   const isHinglish = language === 'hinglish';
 
@@ -92,10 +93,17 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                         <span className="text-[10px] font-semibold text-rose-300 bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/30 uppercase tracking-wider">
                           {isHinglish ? `Week ${item.week} Mein Evict` : `Evicted Week ${item.week}`}
                         </span>
-                        <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
-                          <ShieldCheck className="w-3 h-3" />
-                          {isHinglish ? 'Broadcaster Confirmed' : 'Broadcaster Confirmed'}
-                        </span>
+                        {item.provenance === 'official' ? (
+                          <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+                            <ShieldCheck className="w-3 h-3" />
+                            [Official: Broadcaster Confirmed]
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-[10px] font-medium text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">
+                            <AlertTriangle className="w-3 h-3 text-amber-400" />
+                            [Reported: Republic World]
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-slate-400 mt-1 font-mono">
                         <span className="flex items-center gap-1">
@@ -151,9 +159,18 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                 {/* Verification Source Citation */}
                 {item.broadcasterVerificationUrl && (
                   <div className="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[11px] text-slate-400">
-                    <span className="text-[10px] text-slate-500 flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                      {isHinglish ? 'Verified via JioHotstar Broadcast & Colors TV Records' : 'Verified via JioHotstar Broadcast & Colors TV Records'}
+                    <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                      {item.provenance === 'official' ? (
+                        <>
+                          <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                          <span>[Official] Verified via JioHotstar Broadcast & Colors TV</span>
+                        </>
+                      ) : (
+                        <>
+                          <AlertTriangle className="w-3 h-3 text-amber-400" />
+                          <span>[Reported] Verified via Republic World & Indian Express News Desks</span>
+                        </>
+                      )}
                     </span>
                     <a
                       href={item.broadcasterVerificationUrl}
@@ -161,7 +178,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 text-[10px] text-cyan-400 hover:text-cyan-300 underline"
                     >
-                      <span>{isHinglish ? 'Official Episode Link' : 'Official Episode Stream'}</span>
+                      <span>{item.provenance === 'official' ? 'Broadcaster Stream' : 'News Report'}</span>
                       <ExternalLink className="w-2.5 h-2.5" />
                     </a>
                   </div>

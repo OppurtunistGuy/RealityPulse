@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldAlert, Sparkles, Globe, Layers, ShieldCheck } from 'lucide-react';
 import { Language } from '../types';
 import { timeAgo } from '../utils/timeAgo';
+import { calculateShowTimeline } from '../data/timelineConfig';
 
 interface TopBarProps {
   activeTab: 'matrix' | 'astroturf' | 'narrative' | 'grounding' | 'studio';
@@ -51,7 +52,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             </div>
             <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
               <span className="text-cyan-300 font-semibold whitespace-nowrap">
-                Day {timeline?.currentDay ?? 52} · W{timeline?.currentWeek ?? 8}
+                Day {timeline?.currentDay ?? calculateShowTimeline().currentDay} · W{timeline?.currentWeek ?? calculateShowTimeline().currentWeek}
               </span>
               {capturedAt && (
                 <span className="hidden md:inline text-slate-500 whitespace-nowrap" title={`Snapshot: ${capturedAt}`}>

@@ -10,6 +10,7 @@ import { SourceProvenanceModal } from './components/SourceProvenanceModal';
 import { SecurityAndFeedModal } from './components/SecurityAndFeedModal';
 import { Contestant, PlatformWeightConfig, Language } from './types';
 import { DEFAULT_PLATFORM_WEIGHTS } from './utils/analyticsEngine';
+import { calculateShowTimeline } from './data/timelineConfig';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
@@ -18,9 +19,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [capturedAt, setCapturedAt] = useState<string | null>(null);
-  const [timeline, setTimeline] = useState<{ currentDay: number; currentWeek: number }>({
-    currentDay: 52,
-    currentWeek: 8
+  const [timeline, setTimeline] = useState<{ currentDay: number; currentWeek: number }>(() => {
+    const t = calculateShowTimeline();
+    return { currentDay: t.currentDay, currentWeek: t.currentWeek };
   });
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [isHistoricalView, setIsHistoricalView] = useState(false);
@@ -110,7 +111,11 @@ export default function App() {
         language={language}
         onToggleLanguage={setLanguage}
         capturedAt={capturedAt ?? undefined}
-        timeline={timeline}
+        timeline={
+          isHistoricalView && selectedWeek
+            ? { currentDay: selectedWeek * 7, currentWeek: selectedWeek }
+            : timeline
+        }
       />
 
       {/* Main Workspace Viewport */}

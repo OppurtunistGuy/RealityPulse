@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { calculateShowTimeline } from '../data/timelineConfig.js';
 
 export interface AuditBlock {
   index: number;
@@ -101,12 +102,22 @@ class SecurityAndFeedManager {
         id: 'feed-2',
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         category: 'Nomination Alert',
-        title: 'Week 8 Public Voting Window Active on JioHotstar (Day 52)',
-        summary: 'Official voting lines opened on JioHotstar app. Nominated housemates facing public ballot confirmed: Scout, Arshifa, Gullu, Love Gill, Harsh Machare, and Uditi Singh.',
-        sourceUrl: 'https://www.jiohotstar.com/reality',
-        sourceDomain: 'jiohotstar.com',
-        verifiedByBroadcaster: true,
-        involvedContestants: ['Tanmay Singh (Scout)', 'Arshifa Khan', 'Kushal Tanwar (Gullu)', 'Love Gill', 'Harsh Machare (Yung DSA)', 'Uditi Singh']
+        title: `Week ${calculateShowTimeline().currentWeek} Nominations Reported (Day ${calculateShowTimeline().currentDay}) [Reported / Disputed]`,
+        summary: 'Nomination lists reported across entertainment news: FilmiBeat reports 6 nominees (Scout, Arshifa, Gullu, Love, Harsh, Uditi); Deccan Chronicle reports 9 nominees (adding Aasif, Qazi, Kanika). Broadcaster direct feed access restricted.',
+        sourceUrl: 'https://www.filmibeat.com/television/news/',
+        sourceDomain: 'filmibeat.com',
+        verifiedByBroadcaster: false,
+        involvedContestants: [
+          'Tanmay Singh (Scout)',
+          'Arshifa Khan',
+          'Kushal Tanwar (Gullu)',
+          'Love Gill',
+          'Harsh Machare (Yung DSA)',
+          'Uditi Singh',
+          'Kanika Mann',
+          'Aasif Khan',
+          'Qazi Ahmad Tauqeer'
+        ]
       },
       {
         id: 'feed-3',

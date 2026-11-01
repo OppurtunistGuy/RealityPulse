@@ -29,7 +29,7 @@ async function seed() {
       role TEXT NOT NULL DEFAULT 'Contestant',
       status TEXT NOT NULL DEFAULT 'Active' CHECK (status IN ('Active', 'Evicted', 'Guest', 'Wildcard')),
       is_nominated BOOLEAN NOT NULL DEFAULT false,
-      entry_date TIMESTAMPTZ NOT NULL DEFAULT '2026-09-11T00:00:00+05:30',
+      entry_date TIMESTAMPTZ NOT NULL DEFAULT '2026-09-06T00:00:00+05:30',
       eviction_week INTEGER,
       status_verified_at TIMESTAMPTZ DEFAULT now(),
       status_source_url TEXT,

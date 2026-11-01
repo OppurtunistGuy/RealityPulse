@@ -53,6 +53,28 @@ export interface SourceCitation {
   verifiedAt: string;
 }
 
+export type FactProvenance = 'official' | 'reported' | 'disputed' | 'unverified';
+
+export interface NominationSourceReport {
+  sourceName: string;
+  domain: string;
+  articleTitle: string;
+  publishedDate: string;
+  url: string;
+  reportedNomineesCount: number;
+  nominees: string[];
+}
+
+export interface NominationConflictReport {
+  week: number;
+  sources: NominationSourceReport[];
+  consensusNominees: string[]; // Reported by both FilmiBeat and Deccan Chronicle
+  disputedNominees: string[];  // Reported by Deccan Chronicle, omitted by FilmiBeat
+  exemptHousemates: string[];
+  broadcasterStatus: string;
+  explanation: string;
+}
+
 export interface Contestant {
   id: string;
   name: string;
@@ -97,8 +119,9 @@ export interface Contestant {
   statusVerifiedAt?: string;
   statusVerificationSource?: string;
   verificationState?: 'Broadcaster Verified' | 'Corroborated' | 'Unconfirmed';
-  statusProvenance?: 'official' | 'reported';
-  nominationProvenance?: 'official' | 'reported';
+  statusProvenance?: FactProvenance;
+  nominationProvenance?: FactProvenance;
+  nominationNote?: string;
   primarySourceUrls?: SourceCitation[];
   structuredControversies?: StructuredControversy[];
 }
@@ -124,7 +147,7 @@ export interface EvictedContestantTimelineItem {
   broadcasterVerificationUrl?: string;
   broadcasterVerifiedAt?: string;
   verificationState?: 'Broadcaster Confirmed' | 'Corroborated' | 'Unconfirmed';
-  provenance?: 'official' | 'reported';
+  provenance?: FactProvenance;
 }
 
 export interface AstroturfCluster {

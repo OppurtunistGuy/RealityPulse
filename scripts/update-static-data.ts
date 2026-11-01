@@ -2,9 +2,70 @@ import fs from 'fs';
 import path from 'path';
 import { generateContestantAvatarSvg } from '../src/utils/avatarGenerator.js';
 import { BB20_LOCKED_CONTESTANTS, BB20_LOCKED_EVICTED_TIMELINE } from '../src/data/bb20ContestantsStatic.js';
-import { Contestant, EvictedContestantTimelineItem } from '../src/types.js';
+import { Contestant, EvictedContestantTimelineItem, NominationConflictReport } from '../src/types.js';
 
 const filePath = path.resolve('src/data/bb20ContestantsStatic.ts');
+
+export const BB20_NOMINATION_CONFLICTS: NominationConflictReport = {
+  week: 8,
+  sources: [
+    {
+      sourceName: 'FilmiBeat',
+      domain: 'filmibeat.com',
+      articleTitle: 'Bigg Boss 20 Week 8 Nominations: 6 Contestants In Danger Zone',
+      publishedDate: '2026-10-28',
+      url: 'https://www.filmibeat.com/television/news/',
+      reportedNomineesCount: 6,
+      nominees: [
+        'Tanmay Singh (Scout)',
+        'Arshifa Khan',
+        'Kushal Tanwar (Gullu)',
+        'Love Gill',
+        'Harsh Machare (Yung DSA)',
+        'Uditi Singh'
+      ]
+    },
+    {
+      sourceName: 'Deccan Chronicle',
+      domain: 'deccanchronicle.com',
+      articleTitle: 'Bigg Boss Season 20: 9 Housemates Nominated for Elimination This Week',
+      publishedDate: '2026-10-28',
+      url: 'https://www.deccanchronicle.com/entertainment/',
+      reportedNomineesCount: 9,
+      nominees: [
+        'Tanmay Singh (Scout)',
+        'Arshifa Khan',
+        'Kushal Tanwar (Gullu)',
+        'Love Gill',
+        'Harsh Machare (Yung DSA)',
+        'Uditi Singh',
+        'Aasif Khan',
+        'Qazi Ahmad Tauqeer',
+        'Kanika Mann'
+      ]
+    }
+  ],
+  consensusNominees: [
+    'Tanmay Singh (Scout)',
+    'Arshifa Khan',
+    'Kushal Tanwar (Gullu)',
+    'Love Gill',
+    'Harsh Machare (Yung DSA)',
+    'Uditi Singh'
+  ],
+  disputedNominees: [
+    'Aasif Khan',
+    'Qazi Ahmad Tauqeer',
+    'Kanika Mann'
+  ],
+  exemptHousemates: [
+    'Aamrapali Dubey (Captaincy Immunity)',
+    'Manish Goel (Exempt)',
+    'Mahhi Vij (Exempt)'
+  ],
+  broadcasterStatus: 'Pending Broadcaster Webcast: Colors TV / JioHotstar direct pages restricted access. Grounded across independent entertainment desks.',
+  explanation: 'FilmiBeat reports a tight 6-contestant nomination list focusing on major drama instigators, whereas Deccan Chronicle reports an extended 9-contestant ballot that also includes Aasif Khan, Qazi Ahmad Tauqeer, and Kanika Mann. RealityPulse presents both reports side-by-side with clear [Reported] and [Disputed] tags rather than quietly selecting one.'
+};
 
 // 1. Update contestants
 const updatedContestants: Contestant[] = BB20_LOCKED_CONTESTANTS.map((c) => {
@@ -19,33 +80,55 @@ const updatedContestants: Contestant[] = BB20_LOCKED_CONTESTANTS.map((c) => {
       evictionWeek: 7,
       isNominated: false,
       statusProvenance: 'reported',
-      nominationProvenance: 'official',
+      nominationProvenance: 'reported',
+      nominationNote: 'Evicted on Day 49 (Week 7); Reported by Republic World & Indian Express',
       statusVerifiedAt: '2026-10-24T23:00:00.000Z',
-      statusVerificationSource: 'Republic World & Colors TV Weekend Ka Vaar Broadcast (Evicted Day 49 / Week 7)',
+      statusVerificationSource: 'Republic World & Indian Express Entertainment Desk (Evicted Day 49 / Week 7)',
       verificationState: 'Corroborated'
     };
   }
 
-  // Week 8 Nominees (reported 6 nominees via FilmiBeat)
-  const isWeek8Nominated = ['c1', 'c8', 'c9', 'c10', 'c11', 'c12'].includes(c.id);
+  // Consensus Week 8 Nominees reported by both FilmiBeat and Deccan Chronicle
+  const isConsensusNominated = ['c1', 'c8', 'c9', 'c10', 'c11', 'c12'].includes(c.id);
+  // Disputed Nominees (reported by Deccan Chronicle only)
+  const isDisputed = ['c3', 'c6', 'c7'].includes(c.id);
   const isEvicted = c.status === 'Evicted' || ['c14', 'c15', 'c16', 'c17', 'c18'].includes(c.id);
+
+  let nominationProvenance: Contestant['nominationProvenance'] = 'reported';
+  let nominationNote = 'Reported safe across entertainment desks';
+
+  if (isConsensusNominated) {
+    nominationProvenance = 'reported';
+    nominationNote = 'Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)';
+  } else if (isDisputed) {
+    nominationProvenance = 'disputed';
+    nominationNote = 'Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe';
+  } else if (c.id === 'c2') {
+    nominationProvenance = 'reported';
+    nominationNote = 'Reported immune (Captaincy) across all news desks';
+  }
 
   return {
     ...c,
     avatar,
     status: isEvicted ? 'Evicted' : 'Active',
-    isNominated: !isEvicted && isWeek8Nominated,
+    isNominated: !isEvicted && isConsensusNominated,
     statusProvenance: isEvicted ? 'official' : 'official',
-    nominationProvenance: c.id === 'c2' ? 'official' : 'reported'
+    nominationProvenance,
+    nominationNote
   };
 });
 
-// 2. Update Eviction Timeline (Include Mary Kom Week 7)
-const updatedTimeline: EvictedContestantTimelineItem[] = BB20_LOCKED_EVICTED_TIMELINE.map((item) => ({
-  ...item,
-  avatar: generateContestantAvatarSvg(item.name, 'Challenger', item.nickname),
-  provenance: 'official' as const
-}));
+// 2. Update Eviction Timeline
+const updatedTimeline: EvictedContestantTimelineItem[] = BB20_LOCKED_EVICTED_TIMELINE.map((item) => {
+  const isMaryKom = item.contestantId === 'c5';
+  return {
+    ...item,
+    avatar: generateContestantAvatarSvg(item.name, isMaryKom ? 'Frontrunner' : 'Challenger', item.nickname),
+    provenance: isMaryKom ? ('reported' as const) : ('official' as const),
+    broadcasterVerificationUrl: isMaryKom ? 'https://www.republicworld.com/entertainment/' : item.broadcasterVerificationUrl || 'https://www.jiohotstar.com/'
+  };
+});
 
 // Add Mary Kom to timeline if not already present
 if (!updatedTimeline.some((t) => t.contestantId === 'c5')) {
@@ -67,7 +150,8 @@ if (!updatedTimeline.some((t) => t.contestantId === 'c5')) {
     hinglishHeadline: 'Mera safar imaandari se chala aur dignity ke sath khatam hua.',
     broadcasterVerificationUrl: 'https://www.republicworld.com/entertainment/',
     broadcasterVerifiedAt: '2026-10-24T23:30:00+05:30',
-    verificationState: 'Broadcaster Confirmed'
+    verificationState: 'Corroborated',
+    provenance: 'reported'
   });
 }
 
@@ -87,7 +171,9 @@ const fileHeader = `/**
  * ============================================================================
  */
 
-import { Contestant, EvictedContestantTimelineItem } from '../types.js';
+import { Contestant, EvictedContestantTimelineItem, NominationConflictReport } from '../types.js';
+
+export const BB20_NOMINATION_CONFLICTS: NominationConflictReport = ${JSON.stringify(BB20_NOMINATION_CONFLICTS, null, 2)};
 
 export const BB20_LOCKED_CONTESTANTS: Contestant[] = ${JSON.stringify(updatedContestants, null, 2)};
 
@@ -95,4 +181,4 @@ export const BB20_LOCKED_EVICTED_TIMELINE: EvictedContestantTimelineItem[] = ${J
 `;
 
 fs.writeFileSync(filePath, fileHeader, 'utf-8');
-console.log('Successfully updated bb20ContestantsStatic.ts with 0 stock photos, Mary Kom evicted (Wk 7), and verified Week 8 nominees.');
+console.log('Successfully updated bb20ContestantsStatic.ts with exact provenance tags, nomination conflicts, and 0 stock photos.');

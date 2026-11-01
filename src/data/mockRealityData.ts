@@ -194,12 +194,12 @@ export const BIPARTITE_LINKS: BipartiteNetworkLink[] = [
 
 export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
   {
-    "episodeNumber": 52,
-    "title": "Weekend Ka Vaar: Week 8 Nominations & The Asli Janta Verdict",
-    "airDate": "Day 52 · November 1, 2026",
-    "hostFocus": "Salman Khan grills the house on manufactured PR bubbles and reviews the high-stakes Week 8 nominations.",
+    "episodeNumber": 57,
+    "title": "Weekend Ka Vaar: Week 9 Nominations & The Asli Janta Verdict",
+    "airDate": "Day 57 · November 1, 2026",
+    "hostFocus": "Salman Khan grills the house on manufactured PR bubbles and reviews the high-stakes Week 9 nominations.",
     "broadcastThemes": [
-      "Week 8 Nomination Shockwaves",
+      "Week 9 Nomination Shockwaves",
       "PR Echo Chamber Reality Check",
       "Captain Aamrapali's Immunity Privilege"
     ],
@@ -243,7 +243,7 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
     ],
     "conflictPairs": [
       {
-        "id": "cp-52-1",
+        "id": "cp-57-1",
         "contestantA": "Tanmay Singh (Scout)",
         "contestantB": "Love Gill",
         "incident": "Nomination Face-Off: Love challenged Scout on being too silent in house arguments; Scout pointed to task execution and team loyalty.",
@@ -251,7 +251,7 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
         "organicAudienceWinner": "Tanmay Singh (Scout) (89% approval)"
       },
       {
-        "id": "cp-52-2",
+        "id": "cp-57-2",
         "contestantA": "Kushal Tanwar (Gullu)",
         "contestantB": "Arshifa Khan",
         "incident": "Ration Allotment Dispute: Gullu used satirical humor to defuse Arshifa's claim of unfair house management.",
@@ -259,7 +259,7 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
         "organicAudienceWinner": "Kushal Tanwar (Gullu) (92% approval)"
       }
     ],
-    "organicDriftSummary": "Scout and Gullu maintain massive organic grounding on Day 52, while Arshifa and Love Gill experience audience skepticism over PR amplification."
+    "organicDriftSummary": "Scout and Gullu maintain massive organic grounding on Day 57, while Arshifa and Love Gill experience audience skepticism over PR amplification."
   },
   {
     "episodeNumber": 49,
@@ -304,14 +304,14 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
     "organicDriftSummary": "Day 49 was marked by profound national respect for Mary Kom's 7-week run, establishing a dignified benchmark for Bigg Boss 20."
   },
   {
-    "episodeNumber": 26,
-    "title": "The Tathas-two Shield Standoff & The Luggage Room Stash",
-    "airDate": "Day 26 · October 06, 2026",
-    "hostFocus": "Salman Khan reprimands theatrical crying and rewards task composure in the immunity arena.",
+    "episodeNumber": 42,
+    "title": "The Mid-Season Crucible & Aman Gandhi's Eviction",
+    "airDate": "Day 42 · October 17, 2026",
+    "hostFocus": "Salman Khan reviews mid-season alliance shakeups and bids farewell to Aman Gandhi after 6 weeks.",
     "broadcastThemes": [
-      "Tathas-two Immunity Shield",
-      "Luggage Room Ration Raid",
-      "Vintage vs Digital Ideology Clash"
+      "Mid-Season Alliance Fracture",
+      "Immunity Task Composure",
+      "Aman Gandhi Eviction"
     ],
     "contestantEdits": [
       {
@@ -335,7 +335,7 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
     ],
     "conflictPairs": [
       {
-        "id": "cp-26-1",
+        "id": "cp-42-1",
         "contestantA": "Tanmay Singh (Scout)",
         "contestantB": "Qazi Ahmad Tauqeer",
         "incident": "Tathas-two Immunity Shield Dispute: Qazi tried to provoke Scout; Scout remained stoic and protected the shield.",
@@ -343,7 +343,7 @@ export const EPISODE_NARRATIVES: EpisodeNarrative[] = [
         "organicAudienceWinner": "Tanmay Singh (Scout) (91% approval)"
       }
     ],
-    "organicDriftSummary": "Scout generated massive authentic goodwill, while theatrical arguments met severe audience rejection."
+    "organicDriftSummary": "Week 6 closed with Aman Gandhi exiting on Day 42 as Scout and Mary Kom retained peak organic authority."
   }
 ];
 

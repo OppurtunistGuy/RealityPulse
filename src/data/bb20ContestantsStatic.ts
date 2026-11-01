@@ -14,7 +14,68 @@
  * ============================================================================
  */
 
-import { Contestant, EvictedContestantTimelineItem } from '../types.js';
+import { Contestant, EvictedContestantTimelineItem, NominationConflictReport } from '../types.js';
+
+export const BB20_NOMINATION_CONFLICTS: NominationConflictReport = {
+  "week": 8,
+  "sources": [
+    {
+      "sourceName": "FilmiBeat",
+      "domain": "filmibeat.com",
+      "articleTitle": "Bigg Boss 20 Week 8 Nominations: 6 Contestants In Danger Zone",
+      "publishedDate": "2026-10-28",
+      "url": "https://www.filmibeat.com/television/news/",
+      "reportedNomineesCount": 6,
+      "nominees": [
+        "Tanmay Singh (Scout)",
+        "Arshifa Khan",
+        "Kushal Tanwar (Gullu)",
+        "Love Gill",
+        "Harsh Machare (Yung DSA)",
+        "Uditi Singh"
+      ]
+    },
+    {
+      "sourceName": "Deccan Chronicle",
+      "domain": "deccanchronicle.com",
+      "articleTitle": "Bigg Boss Season 20: 9 Housemates Nominated for Elimination This Week",
+      "publishedDate": "2026-10-28",
+      "url": "https://www.deccanchronicle.com/entertainment/",
+      "reportedNomineesCount": 9,
+      "nominees": [
+        "Tanmay Singh (Scout)",
+        "Arshifa Khan",
+        "Kushal Tanwar (Gullu)",
+        "Love Gill",
+        "Harsh Machare (Yung DSA)",
+        "Uditi Singh",
+        "Aasif Khan",
+        "Qazi Ahmad Tauqeer",
+        "Kanika Mann"
+      ]
+    }
+  ],
+  "consensusNominees": [
+    "Tanmay Singh (Scout)",
+    "Arshifa Khan",
+    "Kushal Tanwar (Gullu)",
+    "Love Gill",
+    "Harsh Machare (Yung DSA)",
+    "Uditi Singh"
+  ],
+  "disputedNominees": [
+    "Aasif Khan",
+    "Qazi Ahmad Tauqeer",
+    "Kanika Mann"
+  ],
+  "exemptHousemates": [
+    "Aamrapali Dubey (Captaincy Immunity)",
+    "Manish Goel (Exempt)",
+    "Mahhi Vij (Exempt)"
+  ],
+  "broadcasterStatus": "Pending Broadcaster Webcast: Colors TV / JioHotstar direct pages restricted access. Grounded across independent entertainment desks.",
+  "explanation": "FilmiBeat reports a tight 6-contestant nomination list focusing on major drama instigators, whereas Deccan Chronicle reports an extended 9-contestant ballot that also includes Aasif Khan, Qazi Ahmad Tauqeer, and Kanika Mann. RealityPulse presents both reports side-by-side with clear [Reported] and [Disputed] tags rather than quietly selecting one."
+};
 
 export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
   {
@@ -193,7 +254,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c2",
@@ -339,7 +401,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "official"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported immune (Captaincy) across all news desks"
   },
   {
     "id": "c3",
@@ -491,7 +554,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
   },
   {
     "id": "c4",
@@ -637,7 +701,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c5",
@@ -795,11 +860,12 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "strongestMove": "Week 3 ke physical obstacle challenge mein underdog team ko coach karke jeetwaya."
     },
     "statusVerifiedAt": "2026-10-24T23:00:00.000Z",
-    "statusVerificationSource": "Republic World & Colors TV Weekend Ka Vaar Broadcast (Evicted Day 49 / Week 7)",
+    "statusVerificationSource": "Republic World & Indian Express Entertainment Desk (Evicted Day 49 / Week 7)",
     "verificationState": "Corroborated",
     "evictionWeek": 7,
     "statusProvenance": "reported",
-    "nominationProvenance": "official"
+    "nominationProvenance": "reported",
+    "nominationNote": "Evicted on Day 49 (Week 7); Reported by Republic World & Indian Express"
   },
   {
     "id": "c6",
@@ -946,7 +1012,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
   },
   {
     "id": "c7",
@@ -1091,7 +1158,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
   },
   {
     "id": "c8",
@@ -1235,7 +1303,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c9",
@@ -1378,7 +1447,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c10",
@@ -1539,7 +1609,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c11",
@@ -1685,7 +1756,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c12",
@@ -1830,7 +1902,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
   },
   {
     "id": "c13",
@@ -1975,7 +2048,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c14",
@@ -2119,7 +2193,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c15",
@@ -2263,7 +2338,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c16",
@@ -2406,7 +2482,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c17",
@@ -2549,7 +2626,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "Colors TV Official Ejection Announcement & JioHotstar Episode 37",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   },
   {
     "id": "c18",
@@ -2693,7 +2771,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across entertainment desks"
   }
 ];
 
@@ -2821,6 +2900,7 @@ export const BB20_LOCKED_EVICTED_TIMELINE: EvictedContestantTimelineItem[] = [
     "hinglishHeadline": "Mera safar imaandari se chala aur dignity ke sath khatam hua.",
     "broadcasterVerificationUrl": "https://www.republicworld.com/entertainment/",
     "broadcasterVerifiedAt": "2026-10-24T23:30:00+05:30",
-    "verificationState": "Broadcaster Confirmed"
+    "verificationState": "Broadcaster Confirmed",
+    "provenance": "reported"
   }
 ];

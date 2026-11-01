@@ -284,9 +284,9 @@ Salman Khan warned Qazi against personal attacks.
       assert.ok(res.body.timeline);
       assert.equal(typeof res.body.timeline.currentDay, 'number');
       assert.equal(typeof res.body.timeline.currentWeek, 'number');
-      // On Nov 1, 2026, premiere Sept 11, 2026 gives Day 52 and Week 8
-      assert.equal(res.body.timeline.currentDay, 52);
-      assert.equal(res.body.timeline.currentWeek, 8);
+      // On Nov 1, 2026, premiere Sept 6, 2026 gives Day 57 and Week 9
+      assert.equal(res.body.timeline.currentDay, 57);
+      assert.equal(res.body.timeline.currentWeek, 9);
     });
 
     it('GET /api/snapshot?week=4 returns historical snapshot clearly labeled as past', async () => {
