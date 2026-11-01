@@ -98,3 +98,4 @@ CREATE TABLE IF NOT EXISTS audit_chain (
     verified_source_domain TEXT,
     is_broadcaster_authorized BOOLEAN NOT NULL DEFAULT false
 );
+

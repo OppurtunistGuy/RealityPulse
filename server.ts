@@ -8,6 +8,7 @@ import { dbService, calculateShowTimeline } from './src/services/dbService.js';
 import { runIngestionPipeline } from './src/services/ingestService.js';
 
 dotenv.config();
+dotenv.config({ path: '.env.local' });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -278,9 +279,9 @@ Return a valid JSON object matching this schema:
     sentimentUniformityScore: isRepeated ? 94 : 38,
     detectedTemplates: isRepeated
       ? [
-          "Repetitive phrasing with minor lexical permutations detected across multiple lines.",
-          "Single-target hashtag flood with zero contextual critical remarks."
-        ]
+        "Repetitive phrasing with minor lexical permutations detected across multiple lines.",
+        "Single-target hashtag flood with zero contextual critical remarks."
+      ]
       : [],
     organicSentimentScore: isRepeated ? 38 : 74,
     rawSentimentScore: isRepeated ? 92 : 68,

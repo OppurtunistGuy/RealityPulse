@@ -42,17 +42,17 @@ class DatabaseService {
   constructor() {
     const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
-    if (databaseUrl) {
-      try {
-        this.sql = neon(databaseUrl);
-        console.log('Connected to Neon PostgreSQL using DATABASE_URL.');
-      } catch (err) {
-        console.warn('Failed to initialize Neon client, using resilient in-memory store:', err);
+      if (databaseUrl) {
+        try {
+          this.sql = neon(databaseUrl);
+          console.log('Connected to Neon PostgreSQL using DATABASE_URL.');
+        } catch (err) {
+          console.warn('Failed to initialize Neon client, using resilient in-memory store:', err);
+        }
+      } else {
+        console.log('Neon DATABASE_URL not set; running with active resilient seed store.');
       }
-    } else {
-      console.log('Neon DATABASE_URL not set; running with active resilient seed store.');
     }
-  }
 
   public isUsingNeon(): boolean {
     return this.sql !== null;
@@ -66,87 +66,87 @@ class DatabaseService {
   }> {
     const timeline = calculateShowTimeline();
 
-    if (this.sql) {
-      try {
-        const dbContestants = (await this.sql`SELECT * FROM contestants ORDER BY id ASC`) as any[];
+      if (this.sql) {
+        try {
+          const dbContestants = (await this.sql`SELECT * FROM contestants ORDER BY id ASC`) as any[];
 
-        if (dbContestants && dbContestants.length > 0) {
-          const dbSnapshots = (await this.sql`SELECT * FROM contestant_snapshots ORDER BY captured_at DESC`) as any[];
+            if (dbContestants && dbContestants.length > 0) {
+              const dbSnapshots = (await this.sql`SELECT * FROM contestant_snapshots ORDER BY captured_at DESC`) as any[];
 
-          const snapshotMap = new Map();
-          if (dbSnapshots) {
-            for (const s of dbSnapshots) {
-              if (!snapshotMap.has(s.contestant_id)) {
-                snapshotMap.set(s.contestant_id, s);
+              const snapshotMap = new Map();
+              if (dbSnapshots) {
+                for (const s of dbSnapshots) {
+                  if (!snapshotMap.has(s.contestant_id)) {
+                    snapshotMap.set(s.contestant_id, s);
+                  }
+                }
               }
-            }
-          }
 
-          const merged: Contestant[] = dbContestants.map(c => {
-            const snap = snapshotMap.get(c.id);
-            return {
-              id: c.id,
-              name: c.name,
-              nickname: c.nickname,
-              avatar: c.avatar,
-              role: c.role,
-              status: c.status,
-              isNominated: Boolean(c.is_nominated),
-              evictionWeek: c.eviction_week ?? undefined,
-              rawSentiment: Number(snap?.raw_sentiment ?? 70),
-              trueOrganicSentiment: Number(snap?.true_organic_sentiment ?? 70),
-              prInflationDelta: Number(snap?.pr_inflation_delta ?? 0),
-              prInfiltrationRate: Number(snap?.pr_infiltration_rate ?? 15),
-              evictionRiskTier: snap?.eviction_risk_tier ?? 'Safe',
-              evictionProbability: Number(snap?.eviction_probability ?? 10),
-              silentMajorityIndex: Number(snap?.silent_majority_index ?? 80),
-              loudMinorityIndex: Number(snap?.loud_minority_index ?? 40),
-              platforms: snap?.platforms ?? {},
-              detectedAstroturfPatterns: snap?.detected_astroturf_patterns ?? [],
-              recentNarrativeEdit: snap?.recent_narrative_edit ?? 'Neutral Edit',
-              votingTrajectory: snap?.voting_trajectory ?? 'Stable',
-              tossTrend7d: snap?.toss_trend_7d ?? [70, 70, 70, 70, 70, 70, 70],
-              bio: c.bio,
-              pastDetails: c.past_details,
-              houseGameplay: c.house_gameplay,
-              strongestMove: c.strongest_move,
-              profession: c.profession,
-              careerCredits: c.career_credits,
-              verifiedSocialHandles: c.verified_social_handles,
-              structuredControversies: c.structured_controversies,
-              primarySourceUrls: c.primary_source_urls,
-              hinglishProfile: c.hinglish_profile,
-              statusVerifiedAt: c.status_verified_at,
-              statusVerificationSource: c.status_source_url
-            };
-          });
+              const merged: Contestant[] = dbContestants.map(c => {
+                const snap = snapshotMap.get(c.id);
+                return {
+                  id: c.id,
+                  name: c.name,
+                  nickname: c.nickname,
+                  avatar: c.avatar,
+                  role: c.role,
+                  status: c.status,
+                  isNominated: Boolean(c.is_nominated),
+                  evictionWeek: c.eviction_week ?? undefined,
+                  rawSentiment: Number(snap?.raw_sentiment ?? 70),
+                  trueOrganicSentiment: Number(snap?.true_organic_sentiment ?? 70),
+                  prInflationDelta: Number(snap?.pr_inflation_delta ?? 0),
+                  prInfiltrationRate: Number(snap?.pr_infiltration_rate ?? 15),
+                  evictionRiskTier: snap?.eviction_risk_tier ?? 'Safe',
+                  evictionProbability: Number(snap?.eviction_probability ?? 10),
+                  silentMajorityIndex: Number(snap?.silent_majority_index ?? 80),
+                  loudMinorityIndex: Number(snap?.loud_minority_index ?? 40),
+                  platforms: snap?.platforms ?? {},
+                  detectedAstroturfPatterns: snap?.detected_astroturf_patterns ?? [],
+                  recentNarrativeEdit: snap?.recent_narrative_edit ?? 'Neutral Edit',
+                  votingTrajectory: snap?.voting_trajectory ?? 'Stable',
+                  tossTrend7d: snap?.toss_trend_7d ?? [70, 70, 70, 70, 70, 70, 70],
+                  bio: c.bio,
+                  pastDetails: c.past_details,
+                  houseGameplay: c.house_gameplay,
+                  strongestMove: c.strongest_move,
+                  profession: c.profession,
+                  careerCredits: c.career_credits,
+                  verifiedSocialHandles: c.verified_social_handles,
+                  structuredControversies: c.structured_controversies,
+                  primarySourceUrls: c.primary_source_urls,
+                  hinglishProfile: c.hinglish_profile,
+                  statusVerifiedAt: c.status_verified_at,
+                  statusVerificationSource: c.status_source_url
+                };
+              });
 
-          return {
-            contestants: merged,
-            capturedAt: dbSnapshots?.[0]?.captured_at || this.lastCapturedAt,
-            timeline,
+              return {
+                contestants: merged,
+                capturedAt: dbSnapshots?.[0]?.captured_at || this.lastCapturedAt,
+                timeline,
             source: 'neon'
-          };
+              };
+            }
+          } catch (err) {
+            console.warn('Neon query error, falling back to resilient store:', err);
+          }
         }
-      } catch (err) {
-        console.warn('Neon query error, falling back to resilient store:', err);
-      }
-    }
 
     return {
-      contestants: this.memoryContestants,
-      capturedAt: this.lastCapturedAt,
-      timeline,
-      source: 'resilient_store'
-    };
-  }
+          contestants: this.memoryContestants,
+          capturedAt: this.lastCapturedAt,
+          timeline,
+          source: 'resilient_store'
+        };
+      }
 
   public async getHistoricalSnapshot(weekNumber: number): Promise<{
-    week: number;
-    contestants: Contestant[];
-    capturedAt: string;
-    isHistorical: boolean;
-  }> {
+        week: number;
+        contestants: Contestant[];
+        capturedAt: string;
+        isHistorical: boolean;
+      }> {
     const currentTimeline = calculateShowTimeline();
     const isHistorical = weekNumber < currentTimeline.currentWeek;
 

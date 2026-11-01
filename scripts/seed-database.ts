@@ -4,6 +4,7 @@ import { INITIAL_CONTESTANTS } from '../src/data/mockRealityData.js';
 import { calculateShowTimeline } from '../src/services/dbService.js';
 
 dotenv.config();
+dotenv.config({ path: '.env.local' });
 
 async function seed() {
   const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
@@ -151,3 +152,4 @@ seed().catch(err => {
   console.error('Seed script error:', err);
   process.exit(1);
 });
+
