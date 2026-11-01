@@ -119,3 +119,4 @@ CREATE POLICY "Service role can manage snapshots" ON public.contestant_snapshots
 CREATE POLICY "Service role can manage raw items" ON public.raw_items FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Service role can manage feed items" ON public.feed_items FOR ALL USING (auth.role() = 'service_role');
 CREATE POLICY "Service role can manage audit chain" ON public.audit_chain FOR ALL USING (auth.role() = 'service_role');
+

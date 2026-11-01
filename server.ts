@@ -44,7 +44,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     hasApiKey: Boolean(process.env.GEMINI_API_KEY),
-    isUsingSupabase: dbService.isUsingSupabase(),
+    isUsingNeon: dbService.isUsingNeon(),
     model: GEMINI_MODEL,
     timeline,
     timestamp: new Date().toISOString()

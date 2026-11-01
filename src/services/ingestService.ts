@@ -160,3 +160,4 @@ Return a valid JSON array:
     auditBlockIndex: block.index
   };
 }
+

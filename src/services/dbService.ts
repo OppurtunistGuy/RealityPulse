@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { neon, NeonQueryFunction } from '@neondatabase/serverless';
 import { Contestant, EvictedContestantTimelineItem } from '../types.js';
 import { INITIAL_CONTESTANTS, EVICTED_CONTESTANTS_TIMELINE } from '../data/mockRealityData.js';
 
@@ -35,50 +35,43 @@ export function calculateShowTimeline(referenceDate: Date = new Date()): {
 }
 
 class DatabaseService {
-  private client: SupabaseClient | null = null;
+  private sql: NeonQueryFunction<false, false> | null = null;
   private memoryContestants: Contestant[] = [...INITIAL_CONTESTANTS];
   private lastCapturedAt: string = new Date().toISOString();
 
   constructor() {
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
-    if (supabaseUrl && supabaseKey) {
+    if (databaseUrl) {
       try {
-        this.client = createClient(supabaseUrl, supabaseKey);
-        console.log('Connected to Supabase PostgreSQL at:', supabaseUrl);
+        this.sql = neon(databaseUrl);
+        console.log('Connected to Neon PostgreSQL using DATABASE_URL.');
       } catch (err) {
-        console.warn('Failed to initialize Supabase client, using resilient in-memory store:', err);
+        console.warn('Failed to initialize Neon client, using resilient in-memory store:', err);
       }
     } else {
-      console.log('Supabase credentials not set; running with active resilient seed store.');
+      console.log('Neon DATABASE_URL not set; running with active resilient seed store.');
     }
   }
 
-  public isUsingSupabase(): boolean {
-    return this.client !== null;
+  public isUsingNeon(): boolean {
+    return this.sql !== null;
   }
 
   public async getLatestContestants(): Promise<{
     contestants: Contestant[];
     capturedAt: string;
     timeline: ReturnType<typeof calculateShowTimeline>;
-    source: 'supabase' | 'resilient_store';
+    source: 'neon' | 'resilient_store';
   }> {
     const timeline = calculateShowTimeline();
 
-    if (this.client) {
+    if (this.sql) {
       try {
-        const { data: dbContestants, error: cErr } = await this.client
-          .from('contestants')
-          .select('*');
+        const dbContestants = (await this.sql`SELECT * FROM contestants ORDER BY id ASC`) as any[];
 
-        if (!cErr && dbContestants && dbContestants.length > 0) {
-          // Join latest snapshots
-          const { data: dbSnapshots } = await this.client
-            .from('contestant_snapshots')
-            .select('*')
-            .order('captured_at', { ascending: false });
+        if (dbContestants && dbContestants.length > 0) {
+          const dbSnapshots = (await this.sql`SELECT * FROM contestant_snapshots ORDER BY captured_at DESC`) as any[];
 
           const snapshotMap = new Map();
           if (dbSnapshots) {
@@ -98,16 +91,16 @@ class DatabaseService {
               avatar: c.avatar,
               role: c.role,
               status: c.status,
-              isNominated: c.is_nominated,
-              evictionWeek: c.eviction_week,
-              rawSentiment: snap?.raw_sentiment ?? 70,
-              trueOrganicSentiment: snap?.true_organic_sentiment ?? 70,
-              prInflationDelta: snap?.pr_inflation_delta ?? 0,
-              prInfiltrationRate: snap?.pr_infiltration_rate ?? 15,
+              isNominated: Boolean(c.is_nominated),
+              evictionWeek: c.eviction_week ?? undefined,
+              rawSentiment: Number(snap?.raw_sentiment ?? 70),
+              trueOrganicSentiment: Number(snap?.true_organic_sentiment ?? 70),
+              prInflationDelta: Number(snap?.pr_inflation_delta ?? 0),
+              prInfiltrationRate: Number(snap?.pr_infiltration_rate ?? 15),
               evictionRiskTier: snap?.eviction_risk_tier ?? 'Safe',
-              evictionProbability: snap?.eviction_probability ?? 10,
-              silentMajorityIndex: snap?.silent_majority_index ?? 80,
-              loudMinorityIndex: snap?.loud_minority_index ?? 40,
+              evictionProbability: Number(snap?.eviction_probability ?? 10),
+              silentMajorityIndex: Number(snap?.silent_majority_index ?? 80),
+              loudMinorityIndex: Number(snap?.loud_minority_index ?? 40),
               platforms: snap?.platforms ?? {},
               detectedAstroturfPatterns: snap?.detected_astroturf_patterns ?? [],
               recentNarrativeEdit: snap?.recent_narrative_edit ?? 'Neutral Edit',
@@ -132,11 +125,11 @@ class DatabaseService {
             contestants: merged,
             capturedAt: dbSnapshots?.[0]?.captured_at || this.lastCapturedAt,
             timeline,
-            source: 'supabase'
+            source: 'neon'
           };
         }
       } catch (err) {
-        console.warn('Supabase query error, falling back to resilient store:', err);
+        console.warn('Neon query error, falling back to resilient store:', err);
       }
     }
 
@@ -157,7 +150,6 @@ class DatabaseService {
     const currentTimeline = calculateShowTimeline();
     const isHistorical = weekNumber < currentTimeline.currentWeek;
 
-    // In a historical week, we look back at the snapshot captured during that week
     const latest = await this.getLatestContestants();
     return {
       week: weekNumber,
