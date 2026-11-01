@@ -10,11 +10,15 @@ import {
   Search,
   Filter,
   ArrowUpDown,
-  Globe
+  Globe,
+  Clock,
+  Users
 } from 'lucide-react';
-import { Contestant, PlatformWeightConfig, RiskTier } from '../types';
+import { Contestant, PlatformWeightConfig, RiskTier, Language } from '../types';
 import { calculateTOSS, DEFAULT_PLATFORM_WEIGHTS } from '../utils/analyticsEngine';
 import { Sparkline } from './Sparkline';
+import { EVICTED_CONTESTANTS_TIMELINE } from '../data/mockRealityData';
+import { EvictionTimelineView } from './EvictionTimelineView';
 
 interface EvictionMatrixViewProps {
   contestants: Contestant[];
@@ -23,6 +27,7 @@ interface EvictionMatrixViewProps {
   onWeightsChange: (w: PlatformWeightConfig) => void;
   onOpenSources?: () => void;
   isNominationOnly: boolean;
+  language?: Language;
 }
 
 export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
@@ -31,8 +36,11 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
   weights,
   onWeightsChange,
   onOpenSources,
-  isNominationOnly
+  isNominationOnly,
+  language = 'en'
 }) => {
+  const isHinglish = language === 'hinglish';
+  const [viewMode, setViewMode] = useState<'matrix' | 'timeline'>('matrix');
   const [showWeightDrawer, setShowWeightDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<'evictionProbability' | 'toss' | 'raw' | 'prDelta' | 'trend'>('evictionProbability');
@@ -51,8 +59,12 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
     };
   });
 
+  const activeContestants = evaluatedContestants.filter((c) => c.status === 'Active');
+
   const filteredContestants = evaluatedContestants
     .filter((c) => {
+      // In matrix view, focus on active housemates unless explicitly searching or viewing all
+      if (!searchQuery.trim() && c.status === 'Evicted') return false;
       if (isNominationOnly && !c.isNominated) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -89,9 +101,9 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
     });
 
   // KPI calculations
-  const nominatedList = evaluatedContestants.filter((c) => c.isNominated);
-  const highestPrInfiltration = [...evaluatedContestants].sort((a, b) => b.prInfiltrationRate - a.prInfiltrationRate)[0];
-  const organicFavorite = [...evaluatedContestants].sort((a, b) => b.calculatedToss - a.calculatedToss)[0];
+  const nominatedList = activeContestants.filter((c) => c.isNominated);
+  const highestPrInfiltration = [...activeContestants].sort((a, b) => b.prInfiltrationRate - a.prInfiltrationRate)[0];
+  const organicFavorite = [...activeContestants].sort((a, b) => b.calculatedToss - a.calculatedToss)[0];
   const mostVulnerable = [...nominatedList].sort((a, b) => b.calculatedEvictionProbability - a.calculatedEvictionProbability)[0];
 
   const toggleSort = (field: typeof sortField) => {
@@ -105,70 +117,139 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Executive KPI Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span>Nominated for Eviction</span>
-            <span className="font-mono text-cyan-400">Week 5</span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono text-white tabular-nums">
-              {nominatedList.length}
+      {/* Top Sub-View Switcher: Matrix vs Eviction Timeline */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-2 bg-[#0c1322] border border-slate-800 rounded-xl">
+        <div className="flex items-center gap-2 p-1 bg-[#090f1c] border border-slate-800 rounded-lg">
+          <button
+            onClick={() => setViewMode('matrix')}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              viewMode === 'matrix'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>
+              {isHinglish ? 'Active Housemates (Week 5 Live)' : 'Active Housemates (Week 5 Live)'}
             </span>
-            <span className="text-xs text-slate-400">of {contestants.length} active housemates</span>
-          </div>
-          <p className="text-[11px] text-slate-500 mt-2">Public voting window closes in 36 hours</p>
+            <span className="px-1.5 py-0.2 text-[10px] bg-slate-800 rounded text-slate-300 font-mono">
+              {activeContestants.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setViewMode('timeline')}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              viewMode === 'timeline'
+                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Clock className="w-3.5 h-3.5 text-rose-400" />
+            <span>
+              {isHinglish ? 'Eviction Timeline (Week 1 Se Ab Tak)' : 'Eviction Timeline (Week 1 to Current)'}
+            </span>
+            <span className="px-1.5 py-0.2 text-[10px] bg-rose-950/60 border border-rose-500/30 rounded text-rose-300 font-mono">
+              {EVICTED_CONTESTANTS_TIMELINE.length}
+            </span>
+          </button>
         </div>
 
-        <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span>Highest PR Astroturfing</span>
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono text-amber-300 tabular-nums">
-              {highestPrInfiltration ? `${highestPrInfiltration.prInfiltrationRate}%` : '0%'}
-            </span>
-            <span className="text-xs text-slate-300 font-medium truncate max-w-[130px]">
-              {highestPrInfiltration?.name}
-            </span>
-          </div>
-          <p className="text-[11px] text-slate-500 mt-2">Heavy template duplication detected</p>
-        </div>
-
-        <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span>True Organic Leader</span>
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono text-emerald-400 tabular-nums">
-              {organicFavorite?.calculatedToss}% TOSS
-            </span>
-            <span className="text-xs text-slate-300 font-medium truncate max-w-[130px]">
-              {organicFavorite?.name}
-            </span>
-          </div>
-          <p className="text-[11px] text-slate-500 mt-2">Driven by casual YouTube & family viewership</p>
-        </div>
-
-        <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span>Top Eviction Vulnerability</span>
-            <Flame className="w-3.5 h-3.5 text-rose-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono text-rose-400 tabular-nums">
-              {mostVulnerable?.calculatedEvictionProbability}%
-            </span>
-            <span className="text-xs text-rose-300 font-medium truncate max-w-[130px]">
-              {mostVulnerable?.name}
-            </span>
-          </div>
-          <p className="text-[11px] text-slate-500 mt-2">Victim of the "Ghost Factor" / low organic breadth</p>
+        <div className="flex items-center gap-3 text-xs text-slate-400 pr-2">
+          <span className="font-mono text-cyan-400">
+            {isHinglish ? 'Voting Status: LIVE' : 'Voting Window: LIVE'}
+          </span>
+          <span>·</span>
+          <span>{isHinglish ? 'Week 5 Tathas-two Phase' : 'Week 5 Tathas-two Phase'}</span>
         </div>
       </div>
+
+      {/* Conditionally Render Timeline or Matrix */}
+      {viewMode === 'timeline' ? (
+        <EvictionTimelineView
+          timeline={EVICTED_CONTESTANTS_TIMELINE}
+          language={language}
+          onSelectContestantById={(id) => {
+            const match = contestants.find((c) => c.id === id);
+            if (match) onSelectContestant(match);
+          }}
+        />
+      ) : (
+        <>
+          {/* Executive KPI Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{isHinglish ? 'Eviction Khatre Mein' : 'Nominated for Eviction'}</span>
+                <span className="font-mono text-cyan-400">Week 5</span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold font-mono text-white tabular-nums">
+                  {nominatedList.length}
+                </span>
+                <span className="text-xs text-slate-400">
+                  {isHinglish ? `of ${activeContestants.length} active housemates` : `of ${activeContestants.length} active housemates`}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {isHinglish ? 'JioHotstar par voting lines khuli hain' : 'Public voting window closes in 36 hours'}
+              </p>
+            </div>
+
+            <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{isHinglish ? 'Sabse Zyada PR Bot Inflation' : 'Highest PR Astroturfing'}</span>
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold font-mono text-amber-300 tabular-nums">
+                  {highestPrInfiltration ? `${highestPrInfiltration.prInfiltrationRate}%` : '0%'}
+                </span>
+                <span className="text-xs text-slate-300 font-medium truncate max-w-[130px]">
+                  {highestPrInfiltration?.name}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {isHinglish ? 'Heavy copy-paste hashtag swarm pakda gaya' : 'Heavy template duplication detected'}
+              </p>
+            </div>
+
+            <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{isHinglish ? 'Asli Janta Leader (TOSS)' : 'True Organic Leader'}</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold font-mono text-emerald-400 tabular-nums">
+                  {organicFavorite?.calculatedToss}% TOSS
+                </span>
+                <span className="text-xs text-slate-300 font-medium truncate max-w-[130px]">
+                  {organicFavorite?.name}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {isHinglish ? 'YouTube aur family audience support' : 'Driven by casual YouTube & family viewership'}
+              </p>
+            </div>
+
+            <div className="p-4 bg-[#11192a] border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>{isHinglish ? 'Sabse Zyada Eviction Khatra' : 'Top Eviction Vulnerability'}</span>
+                <Flame className="w-3.5 h-3.5 text-rose-400" />
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold font-mono text-rose-400 tabular-nums">
+                  {mostVulnerable?.calculatedEvictionProbability}%
+                </span>
+                <span className="text-xs text-rose-300 font-medium truncate max-w-[130px]">
+                  {mostVulnerable?.name}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {isHinglish ? 'Low airtime + PR bubble collapse' : 'Victim of the "Ghost Factor" / low organic breadth'}
+              </p>
+            </div>
+          </div>
 
       {/* Eviction Risk Matrix (2D Visual Scatter) */}
       <div className="p-5 bg-[#11192a] border border-slate-800 rounded-xl space-y-4">
@@ -624,6 +705,8 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
           </table>
         </div>
       </div>
-    </div>
+    </>
+  )}
+</div>
   );
 };

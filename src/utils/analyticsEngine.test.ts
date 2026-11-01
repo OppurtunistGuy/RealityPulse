@@ -29,6 +29,10 @@ describe('Analytics Engine - calculateTOSS (Edge-to-Edge Hard Tests)', () => {
     votingTrajectory: 'Rising',
     tossTrend7d: [65, 66, 68, 70, 72, 74, 75],
     bio: 'Test bio',
+    pastDetails: 'Test past details',
+    controversies: ['Test controversy'],
+    houseGameplay: 'Test house gameplay',
+    strongestMove: 'Test strongest move',
     detectedAstroturfPatterns: [],
     platforms: {
       youtube: { sentiment: 80, organicRatio: 0.9, rawVolume: 10000, botCountEstimate: 500 },

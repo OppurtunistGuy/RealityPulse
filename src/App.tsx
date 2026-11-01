@@ -8,7 +8,7 @@ import { CustomDiscourseStudioView } from './components/CustomDiscourseStudioVie
 import { ContestantDetailModal } from './components/ContestantDetailModal';
 import { SourceProvenanceModal } from './components/SourceProvenanceModal';
 import { INITIAL_CONTESTANTS } from './data/mockRealityData';
-import { Contestant, PlatformWeightConfig } from './types';
+import { Contestant, PlatformWeightConfig, Language } from './types';
 import { DEFAULT_PLATFORM_WEIGHTS } from './utils/analyticsEngine';
 
 export default function App() {
@@ -18,6 +18,7 @@ export default function App() {
   const [isSourcesOpen, setIsSourcesOpen] = useState(false);
   const [weights, setWeights] = useState<PlatformWeightConfig>(DEFAULT_PLATFORM_WEIGHTS);
   const [isNominationOnly, setIsNominationOnly] = useState(false);
+  const [language, setLanguage] = useState<Language>('en');
 
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans">
@@ -29,6 +30,8 @@ export default function App() {
         onOpenSources={() => setIsSourcesOpen(true)}
         isNominationOnly={isNominationOnly}
         onToggleNominationOnly={() => setIsNominationOnly(!isNominationOnly)}
+        language={language}
+        onToggleLanguage={setLanguage}
       />
 
       {/* Main Workspace Viewport */}
@@ -41,6 +44,7 @@ export default function App() {
             onWeightsChange={setWeights}
             onOpenSources={() => setIsSourcesOpen(true)}
             isNominationOnly={isNominationOnly}
+            language={language}
           />
         )}
 
@@ -68,6 +72,7 @@ export default function App() {
       <ContestantDetailModal
         contestant={selectedContestant}
         onClose={() => setSelectedContestant(null)}
+        language={language}
       />
 
       {/* Real Source Provenance Modal */}

@@ -4,12 +4,22 @@ export type RiskTier = 'Safe' | 'Vocal Bubble / At Risk' | 'High Danger';
 
 export type EditType = 'Hero Edit' | 'Villain Edit' | 'Ghost Edit' | 'Neutral Edit';
 
+export type Language = 'en' | 'hinglish';
+
 export interface PlatformMetric {
   sentiment: number;      // 0 - 100
   organicRatio: number;   // 0.0 - 1.0 (portion deemed authentic)
   rawVolume: number;      // count of mentions/comments
   botCountEstimate: number;
   sampleSources?: string[]; // Specific source handles or links
+}
+
+export interface ContestantHinglish {
+  bio: string;
+  pastDetails: string;
+  controversies: string[];
+  houseGameplay: string;
+  strongestMove: string;
 }
 
 export interface Contestant {
@@ -20,6 +30,7 @@ export interface Contestant {
   role: 'Frontrunner' | 'Challenger' | 'Underdog' | 'Wildcard' | 'Polarizing';
   status: 'Active' | 'Evicted';
   isNominated: boolean;
+  evictionWeek?: number;            // 1, 2, 3, 4, etc. if evicted
   rawSentiment: number;             // 0 - 100
   trueOrganicSentiment: number;     // 0 - 100 (TOSS)
   prInflationDelta: number;         // raw - TOSS (positive = inflated by PR)
@@ -40,6 +51,31 @@ export interface Contestant {
   votingTrajectory: 'Rising' | 'Stable' | 'Plummeting' | 'Vocal Illusion';
   tossTrend7d: number[];            // 7 daily scores from Day 1 to Day 7
   bio: string;
+
+  // Deep Contestant Dossier
+  pastDetails?: string;             // Past career, origins, claim to fame
+  controversies?: string[];         // Past public controversies & viral internet drama
+  houseGameplay?: string;           // Strategy in BB house (alliances, habits, conflicts)
+  strongestMove?: string;           // Defining strongest move / task performance in house
+  hinglishProfile?: ContestantHinglish;
+}
+
+export interface EvictedContestantTimelineItem {
+  week: number;
+  weekLabel: string;
+  evictionDate: string;
+  contestantId: string;
+  name: string;
+  nickname: string;
+  avatar: string;
+  daysInHouse: number;
+  finalTossScore: number;
+  finalPrDelta: number;
+  evictionReason: string;
+  prVsOrganicCollapse: string;
+  headlineQuote: string;
+  hinglishReason?: string;
+  hinglishHeadline?: string;
 }
 
 export interface AstroturfCluster {
