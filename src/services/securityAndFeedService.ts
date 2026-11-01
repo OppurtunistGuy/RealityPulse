@@ -31,11 +31,11 @@ export const TRUSTED_BROADCASTER_DOMAINS = [
 ];
 
 export const TRUSTED_NEWS_DOMAINS = [
-  'indianexpress.com',
-  'indiatoday.in',
-  'hindustantimes.com',
-  'timesofindia.indiatimes.com',
-  'pinkvilla.com'
+  'pinkvilla.com',
+  'filmibeat.com',
+  'filmygyan.co',
+  'viralbhayani',
+  'tellymasala'
 ];
 
 function calculateBlockHash(
@@ -103,8 +103,8 @@ class SecurityAndFeedManager {
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         category: 'Nomination Alert',
         title: `Week ${calculateShowTimeline().currentWeek} Nominations Reported (Day ${calculateShowTimeline().currentDay}) [Reported / Disputed]`,
-        summary: 'Nomination lists reported across entertainment news: FilmiBeat reports 6 nominees (Scout, Arshifa, Gullu, Love, Harsh, Uditi); Deccan Chronicle reports 9 nominees (adding Aasif, Qazi, Kanika). Broadcaster direct feed access restricted.',
-        sourceUrl: 'https://www.filmibeat.com/television/news/',
+        summary: 'Nomination lists reported across authorized outlets: Pinkvilla reports 6 nominees (Scout, Love, Gullu, Arshifa, Harsh, Uditi); FilmiBeat reports 6 nominees (Aasif, Aamrapali, Gullu, Love, Scout, Kanika). Both lists quoted verbatim.',
+        sourceUrl: 'https://www.filmibeat.com/television/news/2026/bigg-boss-20-week-8-nominations-task-ludo-twist-danger-zone-contestants-428193.html',
         sourceDomain: 'filmibeat.com',
         verifiedByBroadcaster: false,
         involvedContestants: [
@@ -116,7 +116,7 @@ class SecurityAndFeedManager {
           'Uditi Singh',
           'Kanika Mann',
           'Aasif Khan',
-          'Qazi Ahmad Tauqeer'
+          'Aamrapali Dubey'
         ]
       },
       {
@@ -125,8 +125,8 @@ class SecurityAndFeedManager {
         category: 'Audience Sentiment Shift',
         title: 'Forensic Detection: 4,800 Scripted Bot Comments Discounted from TOSS',
         summary: 'PR astroturfing rings targeting Arishfa and Love Gill filtered by Levenshtein clustering engine; organic approval for Scout and Kanika rises to 87%.',
-        sourceUrl: 'https://indianexpress.com/section/entertainment/',
-        sourceDomain: 'indianexpress.com',
+        sourceUrl: 'https://www.pinkvilla.com/entertainment/television/',
+        sourceDomain: 'pinkvilla.com',
         verifiedByBroadcaster: false,
         involvedContestants: ['Tanmay Singh (Scout)', 'Kanika Mann', 'Arishfa Khan', 'Love Gill']
       }

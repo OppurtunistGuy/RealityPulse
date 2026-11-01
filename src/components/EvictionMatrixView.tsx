@@ -11,14 +11,15 @@ import {
   Clock,
   Shield,
   AlertOctagon,
-  HelpCircle
+  HelpCircle,
+  ExternalLink
 } from 'lucide-react';
 import { Contestant, PlatformWeightConfig, Language } from '../types';
 import { calculateTOSS } from '../utils/analyticsEngine';
 import { Sparkline } from './Sparkline';
 import { EvictionTimelineView } from './EvictionTimelineView';
 import { EVICTED_CONTESTANTS_TIMELINE } from '../data/mockRealityData';
-import { BB20_NOMINATION_CONFLICTS } from '../data/bb20ContestantsStatic';
+import { BB20_NOMINATION_AUDIT_DATA } from '../data/bb20ContestantsStatic';
 import { calculateShowTimeline } from '../data/timelineConfig';
 
 interface EvictionMatrixViewProps {
@@ -281,88 +282,157 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
         </span>
       </div>
 
-      {/* Week 8 / 9 Nomination Discrepancy & Evidence Card (Rule 4: Show Both Sources) */}
-      <div className="p-4 bg-[#0a1222] border border-cyan-500/30 rounded-xl space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+      {/* Nominations Panel (SOURCE POLICY: Pinkvilla, FilmiBeat, FilmyGyan, Viral Bhayani, TellyMasala) */}
+      <div id="nominations-panel" className="p-4 sm:p-5 bg-[#0a1222] border border-cyan-500/30 rounded-xl space-y-4 shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
           <div className="flex items-center gap-2 flex-wrap">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-            <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight">
-              Nomination Intel: Conflicting Reports Disclosed
+            <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
+              Nomination Intel: Authorized Multi-Source Audit
             </h4>
-            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+              Source Policy Enforced
+            </span>
+            <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
               Source Disagreement
             </span>
           </div>
-          <span className="text-xs font-mono text-slate-400">
-            [Official: Pending Broadcaster Webcast]
+          <span className="text-xs font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-slate-800">
+            [Official: Withheld — Broadcaster direct page not opened]
           </span>
         </div>
 
         <p className="text-xs text-slate-300 leading-relaxed">
-          {BB20_NOMINATION_CONFLICTS.explanation}
+          {BB20_NOMINATION_AUDIT_DATA.explanation}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-          {/* Source 1: FilmiBeat */}
-          <div className="p-3 bg-[#0f172a] border border-slate-800 rounded-lg space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-200">
-                Source A: FilmiBeat (6 Nominees)
-              </span>
-              <span className="font-mono text-xs px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">
-                [Reported: FilmiBeat]
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {BB20_NOMINATION_CONFLICTS.sources[0].nominees.map((nom) => (
-                <span
-                  key={nom}
-                  className="px-2 py-0.5 text-[11px] font-medium bg-rose-950/60 border border-rose-500/30 text-rose-300 rounded"
-                >
-                  {nom}
-                </span>
-              ))}
-            </div>
-          </div>
+        {/* Side-by-Side Authorized Outlet Lists */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+          {BB20_NOMINATION_AUDIT_DATA.sources.map((source) => {
+            const isStale = new Date(source.publishDate) < new Date(BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeDate);
+            return (
+              <div
+                key={source.outletName}
+                className="p-4 bg-[#0f172a] border border-slate-800 rounded-xl space-y-3 flex flex-col justify-between"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-sm text-white">{source.outletName}</span>
+                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-purple-950/80 border border-purple-700/60 text-purple-300">
+                        [{source.provenanceTag}: {source.outletName}]
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono text-slate-400">
+                        {source.publishDate}
+                      </span>
+                      {isStale ? (
+                        <span
+                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold"
+                          title={`Published on ${source.publishDate} before latest Episode ${BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeNumber} broadcast on ${BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeDate}`}
+                        >
+                          ⚠️ [Stale: Pre-Ep {BB20_NOMINATION_AUDIT_DATA.latestAiredEpisodeNumber}]
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+                          [Current]
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-          {/* Source 2: Deccan Chronicle */}
-          <div className="p-3 bg-[#0f172a] border border-slate-800 rounded-lg space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-200">
-                Source B: Deccan Chronicle (9 Nominees)
-              </span>
-              <span className="font-mono text-xs px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300">
-                [Reported: Deccan Chronicle]
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {BB20_NOMINATION_CONFLICTS.sources[1].nominees.map((nom) => {
-                const isDisputed = BB20_NOMINATION_CONFLICTS.disputedNominees.includes(nom);
-                return (
-                  <span
-                    key={nom}
-                    className={`px-2 py-0.5 text-[11px] font-medium rounded border ${
-                      isDisputed
-                        ? 'bg-amber-950/60 border-amber-500/40 text-amber-300 font-semibold'
-                        : 'bg-rose-950/60 border-rose-500/30 text-rose-300'
-                    }`}
-                    title={isDisputed ? 'Disputed nominee (absent from FilmiBeat)' : 'Consensus nominee'}
-                  >
-                    {nom} {isDisputed && '⚠️ [Disputed]'}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
+                  {/* Exact Article URL */}
+                  <div className="pt-1 pb-1">
+                    <span className="text-[10px] uppercase font-mono text-slate-500 block mb-0.5">
+                      Verified Article URL:
+                    </span>
+                    <a
+                      href={source.articleUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 underline font-mono break-all group"
+                      title={source.articleUrl}
+                    >
+                      <span className="truncate max-w-[280px] sm:max-w-[400px]">{source.articleUrl}</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0 text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+
+                  {/* Verbatim Name List As Printed */}
+                  <div className="space-y-1.5 pt-2 border-t border-slate-800/80">
+                    <span className="text-[10px] uppercase font-mono text-slate-400 block font-bold">
+                      Name List As Printed ({source.namesAsPrinted.length} Nominees):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                      {source.namesAsPrinted.map((name, idx) => {
+                        const isDisputed = BB20_NOMINATION_AUDIT_DATA.disputedNames.some((d) =>
+                          name.toLowerCase().includes(d.toLowerCase()) || d.toLowerCase().includes(name.toLowerCase())
+                        );
+
+                        return (
+                          <div
+                            key={idx}
+                            className={`px-2.5 py-1.5 text-xs rounded border transition-all ${
+                              isDisputed
+                                ? 'bg-amber-950/60 border-amber-500/40 text-amber-200 font-semibold'
+                                : 'bg-rose-950/50 border-rose-500/30 text-rose-300'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-1.5">
+                              <span className="truncate">
+                                {idx + 1}. {name}
+                              </span>
+                              {isDisputed ? (
+                                <span className="text-[10px] font-mono px-1 rounded bg-amber-500/30 text-amber-300 shrink-0 font-bold">
+                                  [Disputed]
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-mono text-emerald-400 shrink-0">
+                                  [Consensus]
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-slate-500 italic pt-2 border-t border-slate-800/60 font-mono">
+                  {source.notes}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] text-slate-400 pt-1 border-t border-slate-800/60">
-          <span>
-            Exempt / Safe per both: {BB20_NOMINATION_CONFLICTS.exemptHousemates.join(', ')}
-          </span>
-          <span className="font-mono text-cyan-400">
-            Colors TV/JioHotstar direct portal restricted
-          </span>
+        {/* Source Policy Rules & Quarantined Social Data Notice */}
+        <div className="p-3 bg-[#0c1424] border border-slate-800 rounded-lg space-y-1.5 text-xs text-slate-300">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+              <Shield className="w-3.5 h-3.5 text-cyan-400" />
+              Source Policy Enforcement Checklist:
+            </span>
+            <span className="font-mono text-[11px] text-cyan-400">
+              Only 5 Outlets Permitted (Pinkvilla, FilmiBeat, FilmyGyan, Viral Bhayani, TellyMasala)
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-400 pt-1">
+            <div>
+              <span className="text-slate-300 font-medium block">Colors TV / JioHotstar [Official]:</span>
+              <span>
+                Direct live voting pages were blocked by geo-fencing/session gates. Per policy, the [Official] tag is withheld unless directly opened.
+              </span>
+            </div>
+            <div>
+              <span className="text-slate-300 font-medium block">Social Media (X, IG, Reddit) [Unverified]:</span>
+              <span>
+                Social speculation is quarantined as [Unverified] and excluded unless corroborated by one of the 5 authorized outlets above.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -916,7 +986,7 @@ export const EvictionMatrixView: React.FC<EvictionMatrixViewProps> = ({
                               title={c.nominationNote}
                             >
                               Disputed
-                              <span className="text-[10px] text-amber-400 font-mono">[Reported: DC]</span>
+                              <span className="text-[10px] text-amber-400 font-mono">[Reported: Disputed]</span>
                             </span>
                           ) : c.isNominated ? (
                             <span

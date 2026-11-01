@@ -55,6 +55,34 @@ export interface SourceCitation {
 
 export type FactProvenance = 'official' | 'reported' | 'disputed' | 'unverified';
 
+export type AllowedSourceOutlet =
+  | 'Colors TV'
+  | 'JioHotstar'
+  | 'Pinkvilla'
+  | 'FilmiBeat'
+  | 'FilmyGyan'
+  | 'Viral Bhayani'
+  | 'TellyMasala';
+
+export interface NominationSourceEntry {
+  outletName: AllowedSourceOutlet;
+  articleUrl: string;
+  publishDate: string; // ISO date format YYYY-MM-DD
+  namesAsPrinted: string[]; // verbatim copied names, exact order as printed
+  provenanceTag: 'Official' | 'Reported' | 'Unverified';
+  isAiredEpCheckPassed?: boolean;
+  notes?: string;
+}
+
+export interface NominationAuditData {
+  latestAiredEpisodeDate: string;
+  latestAiredEpisodeNumber: number;
+  sources: NominationSourceEntry[];
+  consensusNames: string[];
+  disputedNames: string[];
+  explanation: string;
+}
+
 export interface NominationSourceReport {
   sourceName: string;
   domain: string;
@@ -68,8 +96,8 @@ export interface NominationSourceReport {
 export interface NominationConflictReport {
   week: number;
   sources: NominationSourceReport[];
-  consensusNominees: string[]; // Reported by both FilmiBeat and Deccan Chronicle
-  disputedNominees: string[];  // Reported by Deccan Chronicle, omitted by FilmiBeat
+  consensusNominees: string[];
+  disputedNominees: string[];
   exemptHousemates: string[];
   broadcasterStatus: string;
   explanation: string;

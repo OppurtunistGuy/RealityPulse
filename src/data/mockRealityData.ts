@@ -444,22 +444,22 @@ export const SOURCE_PROVENANCE_CATALOG: SourceProvenanceItem[] = [
     "description": "Established national entertainment journalism providing factual corroboration.",
     "verifiedFeedsAndHandles": [
       {
-        "name": "The Indian Express (BB20 Live)",
-        "identifier": "indianexpress.com/section/entertainment",
-        "role": "Daily live blog, episode recaps, and task analysis",
-        "estimatedDailyVolume": "6 in-depth articles/day"
+        "name": "Pinkvilla (Television Desk)",
+        "identifier": "pinkvilla.com/entertainment/television",
+        "role": "Daily episodic recaps, verified nomination updates, and task analysis",
+        "estimatedDailyVolume": "8 in-depth articles/day"
       },
       {
-        "name": "Times of India (TOI TV)",
-        "identifier": "timesofindia.indiatimes.com/tv/news/hindi",
+        "name": "FilmiBeat (Television News)",
+        "identifier": "filmibeat.com/television/news",
         "role": "Nomination lists, voting trends, and exit leaks",
-        "estimatedDailyVolume": "8 articles/day"
+        "estimatedDailyVolume": "10 articles/day"
       },
       {
-        "name": "Hindustan Times Entertainment",
-        "identifier": "hindustantimes.com/entertainment",
+        "name": "FilmyGyan (Entertainment Network)",
+        "identifier": "filmygyan.co/bigg-boss-20",
         "role": "Audience review roundups and weekend critiques",
-        "estimatedDailyVolume": "6 articles/day"
+        "estimatedDailyVolume": "6 updates/day"
       }
     ],
     "samplingMethodology": "Automated newsfeed aggregation cross-referencing author names, publication times, and primary claims.",

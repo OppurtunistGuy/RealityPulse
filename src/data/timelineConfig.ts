@@ -49,3 +49,4 @@ export function getDynamicShowInfo(referenceDate: Date = new Date()) {
   const { currentDay, currentWeek } = calculateShowTimeline(referenceDate);
   return { currentDay, currentWeek };
 }
+

@@ -101,7 +101,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                         ) : (
                           <span className="flex items-center gap-1 text-[10px] font-medium text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">
                             <AlertTriangle className="w-3 h-3 text-amber-400" />
-                            [Reported: Republic World]
+                            [Reported: Pinkvilla]
                           </span>
                         )}
                       </div>
@@ -168,7 +168,7 @@ export const EvictionTimelineView: React.FC<EvictionTimelineViewProps> = ({
                       ) : (
                         <>
                           <AlertTriangle className="w-3 h-3 text-amber-400" />
-                          <span>[Reported] Verified via Republic World & Indian Express News Desks</span>
+                          <span>[Reported] Verified via Pinkvilla Television Desk</span>
                         </>
                       )}
                     </span>

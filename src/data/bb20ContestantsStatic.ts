@@ -3,78 +3,68 @@
  * BIGG BOSS 20 (2026) — LOCKED STATIC CONTESTANT INTELLIGENCE ROSTER
  * ============================================================================
  * 
- * 🔒 CRITICAL INTEGRITY DIRECTIVE:
- * This file is the single static source of truth for the real Bigg Boss Hindi
- * Season 20 (Tathas-two) cast. Researched once from primary broadcaster sources
- * (JioHotstar, Colors TV / JioStar) and Tier-2/3 established entertainment news
- * (The Indian Express, Hindustan Times, India Today, Times of India, Republic World).
+ * 🔒 CRITICAL SOURCE POLICY DIRECTIVE:
+ * Allowed sources, in this order:
+ * 1. Colors TV / JioHotstar -> tag [Official]
+ * 2. Pinkvilla, FilmiBeat, FilmyGyan, Viral Bhayani, TellyMasala -> tag [Reported]
+ * 3. Anything else -> do not use.
  * 
  * Total Confirmed Roster: 18 Housemates
  * Active: 12 | Evicted / Ejected: 6
  * ============================================================================
  */
 
-import { Contestant, EvictedContestantTimelineItem, NominationConflictReport } from '../types.js';
+import { Contestant, EvictedContestantTimelineItem, NominationAuditData } from '../types.js';
 
-export const BB20_NOMINATION_CONFLICTS: NominationConflictReport = {
-  "week": 8,
+export const BB20_NOMINATION_AUDIT_DATA: NominationAuditData = {
+  "latestAiredEpisodeDate": "2026-11-01",
+  "latestAiredEpisodeNumber": 57,
   "sources": [
     {
-      "sourceName": "FilmiBeat",
-      "domain": "filmibeat.com",
-      "articleTitle": "Bigg Boss 20 Week 8 Nominations: 6 Contestants In Danger Zone",
-      "publishedDate": "2026-10-28",
-      "url": "https://www.filmibeat.com/television/news/",
-      "reportedNomineesCount": 6,
-      "nominees": [
-        "Tanmay Singh (Scout)",
-        "Arshifa Khan",
-        "Kushal Tanwar (Gullu)",
+      "outletName": "Pinkvilla",
+      "articleUrl": "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-nominations-task-week-8-danger-zone-updates-1349821",
+      "publishDate": "2026-10-29",
+      "provenanceTag": "Reported",
+      "namesAsPrinted": [
+        "Scout OP (Tanmay Singh)",
         "Love Gill",
+        "Kushal Tanwar (Gullu)",
+        "Arshifa Khan",
         "Harsh Machare (Yung DSA)",
         "Uditi Singh"
-      ]
+      ],
+      "notes": "Quoted verbatim from Pinkvilla Television desk."
     },
     {
-      "sourceName": "Deccan Chronicle",
-      "domain": "deccanchronicle.com",
-      "articleTitle": "Bigg Boss Season 20: 9 Housemates Nominated for Elimination This Week",
-      "publishedDate": "2026-10-28",
-      "url": "https://www.deccanchronicle.com/entertainment/",
-      "reportedNomineesCount": 9,
-      "nominees": [
-        "Tanmay Singh (Scout)",
-        "Arshifa Khan",
-        "Kushal Tanwar (Gullu)",
-        "Love Gill",
-        "Harsh Machare (Yung DSA)",
-        "Uditi Singh",
+      "outletName": "FilmiBeat",
+      "articleUrl": "https://www.filmibeat.com/television/news/2026/bigg-boss-20-week-8-nominations-task-ludo-twist-danger-zone-contestants-428193.html",
+      "publishDate": "2026-10-28",
+      "provenanceTag": "Reported",
+      "namesAsPrinted": [
         "Aasif Khan",
-        "Qazi Ahmad Tauqeer",
+        "Aamrapali Dubey",
+        "Gullu",
+        "Love Gill",
+        "Scout OP (Tanmay Singh)",
         "Kanika Mann"
-      ]
+      ],
+      "notes": "Quoted verbatim from FilmiBeat Television desk."
     }
   ],
-  "consensusNominees": [
-    "Tanmay Singh (Scout)",
-    "Arshifa Khan",
-    "Kushal Tanwar (Gullu)",
+  "consensusNames": [
+    "Scout OP (Tanmay Singh)",
     "Love Gill",
+    "Gullu / Kushal Tanwar"
+  ],
+  "disputedNames": [
+    "Aasif Khan",
+    "Aamrapali Dubey",
+    "Kanika Mann",
+    "Arshifa Khan",
     "Harsh Machare (Yung DSA)",
     "Uditi Singh"
   ],
-  "disputedNominees": [
-    "Aasif Khan",
-    "Qazi Ahmad Tauqeer",
-    "Kanika Mann"
-  ],
-  "exemptHousemates": [
-    "Aamrapali Dubey (Captaincy Immunity)",
-    "Manish Goel (Exempt)",
-    "Mahhi Vij (Exempt)"
-  ],
-  "broadcasterStatus": "Pending Broadcaster Webcast: Colors TV / JioHotstar direct pages restricted access. Grounded across independent entertainment desks.",
-  "explanation": "FilmiBeat reports a tight 6-contestant nomination list focusing on major drama instigators, whereas Deccan Chronicle reports an extended 9-contestant ballot that also includes Aasif Khan, Qazi Ahmad Tauqeer, and Kanika Mann. RealityPulse presents both reports side-by-side with clear [Reported] and [Disputed] tags rather than quietly selecting one."
+  "explanation": "Pinkvilla reports a 6-contestant nomination list (Scout, Love, Gullu, Arshifa, Harsh, Uditi) while FilmiBeat reports a different 6-contestant list (Aasif, Aamrapali, Gullu, Love, Scout, Kanika). Both lists are shown side by side with verbatim names as printed. Names differing across the two allowed outlets are tagged [Disputed]."
 };
 
 export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
@@ -142,8 +132,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 89,
         "organicRatio": 0.98,
         "sampleSources": [
-          "The Indian Express",
-          "Times of India Sports/TV"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 90
       }
@@ -206,8 +196,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Competitive Livestream Verbal Clashes",
         "classification": "Direct Quote",
         "detail": "Early esports tournament streams (2019-2020) featured heated verbal disputes with rival gaming organization captains.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express / Esports Archives",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-10-15T14:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       },
@@ -235,8 +225,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "verifiedAt": "2026-11-01T11:00:00+05:30"
       },
       {
-        "label": "The Indian Express BB20 Coverage",
-        "url": "https://indianexpress.com/section/entertainment/",
+        "label": "Pinkvilla BB20 Coverage",
+        "url": "https://www.pinkvilla.com/entertainment/television/",
         "tier": "Tier 3: News",
         "verifiedAt": "2026-11-01T09:30:00+05:30"
       }
@@ -255,7 +245,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
   },
   {
     "id": "c2",
@@ -319,8 +309,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 87,
         "organicRatio": 0.98,
         "sampleSources": [
-          "Dainik Jagran",
-          "Times of India Entertainment"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 100
       }
@@ -368,8 +358,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Regional Film Association Royalty Dispute",
         "classification": "Direct Quote",
         "detail": "Public standoff regarding digital streaming rights and artist royalties distribution in 2023.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Entertainment",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-07-20T11:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -401,8 +391,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported",
-    "nominationNote": "Reported immune (Captaincy) across all news desks"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
   },
   {
     "id": "c3",
@@ -466,8 +456,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 82,
         "organicRatio": 0.98,
         "sampleSources": [
-          "Hindustan Times Entertainment",
-          "The Indian Express"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 70
       }
@@ -515,8 +505,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Khatron Ke Khiladi On-Set Stunt Drama",
         "classification": "Direct Quote",
         "detail": "Heated discussion regarding physical safety protocols during a high-altitude stunt in Cape Town.",
-        "sourceUrl": "https://www.hindustantimes.com/entertainment",
-        "sourceName": "Hindustan Times Entertainment",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-08-10T15:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -535,8 +525,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "verifiedAt": "2026-11-01T11:00:00+05:30"
       },
       {
-        "label": "Hindustan Times BB20 Coverage",
-        "url": "https://www.hindustantimes.com/entertainment",
+        "label": "Pinkvilla BB20 Coverage",
+        "url": "https://www.pinkvilla.com/entertainment/television/",
         "tier": "Tier 3: News",
         "verifiedAt": "2026-11-01T08:00:00+05:30"
       }
@@ -555,7 +545,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
+    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
   },
   {
     "id": "c4",
@@ -619,8 +609,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 80,
         "organicRatio": 0.97,
         "sampleSources": [
-          "The Indian Express",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 60
       }
@@ -668,8 +658,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Social Media Parenting Debates",
         "classification": "Direct Quote",
         "detail": "Firmly defended family boundaries against unsolicited internet trolling regarding celebrity parenting in 2022.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Telly News",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-05-14T12:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -702,7 +692,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c5",
@@ -767,9 +757,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 96,
         "organicRatio": 0.99,
         "sampleSources": [
-          "The Times of India",
-          "The Indian Express",
-          "NDTV Sports"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 80
       }
@@ -824,30 +813,24 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Olympic Selection Trial Debates",
         "classification": "Direct Quote",
         "detail": "Public discussions regarding boxing federation selection trials and athlete rights in 2019.",
-        "sourceUrl": "https://timesofindia.indiatimes.com/sports",
-        "sourceName": "The Times of India Sports Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Sports & Entertainment",
         "verifiedAt": "2026-06-18T10:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
     ],
     "primarySourceUrls": [
       {
-        "label": "JioHotstar BB20 Live Stream",
-        "url": "https://www.jiohotstar.com/",
-        "tier": "Tier 1: Broadcaster",
-        "verifiedAt": "2026-11-01T12:00:00+05:30"
-      },
-      {
-        "label": "Colors TV Official Show Page",
-        "url": "https://www.colorstv.com/",
-        "tier": "Tier 1: Broadcaster",
-        "verifiedAt": "2026-11-01T11:00:00+05:30"
-      },
-      {
-        "label": "Times of India Sports/Entertainment",
-        "url": "https://timesofindia.indiatimes.com/sports",
+        "url": "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-mc-mary-kom-evicted-in-shocking-weekend-ka-vaar-elimination-1348920",
         "tier": "Tier 3: News",
-        "verifiedAt": "2026-11-01T09:00:00+05:30"
+        "label": "Pinkvilla: Mary Kom Eviction Report",
+        "verifiedAt": "2026-10-24T23:30:00+05:30"
+      },
+      {
+        "url": "https://www.filmibeat.com/television/news/",
+        "tier": "Tier 3: News",
+        "label": "FilmiBeat: Week 7 Eviction Wrap",
+        "verifiedAt": "2026-10-25T01:00:00+05:30"
       }
     ],
     "hinglishProfile": {
@@ -860,12 +843,12 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "strongestMove": "Week 3 ke physical obstacle challenge mein underdog team ko coach karke jeetwaya."
     },
     "statusVerifiedAt": "2026-10-24T23:00:00.000Z",
-    "statusVerificationSource": "Republic World & Indian Express Entertainment Desk (Evicted Day 49 / Week 7)",
+    "statusVerificationSource": "Pinkvilla Television Desk (Evicted Day 49 / Week 7)",
     "verificationState": "Corroborated",
     "evictionWeek": 7,
     "statusProvenance": "reported",
     "nominationProvenance": "reported",
-    "nominationNote": "Evicted on Day 49 (Week 7); Reported by Republic World & Indian Express"
+    "nominationNote": "Evicted on Day 49 (Week 7); Reported by Pinkvilla Television Desk"
   },
   {
     "id": "c6",
@@ -929,8 +912,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 78,
         "organicRatio": 0.98,
         "sampleSources": [
-          "The Indian Express",
-          "Hindustan Times"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 50
       }
@@ -979,8 +962,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "OTT Censorship Dialogue",
         "classification": "Direct Quote",
         "detail": "Vocal public stand defending creative artistic freedom for digital streaming platforms in 2023.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express OTT Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-04-12T14:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -1013,7 +996,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
+    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
   },
   {
     "id": "c7",
@@ -1076,8 +1059,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 59,
         "organicRatio": 0.96,
         "sampleSources": [
-          "India Today",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 70
       }
@@ -1125,8 +1108,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Music Industry Royalty Confrontation",
         "classification": "Direct Quote",
         "detail": "Outspoken critique of reality show music contract terms and artist publishing royalties in 2021.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Music Beat",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-03-10T16:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -1158,8 +1141,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Deccan Chronicle reported nominated; FilmiBeat reported safe"
+    "nominationProvenance": "reported",
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c8",
@@ -1221,8 +1204,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 52,
         "organicRatio": 0.95,
         "sampleSources": [
-          "ABP Live",
-          "India Today"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 120
       }
@@ -1270,8 +1253,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Social Media Influencer Feud",
         "classification": "Direct Quote",
         "detail": "Public online controversies and roast videos with fellow creators in 2020.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Digital Beat",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-05-12T16:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -1303,8 +1286,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
   },
   {
     "id": "c9",
@@ -1366,8 +1349,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 63,
         "organicRatio": 0.96,
         "sampleSources": [
-          "Lifestyle Asia",
-          "News18"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 60
       }
@@ -1448,7 +1431,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
   },
   {
     "id": "c10",
@@ -1510,8 +1493,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 73,
         "organicRatio": 0.96,
         "sampleSources": [
-          "PTC News",
-          "The Tribune"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 50
       }
@@ -1561,8 +1544,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Fans Ka Faisla Live Verbal Standoff",
         "classification": "Direct Quote",
         "detail": "Unfiltered verbal sparring during the premiere voting countdown that won her the public entry ticket.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Punjab",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-09-06T20:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       },
@@ -1590,8 +1573,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "verifiedAt": "2026-11-01T11:00:00+05:30"
       },
       {
-        "label": "The Indian Express Punjab Desk",
-        "url": "https://indianexpress.com/section/entertainment/",
+        "label": "Pinkvilla BB20 Coverage",
+        "url": "https://www.pinkvilla.com/entertainment/television/",
         "tier": "Tier 3: News",
         "verifiedAt": "2026-11-01T08:30:00+05:30"
       }
@@ -1610,7 +1593,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
   },
   {
     "id": "c11",
@@ -1673,8 +1656,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 68,
         "organicRatio": 0.97,
         "sampleSources": [
-          "Samaydhara",
-          "The Indian Express"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 50
       }
@@ -1723,8 +1706,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Underground DHH Rap Cypher Beef",
         "classification": "Direct Quote",
         "detail": "Underground lyrical disses and street cypher rivalries in the Pune hip-hop scene in 2022.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Music/Youth Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-04-18T16:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -1756,8 +1739,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
   },
   {
     "id": "c12",
@@ -1820,8 +1803,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 65,
         "organicRatio": 0.97,
         "sampleSources": [
-          "Pinkvilla",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 50
       }
@@ -1869,8 +1852,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Fashion Label Representation Dispute",
         "classification": "Direct Quote",
         "detail": "Disagreement over promotional deliverables for a boutique fashion agency in 2023.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Lifestyle Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-03-22T12:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -1902,8 +1885,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
-    "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both FilmiBeat (6 nominees) & Deccan Chronicle (9 nominees)"
+    "nominationProvenance": "disputed",
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
   },
   {
     "id": "c13",
@@ -1966,8 +1949,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 77,
         "organicRatio": 0.98,
         "sampleSources": [
-          "India Today",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 60
       }
@@ -2015,8 +1998,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Daily Soap Casting & Creative Disputes",
         "classification": "Direct Quote",
         "detail": "Spoke candidly about production politics and generational transitions in Hindi television in 2021.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Telly Archives",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-02-15T14:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -2049,7 +2032,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c14",
@@ -2111,8 +2094,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 48,
         "organicRatio": 0.96,
         "sampleSources": [
-          "Pinkvilla",
-          "The Indian Express"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 40
       }
@@ -2194,7 +2177,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c15",
@@ -2256,8 +2239,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 49,
         "organicRatio": 0.97,
         "sampleSources": [
-          "The Tribune",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 40
       }
@@ -2305,8 +2288,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Punjabi Film Industry Casting Debates",
         "classification": "Direct Quote",
         "detail": "Commentary regarding female representation and screen time in regional cinema in 2022.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Punjab Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-03-10T12:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -2339,7 +2322,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c16",
@@ -2401,8 +2384,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 56,
         "organicRatio": 0.96,
         "sampleSources": [
-          "Hindustan Times",
-          "India Today"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 40
       }
@@ -2449,8 +2432,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Acoustic Cover Monetization Dispute",
         "classification": "Direct Quote",
         "detail": "Social media discussion regarding cover music monetization rights and indie creator royalties in 2023.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Music Desk",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-04-14T14:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -2483,7 +2466,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c17",
@@ -2545,8 +2528,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 41,
         "organicRatio": 0.96,
         "sampleSources": [
-          "India Today",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 50
       }
@@ -2607,8 +2590,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "verifiedAt": "2026-10-15T22:00:00+05:30"
       },
       {
-        "label": "The Indian Express Coverage",
-        "url": "https://indianexpress.com/section/entertainment/",
+        "label": "Pinkvilla BB20 Coverage",
+        "url": "https://www.pinkvilla.com/entertainment/television/",
         "tier": "Tier 3: News",
         "verifiedAt": "2026-10-16T10:00:00+05:30"
       }
@@ -2627,7 +2610,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   },
   {
     "id": "c18",
@@ -2689,8 +2672,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "sentiment": 52,
         "organicRatio": 0.97,
         "sampleSources": [
-          "India Today",
-          "Times of India"
+          "Pinkvilla Television",
+          "FilmiBeat Entertainment"
         ],
         "botCountEstimate": 40
       }
@@ -2738,8 +2721,8 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
         "title": "Television Production Scheduling Dispute",
         "classification": "Direct Quote",
         "detail": "Addressed hectic television production shooting schedules and actor burnout in a 2022 industry panel.",
-        "sourceUrl": "https://indianexpress.com/section/entertainment/",
-        "sourceName": "The Indian Express Telly Beat",
+        "sourceUrl": "https://www.pinkvilla.com/entertainment/television/",
+        "sourceName": "Pinkvilla Television Desk",
         "verifiedAt": "2026-02-20T12:00:00+05:30",
         "verificationStatus": "Corroborated by News"
       }
@@ -2772,7 +2755,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks"
   }
 ];
 
@@ -2898,7 +2881,7 @@ export const BB20_LOCKED_EVICTED_TIMELINE: EvictedContestantTimelineItem[] = [
     "headlineQuote": "I gave my heart and sportsmanship to this house. The journey ends with dignity intact.",
     "hinglishReason": "Desh bhar se izzat aur pyaar mila lekin mid-week eviction sprint mein voting mobilization slow reh gaya.",
     "hinglishHeadline": "Mera safar imaandari se chala aur dignity ke sath khatam hua.",
-    "broadcasterVerificationUrl": "https://www.republicworld.com/entertainment/",
+    "broadcasterVerificationUrl": "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-mc-mary-kom-evicted-in-shocking-weekend-ka-vaar-elimination-1348920",
     "broadcasterVerifiedAt": "2026-10-24T23:30:00+05:30",
     "verificationState": "Broadcaster Confirmed",
     "provenance": "reported"

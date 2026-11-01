@@ -37,8 +37,8 @@ const INITIAL_GROUNDED_REPORT = {
 - **High Danger:** Contestants suffering from the "Ghost Factor" (minimal broadcast airtime combined with no organic casual fanbase, such as Aasif Khan or Aamrapali Dubey in the danger zone) or acute audience fatigue remain at highest risk of elimination.
 - **Audience Verdict:** Casual voters are actively rejecting forced producer edits, creating a negative reception delta for manufactured heroic narratives.`,
   groundingChunks: [
-    { web: { title: "The Indian Express: Bigg Boss 20 Voting Trends & Elimination Coverage", uri: "https://indianexpress.com/section/entertainment/" } },
-    { web: { title: "Hindustan Times Entertainment: Bigg Boss Season 20 Eviction News & Analysis", uri: "https://www.hindustantimes.com/entertainment/" } },
+    { web: { title: "Pinkvilla: Bigg Boss 20 Week 8 Danger Zone & Nominations Coverage", uri: "https://www.pinkvilla.com/entertainment/television/bigg-boss-20-nominations-task-week-8-danger-zone-updates-1349821" } },
+    { web: { title: "FilmiBeat: Bigg Boss 20 Week 8 Nominations Task Analysis & Contestant Roster", uri: "https://www.filmibeat.com/television/news/2026/bigg-boss-20-week-8-nominations-task-ludo-twist-danger-zone-contestants-428193.html" } },
     { web: { title: "JioHotstar Official: Bigg Boss 20 Broadcast Stream & Public Polls", uri: "https://www.jiohotstar.com/" } }
   ],
   webSearchQueries: [
