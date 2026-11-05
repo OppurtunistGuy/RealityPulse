@@ -62,7 +62,10 @@ export type AllowedSourceOutlet =
   | 'FilmiBeat'
   | 'FilmyGyan'
   | 'Viral Bhayani'
-  | 'TellyMasala';
+  | 'TellyMasala'
+  | 'bigboss20.in'
+  | 'bbvote.in'
+  | 'biggbosshindi.in';
 
 export interface NominationSourceEntry {
   outletName: AllowedSourceOutlet;
@@ -280,11 +283,11 @@ export interface PredictionScorecardEntry {
   contestantName: string;
   avatar: string;
   predictedRiskPercentage: number | null;
-  predictedToss: number;
-  predictedRiskTier: RiskTier;
-  actualOutcome: 'Evicted' | 'Saved' | 'Disqualified';
+  predictedToss: number | null;
+  predictedRiskTier: RiskTier | 'Pending Evaluation';
+  actualOutcome: 'Evicted' | 'Saved' | 'Disqualified' | 'Pending (Weekend Ka Vaar · 8 Nov 2026)';
   outcomeDetail: string;
-  verdict: 'HIT' | 'MISSED' | 'EXCLUDED';
+  verdict: 'HIT' | 'MISSED' | 'EXCLUDED' | 'PENDING';
   notes: string;
 }
 

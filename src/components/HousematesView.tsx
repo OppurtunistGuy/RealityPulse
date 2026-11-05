@@ -363,3 +363,4 @@ export const HousematesView: React.FC<HousematesViewProps> = ({
     </div>
   );
 };
+

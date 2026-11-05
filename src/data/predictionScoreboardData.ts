@@ -2,6 +2,22 @@ import { PredictionScorecardEntry, PredictionScoreboardSummary } from '../types'
 
 export const PREDICTION_SCORECARD_DATA: PredictionScorecardEntry[] = [
   {
+    week: 9,
+    weekLabel: 'Week 9 · Chain Reaction Nominations (Day 61)',
+    episodeNumber: 60,
+    date: '2026-11-05',
+    contestantId: 'c4',
+    contestantName: 'Declined to Call (Insufficient Data)',
+    avatar: 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%231e293b%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%22%20font-size%3D%2232%22%20font-weight%3D%22bold%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3EW9%3C%2Ftext%3E%0A%3C%2Fsvg%3E',
+    predictedRiskPercentage: null,
+    predictedToss: null,
+    predictedRiskTier: 'Safe',
+    actualOutcome: 'Pending (Weekend Ka Vaar · 8 Nov 2026)',
+    outcomeDetail: 'Nominees: Tanmay Singh, Uditi Singh, Arshifa Khan, Aamrapali Dubey, Manish Goel, Mahhi Vij. Voting deadline: Friday 6 Nov, 10:00 AM IST.',
+    verdict: 'PENDING',
+    notes: 'PROSPECTIVE FORECAST (Timestamped 05 Nov 2026, 17:30 IST): Refusing to invent numbers or backfill predictions before comment pipeline verification. Model holds call in Insufficient Data state prior to Friday 10:00 AM voting deadline.'
+  },
+  {
     week: 8,
     weekLabel: 'Week 8 · Weekend Ka Vaar (Day 57)',
     episodeNumber: 57,

@@ -78,7 +78,7 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-lg font-bold text-white tracking-tight">{contestant.name}</h3>
                 <span className="text-xs font-mono text-slate-400">"{contestant.nickname}"</span>
-                
+
                 {contestant.status === 'Evicted' ? (
                   <span className="text-[11px] font-semibold text-rose-300 bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/30">
                     {isHinglish ? `Week ${contestant.evictionWeek ?? ''} Mein Evicted` : `Evicted (Week ${contestant.evictionWeek ?? ''})`}
@@ -177,9 +177,8 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
                 {isHinglish ? 'PR Hype Gap' : 'PR manipulation'}
               </span>
               <span
-                className={`text-xl font-bold font-mono tabular-nums ${
-                  contestant.prInflationDelta > 15 ? 'text-rose-400' : 'text-slate-200'
-                }`}
+                className={`text-xl font-bold font-mono tabular-nums ${contestant.prInflationDelta > 15 ? 'text-rose-400' : 'text-slate-200'
+                  }`}
               >
                 {contestant.prInflationDelta > 0 ? `+${contestant.prInflationDelta}` : contestant.prInflationDelta}%
               </span>

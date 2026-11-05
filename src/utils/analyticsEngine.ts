@@ -32,12 +32,12 @@ export function calculateTOSS(
     (p.instagram?.rawVolume || 0) +
     (p.threads?.rawVolume || 0);
 
-  // If social sample volume is below statistical confidence threshold (< 1000 comments)
-  if (totalSocialVolume < 1000) {
+  // If marked insufficientData or social sample volume is below statistical confidence threshold (< 1000 comments)
+  if (contestant.insufficientData || totalSocialVolume < 1000) {
     return {
-      toss: 50,
-      raw: 50,
-      prDelta: 0,
+      toss: contestant.trueOrganicSentiment || 50,
+      raw: contestant.rawSentiment || 50,
+      prDelta: (contestant.rawSentiment || 50) - (contestant.trueOrganicSentiment || 50),
       riskTier: 'Safe',
       evictionProbability: null,
       insufficientData: true

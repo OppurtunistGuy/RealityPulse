@@ -17,54 +17,50 @@
 import { Contestant, EvictedContestantTimelineItem, NominationAuditData } from '../types.js';
 
 export const BB20_NOMINATION_AUDIT_DATA: NominationAuditData = {
-  "latestAiredEpisodeDate": "2026-11-01",
-  "latestAiredEpisodeNumber": 57,
+  "latestAiredEpisodeDate": "2026-11-04",
+  "latestAiredEpisodeNumber": 60,
   "sources": [
     {
-      "outletName": "Pinkvilla",
-      "articleUrl": "",
-      "publishDate": "2026-10-29",
+      "outletName": "bigboss20.in",
+      "articleUrl": "https://bigboss20.in/nominations",
+      "publishDate": "2026-11-04",
       "provenanceTag": "Reported",
       "namesAsPrinted": [
-        "Scout OP (Tanmay Singh)",
-        "Love Gill",
-        "Kushal Tanwar (Gullu)",
+        "Tanmay Singh (Scoutop)",
+        "Uditi Singh",
         "Arshifa Khan",
-        "Harsh Machare (Yung DSA)",
-        "Uditi Singh"
+        "Aamrapali Dubey",
+        "Manish Goel",
+        "Mahhi Vij"
       ],
-      "notes": "Reported via Pinkvilla Television Desk. Direct article link unverified/session restricted [Unverifiable]."
+      "notes": "Verified via bigboss20.in. Week 9 chain-reaction task: Captain Kanika Mann nominated Mahhi Vij, passing down to Aamrapali -> Arshifa -> Scout -> Uditi -> Manish Goel (stopped chain). Voting closes Friday 6 Nov, 10:00 AM IST."
     },
     {
-      "outletName": "FilmiBeat",
-      "articleUrl": "",
-      "publishDate": "2026-10-28",
+      "outletName": "bbvote.in",
+      "articleUrl": "https://bbvote.in/",
+      "publishDate": "2026-11-04",
       "provenanceTag": "Reported",
       "namesAsPrinted": [
-        "Aasif Khan",
-        "Aamrapali Dubey",
-        "Gullu",
-        "Love Gill",
-        "Scout OP (Tanmay Singh)",
-        "Kanika Mann"
+        "Scout OP",
+        "Manish",
+        "Uditi Singh",
+        "Amrapali Dubey",
+        "Arishfa Khan",
+        "Mahhi Vij"
       ],
-      "notes": "Reported via FilmiBeat Television Desk. Direct article link unverified/session restricted [Unverifiable]."
+      "notes": "Verified via bbvote.in Week 9 Live Results (99,306 votes recorded). [Source Anomaly Flagged: bbvote row 5 printed 'Aasif Khan' in poll table; flagged for manual review rather than silently merged into Arshifa Khan]."
     }
   ],
   "consensusNames": [
-    "Scout OP (Tanmay Singh)",
-    "Love Gill",
-    "Gullu / Kushal Tanwar"
-  ],
-  "disputedNames": [
-    "Aasif Khan",
-    "Aamrapali Dubey",
-    "Kanika Mann",
+    "Tanmay Singh (Scout)",
+    "Uditi Singh",
     "Arshifa Khan",
-    "Harsh Machare (Yung DSA)",
-    "Uditi Singh"
+    "Aamrapali Dubey",
+    "Manish Goel",
+    "Mahhi Vij"
   ],
-  "explanation": "Pinkvilla reports a 6-contestant nomination list (Scout, Love, Gullu, Arshifa, Harsh, Uditi) while FilmiBeat reports a different 6-contestant list (Aasif, Aamrapali, Gullu, Love, Scout, Kanika). Both lists are shown side by side with verbatim names as printed. Names differing across the two allowed outlets are tagged [Disputed]."
+  "disputedNames": [],
+  "explanation": "Two-of-three tracker agreement met (bigboss20.in and bbvote.in matched on the exact 6-nominee roster following the Week 9 chain-reaction task; biggbosshindi.in unparsed for Week 9). Voting is open on JioHotstar until Friday 6 November 2026, 10:00 AM IST."
 };
 
 export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
@@ -81,7 +77,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "prInflationDelta": -1,
     "prInfiltrationRate": 10,
     "evictionRiskTier": "Safe",
-    "evictionProbability": 11,
+    "evictionProbability": null,
     "silentMajorityIndex": 94,
     "loudMinorityIndex": 70,
     "platforms": {
@@ -240,12 +236,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Ekdum zen mode mein khel raha hai. Provocations pe smile karke disarm kar deta hai.",
       "strongestMove": "Tathas-two immunity task mein akele shield pakad kar team ko immunity dilayi."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]",
+    "insufficientData": true
   },
   {
     "id": "c2",
@@ -254,13 +251,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_AD%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23083344%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23164e63%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_AD)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%2306b6d4%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%2367e8f9%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20AD%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Frontrunner",
     "status": "Active",
-    "isNominated": false,
+    "isNominated": true,
     "rawSentiment": 83,
     "trueOrganicSentiment": 85,
     "prInflationDelta": -2,
     "prInfiltrationRate": 14,
     "evictionRiskTier": "Safe",
-    "evictionProbability": 8,
+    "evictionProbability": null,
     "silentMajorityIndex": 92,
     "loudMinorityIndex": 68,
     "platforms": {
@@ -387,12 +384,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Ghar ki sabse respected player. Kitchen aur alliances ko smart tareeqe se manage karti hai.",
       "strongestMove": "Week 3 mein Scout ke saath smart understanding karke captaincy jeeti."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
+    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla",
+    "insufficientData": true
   },
   {
     "id": "c3",
@@ -407,7 +405,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "prInflationDelta": -2,
     "prInfiltrationRate": 15,
     "evictionRiskTier": "Safe",
-    "evictionProbability": 11,
+    "evictionProbability": null,
     "silentMajorityIndex": 88,
     "loudMinorityIndex": 66,
     "platforms": {
@@ -540,12 +538,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Fearless player jo task mein 100% deti hai aur bullies ko direct face karti hai.",
       "strongestMove": "Week 4 ke riddle task mein secret clue decode karke team ko immunity dilayi."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla"
+    "nominationNote": "Disputed: Reported nominated by FilmiBeat; omitted by Pinkvilla",
+    "insufficientData": true
   },
   {
     "id": "c4",
@@ -554,13 +553,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_MV%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231e1b4b%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23312e81%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_MV)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%236366f1%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%236366f1%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23a5b4fc%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20MV%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Challenger",
     "status": "Active",
-    "isNominated": false,
+    "isNominated": true,
     "rawSentiment": 77,
     "trueOrganicSentiment": 79,
     "prInflationDelta": -2,
     "prInfiltrationRate": 14,
     "evictionRiskTier": "Safe",
-    "evictionProbability": 13,
+    "evictionProbability": null,
     "silentMajorityIndex": 86,
     "loudMinorityIndex": 65,
     "platforms": {
@@ -687,12 +686,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Emotionally grounded aur fair player. Ghar mein injustice aur badtameezi tolerate nahi karti.",
       "strongestMove": "Week 2 kitchen boycott ke time sabko sath laakar meal schedule normal karwaya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": true
   },
   {
     "id": "c5",
@@ -842,13 +842,14 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Discipline aur sportsmanship ki misaal. Bakwaas drama avoid karti hain aur task mein unbeatable hain.",
       "strongestMove": "Week 3 ke physical obstacle challenge mein underdog team ko coach karke jeetwaya."
     },
-    "statusVerifiedAt": "2026-10-24T23:00:00.000Z",
-    "statusVerificationSource": "Pinkvilla Television Desk (Evicted Day 49 / Week 7)",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Corroborated",
     "evictionWeek": 7,
     "statusProvenance": "reported",
     "nominationProvenance": "reported",
-    "nominationNote": "Evicted on Day 49 (Week 7); Reported by Pinkvilla Television Desk"
+    "nominationNote": "Evicted on Day 49 (Week 7); Reported by Pinkvilla Television Desk",
+    "insufficientData": false
   },
   {
     "id": "c6",
@@ -992,12 +993,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Bohat smart observer hai. Sabki planning quietly observe karta hai aur nomination mein sach bolta hai.",
       "strongestMove": "Week 4 mein satirical logic ke sath fake groups ko openly confront kiya."
     },
-    "statusVerifiedAt": "2026-11-01T21:30:00.000Z",
-    "statusVerificationSource": "Weekend Ka Vaar Day 57 Broadcast (Reported via FilmiBeat Television Desk)",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Corroborated",
     "statusProvenance": "reported",
     "nominationProvenance": "reported",
-    "nominationNote": "Evicted on Day 57 (Week 8 Weekend Ka Vaar) due to lowest audience votes."
+    "nominationNote": "Evicted on Day 57 (Week 8 Weekend Ka Vaar) due to lowest audience votes.",
+    "insufficientData": false
   },
   {
     "id": "c7",
@@ -1012,7 +1014,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "prInflationDelta": 6,
     "prInfiltrationRate": 27,
     "evictionRiskTier": "Vocal Bubble / At Risk",
-    "evictionProbability": 38,
+    "evictionProbability": null,
     "silentMajorityIndex": 58,
     "loudMinorityIndex": 82,
     "platforms": {
@@ -1138,12 +1140,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Bina baat ke mudda banana aur singing ke through taunt marna.",
       "strongestMove": "Week 3 mein housemates ke khilaf rap diss track gaa kar show ka focus apne pe kiya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": true
   },
   {
     "id": "c8",
@@ -1158,7 +1161,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "prInflationDelta": 8,
     "prInfiltrationRate": 33,
     "evictionRiskTier": "High Danger",
-    "evictionProbability": 46,
+    "evictionProbability": null,
     "silentMajorityIndex": 43,
     "loudMinorityIndex": 87,
     "platforms": {
@@ -1283,12 +1286,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Choti baato pe high decibel screaming, crying aur Scout aur Gullu ke sath clashes.",
       "strongestMove": "Week 3 captaincy task ko disrupt karke game ko reset karwaya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat",
+    "insufficientData": true
   },
   {
     "id": "c9",
@@ -1297,13 +1301,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_KT%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234c0519%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23881337%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_KT)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%23f43f5e%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%23f43f5e%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23fda4af%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20KT%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Polarizing",
     "status": "Active",
-    "isNominated": true,
+    "isNominated": false,
     "rawSentiment": 67,
     "trueOrganicSentiment": 62,
     "prInflationDelta": 5,
     "prInfiltrationRate": 24,
     "evictionRiskTier": "Vocal Bubble / At Risk",
-    "evictionProbability": 31,
+    "evictionProbability": null,
     "silentMajorityIndex": 65,
     "loudMinorityIndex": 78,
     "platforms": {
@@ -1427,12 +1431,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Front-foot attack gameplay. Ladai mein peeche nahi hatti.",
       "strongestMove": "Nakul Dhull ke attack ko face kiya jiske baad Nakul ko Bigg Boss ne eliminate kar diya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]",
+    "insufficientData": true
   },
   {
     "id": "c10",
@@ -1441,13 +1446,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_LG%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231e1b4b%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23312e81%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_LG)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%236366f1%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%236366f1%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23a5b4fc%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20LG%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Challenger",
     "status": "Active",
-    "isNominated": true,
+    "isNominated": false,
     "rawSentiment": 73,
     "trueOrganicSentiment": 68,
     "prInflationDelta": 5,
     "prInfiltrationRate": 24,
     "evictionRiskTier": "Vocal Bubble / At Risk",
-    "evictionProbability": 24,
+    "evictionProbability": null,
     "silentMajorityIndex": 72,
     "loudMinorityIndex": 74,
     "platforms": {
@@ -1589,12 +1594,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "TV serial actors ki entitlement ko challenge karti hai. Ration muddo pe direct baat karti hai.",
       "strongestMove": "Week 3 mein physical endurance task jeet kar pure ghar ka ration protect kiya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]"
+    "nominationNote": "Reported nominated by both Pinkvilla and FilmiBeat [Consensus]",
+    "insufficientData": true
   },
   {
     "id": "c11",
@@ -1603,13 +1609,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_HM%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%231e1b4b%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23312e81%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_HM)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%236366f1%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%236366f1%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23a5b4fc%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20HM%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Challenger",
     "status": "Active",
-    "isNominated": true,
+    "isNominated": false,
     "rawSentiment": 71,
     "trueOrganicSentiment": 67,
     "prInflationDelta": 4,
     "prInfiltrationRate": 20,
     "evictionRiskTier": "Vocal Bubble / At Risk",
-    "evictionProbability": 27,
+    "evictionProbability": null,
     "silentMajorityIndex": 69,
     "loudMinorityIndex": 75,
     "platforms": {
@@ -1736,12 +1742,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Show-off drama avoid karta hai. Nomination ke time muh pe sach bol deta hai.",
       "strongestMove": "Week 3 ke showcase mein house politics pe rap sunakar audience ko impress kiya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat",
+    "insufficientData": true
   },
   {
     "id": "c12",
@@ -1756,7 +1763,7 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "prInflationDelta": 4,
     "prInfiltrationRate": 22,
     "evictionRiskTier": "Vocal Bubble / At Risk",
-    "evictionProbability": 30,
+    "evictionProbability": null,
     "silentMajorityIndex": 67,
     "loudMinorityIndex": 73,
     "platforms": {
@@ -1882,12 +1889,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Quiet alliances banati hai aur loud unnecessary arguments avoid karti hai.",
       "strongestMove": "Week 3 ration crisis ke time kitchen planning manage ki."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "disputed",
-    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat"
+    "nominationNote": "Disputed: Reported nominated by Pinkvilla; omitted by FilmiBeat",
+    "insufficientData": true
   },
   {
     "id": "c13",
@@ -1896,13 +1904,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
     "avatar": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g_MG%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23451a03%22%20%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2378350f%22%20%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22url(%23g_MG)%22%20%2F%3E%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20%2F%3E%0A%20%20%3Ccircle%20cx%3D%2286%22%20cy%3D%2214%22%20r%3D%225%22%20fill%3D%22%23f59e0b%22%20%2F%3E%0A%20%20%3Ctext%20x%3D%2250%22%20y%3D%2258%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22800%22%20fill%3D%22%23fcd34d%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20letter-spacing%3D%221%22%3E%0A%20%20%20%20MG%0A%20%20%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
     "role": "Wildcard",
     "status": "Active",
-    "isNominated": false,
+    "isNominated": true,
     "rawSentiment": 74,
     "trueOrganicSentiment": 76,
     "prInflationDelta": -2,
     "prInfiltrationRate": 14,
     "evictionRiskTier": "Safe",
-    "evictionProbability": 16,
+    "evictionProbability": null,
     "silentMajorityIndex": 82,
     "loudMinorityIndex": 65,
     "platforms": {
@@ -2028,12 +2036,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Aate hi game ka pattern decode kar diya. Young contestants ke overconfidence ko counter karta hai.",
       "strongestMove": "Ghar mein aate hi secret alliances ko living room mein openly expose kiya."
     },
-    "statusVerifiedAt": "2026-11-01T06:30:00.000Z",
-    "statusVerificationSource": "JioHotstar Episode 28 Broadcast & Colors TV Official Active Roster",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": true
   },
   {
     "id": "c14",
@@ -2173,12 +2182,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Polite aur quiet the, jiski wajah se high voltage fights mein unhe airtime nahi mila.",
       "strongestMove": "Premiere task mein athletic plank endurance dikhaya."
     },
-    "statusVerifiedAt": "2026-09-20T23:00:00+05:30",
-    "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": false
   },
   {
     "id": "c15",
@@ -2318,12 +2328,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Graceful rehna chahti thi, ladai-jhagdo se door rahi jisse votes kam mile.",
       "strongestMove": "Week 2 memory test task mein housemates ke liye grocery hampers jeete."
     },
-    "statusVerifiedAt": "2026-09-27T23:00:00+05:30",
-    "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": false
   },
   {
     "id": "c16",
@@ -2462,12 +2473,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Subah sabko gaane sunati thi lekin house politics aur strategy se door rahi.",
       "strongestMove": "Week 2 mein pure ghar ke liye morning anthem compose kiya."
     },
-    "statusVerifiedAt": "2026-10-04T23:00:00+05:30",
-    "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": false
   },
   {
     "id": "c17",
@@ -2606,12 +2618,13 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Aate hi violent aggressive stance liya jo unpar ulta pad gaya.",
       "strongestMove": "Ghar ke andar entry karte hi established seniors ko open challenge kiya."
     },
-    "statusVerifiedAt": "2026-10-15T22:00:00+05:30",
-    "statusVerificationSource": "Colors TV Official Ejection Announcement & JioHotstar Episode 37",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": false
   },
   {
     "id": "c18",
@@ -2751,15 +2764,15 @@ export const BB20_LOCKED_CONTESTANTS: Contestant[] = [
       "houseGameplay": "Sabke dost the lekin game mein independent stand nahi le paaye.",
       "strongestMove": "Week 5 ke puzzle challenge mein team ko coordinate karke luxury budget jeetwaya."
     },
-    "statusVerifiedAt": "2026-10-18T23:00:00+05:30",
-    "statusVerificationSource": "Colors TV Official Elimination Broadcast & JioHotstar Exit Tape",
+    "statusVerifiedAt": "2026-11-05T11:45:00.000Z",
+    "statusVerificationSource": "bigboss20.in & bbvote.in Tracker Consensus [Reported] (Verified 05 Nov 2026, 17:15 IST)",
     "verificationState": "Broadcaster Verified",
     "statusProvenance": "official",
     "nominationProvenance": "reported",
-    "nominationNote": "Reported safe across approved entertainment desks"
+    "nominationNote": "Reported safe across approved entertainment desks",
+    "insufficientData": false
   }
 ];
-
 export const BB20_LOCKED_EVICTED_TIMELINE: EvictedContestantTimelineItem[] = [
   {
     "week": 2,

@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import request from 'supertest';
 import { app } from '../server.js';
+import { calculateShowTimeline } from './data/timelineConfig.js';
 
 describe('Server & API Endpoints - Hard Edge-to-Edge Tests', () => {
   it('GET /api/health returns 200 with ok status and server metadata', async () => {
@@ -284,9 +285,10 @@ Salman Khan warned Qazi against personal attacks.
       assert.ok(res.body.timeline);
       assert.equal(typeof res.body.timeline.currentDay, 'number');
       assert.equal(typeof res.body.timeline.currentWeek, 'number');
-      // On Nov 1, 2026, premiere Sept 6, 2026 gives Day 57 and Week 9
-      assert.equal(res.body.timeline.currentDay, 57);
-      assert.equal(res.body.timeline.currentWeek, 9);
+      // Single source of truth: Dynamic day count from Sept 6, 2026
+      const expectedTimeline = calculateShowTimeline();
+      assert.equal(res.body.timeline.currentDay, expectedTimeline.currentDay);
+      assert.equal(res.body.timeline.currentWeek, expectedTimeline.currentWeek);
     });
 
     it('GET /api/snapshot?week=4 returns historical snapshot clearly labeled as past', async () => {

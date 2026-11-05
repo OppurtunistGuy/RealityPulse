@@ -18,7 +18,7 @@ import {
 export const PredictionScoreboardView: React.FC = () => {
   const summary = PREDICTION_SCOREBOARD_SUMMARY;
 
-  const getVerdictBadge = (verdict: 'HIT' | 'MISSED' | 'EXCLUDED') => {
+  const getVerdictBadge = (verdict: 'HIT' | 'MISSED' | 'EXCLUDED' | 'PENDING') => {
     switch (verdict) {
       case 'HIT':
         return (
@@ -39,6 +39,13 @@ export const PredictionScoreboardView: React.FC = () => {
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-slate-700/50 text-slate-300 border border-slate-600">
             <HelpCircle className="w-3.5 h-3.5 text-slate-400" />
             EXCLUDED
+          </span>
+        );
+      case 'PENDING':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            PENDING
           </span>
         );
     }
@@ -223,7 +230,7 @@ export const PredictionScoreboardView: React.FC = () => {
                     </td>
 
                     <td className="py-3.5 px-4 font-mono font-semibold text-emerald-400">
-                      {entry.predictedToss}%
+                      {entry.predictedToss != null ? `${entry.predictedToss}%` : '—'}
                     </td>
 
                     <td className="py-3.5 px-4 text-slate-200">

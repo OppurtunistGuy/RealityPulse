@@ -42,3 +42,4 @@ export const WhatHappenedThisWeekView: React.FC = () => {
     </div>
   );
 };
+

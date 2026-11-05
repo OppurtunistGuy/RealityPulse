@@ -59,8 +59,8 @@ async function seed() {
       true_organic_sentiment NUMERIC NOT NULL,
       pr_inflation_delta NUMERIC NOT NULL,
       pr_infiltration_rate NUMERIC NOT NULL,
-      eviction_risk_tier TEXT NOT NULL CHECK (eviction_risk_tier IN ('Safe', 'Vocal Bubble / At Risk', 'High Danger')),
-      eviction_probability NUMERIC NOT NULL,
+      eviction_risk_tier TEXT NOT NULL,
+      eviction_probability NUMERIC,
       silent_majority_index NUMERIC NOT NULL,
       loud_minority_index NUMERIC NOT NULL,
       recent_narrative_edit TEXT NOT NULL,
@@ -70,6 +70,14 @@ async function seed() {
       detected_astroturf_patterns JSONB DEFAULT '[]'::jsonb
     );
   `;
+
+  // Ensure eviction_probability can be NULL and risk_tier constraint is flexible
+  try {
+    await sql`ALTER TABLE contestant_snapshots ALTER COLUMN eviction_probability DROP NOT NULL;`;
+    await sql`ALTER TABLE contestant_snapshots DROP CONSTRAINT IF EXISTS contestant_snapshots_eviction_risk_tier_check;`;
+  } catch (e) {
+    // Ignore if already dropped
+  }
 
   const timeline = calculateShowTimeline();
   console.log(`Current Show State: Day ${timeline.currentDay}, Week ${timeline.currentWeek}`);
@@ -124,7 +132,7 @@ async function seed() {
       ) VALUES (
         ${c.id}, now(), ${timeline.currentWeek}, ${timeline.currentDay},
         ${c.rawSentiment}, ${c.trueOrganicSentiment}, ${c.prInflationDelta}, ${c.prInfiltrationRate},
-        ${c.evictionRiskTier}, ${c.evictionProbability}, ${c.silentMajorityIndex}, ${c.loudMinorityIndex},
+        ${c.evictionRiskTier ?? 'Safe'}, ${c.evictionProbability ?? null}, ${c.silentMajorityIndex}, ${c.loudMinorityIndex},
         ${c.recentNarrativeEdit}, ${c.votingTrajectory}, ${JSON.stringify(c.tossTrend7d)},
         ${JSON.stringify(c.platforms)}, ${JSON.stringify(c.detectedAstroturfPatterns)}
       );
