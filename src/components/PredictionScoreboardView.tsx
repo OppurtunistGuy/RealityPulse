@@ -174,7 +174,7 @@ export const PredictionScoreboardView: React.FC = () => {
         <div className="p-4 border-b border-slate-800 flex items-center justify-between">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <Calendar className="w-4 h-4 text-cyan-400" />
-            Season 20 Weekly Prediction Log (Weeks 1 – 8)
+            Season 20 Weekly Prediction Log (Weeks 1 – {Math.max(...PREDICTION_SCORECARD_DATA.map(e => e.week))})
           </h3>
           <span className="text-xs font-mono text-slate-400">
             Chronological Order
