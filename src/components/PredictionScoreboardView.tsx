@@ -222,10 +222,10 @@ export const PredictionScoreboardView: React.FC = () => {
 
                     <td className="py-3.5 px-4 font-mono font-bold">
                       <span className={isMiss ? 'text-rose-400' : 'text-amber-400'}>
-                        {entry.predictedRiskPercentage != null ? `${entry.predictedRiskPercentage}%` : 'N/A'}
+                        {entry.predictedRiskPercentage != null ? `${entry.predictedRiskPercentage}%` : (entry.verdict === 'PENDING' ? 'Pending' : 'N/A')}
                       </span>
                       <span className="block text-[10px] text-slate-400 font-normal">
-                        Tier: {entry.predictedRiskTier}
+                        Tier: {entry.predictedRiskTier === 'Pending Evaluation' ? 'Evaluating' : entry.predictedRiskTier}
                       </span>
                     </td>
 

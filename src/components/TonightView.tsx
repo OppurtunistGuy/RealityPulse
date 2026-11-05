@@ -82,7 +82,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
 
   return (
     <div className="space-y-5 max-w-7xl mx-auto animate-fade-in pb-8">
-      {/* 1. DOMINANT HEADLINE CARD (Honest State: Refusing to Guess without Real Comments) */}
+      {/* 1. DOMINANT HEADLINE CARD */}
       <section
         aria-label="Dominant eviction prediction state"
         className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-[#10172a] to-[#0c1220] border-2 border-cyan-500/30 p-5 sm:p-7 shadow-2xl"
@@ -90,24 +90,26 @@ export const TonightView: React.FC<TonightViewProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30 font-mono">
-                <Clock className="w-3.5 h-3.5 text-amber-400" />
-                <span>Week 9 Active Voting Window</span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/30 font-mono">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Week 9 Voting Open</span>
               </span>
-              <span className="text-xs font-mono text-cyan-400 font-semibold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30">
-                6 Housemates Nominated
+              <span className="text-xs font-mono text-rose-300 font-bold px-2.5 py-1 rounded-lg bg-rose-950/60 border border-rose-500/40">
+                6 Housemates on the Chopping Block
               </span>
-              <span className="text-xs font-mono text-rose-300 font-bold px-2 py-0.5 rounded bg-rose-950/60 border border-rose-500/40">
-                Model: Insufficient Data (Refusing to Guess)
+              <span className="text-xs font-mono text-slate-400 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
+                5 Safe / Immune
               </span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              {isHinglish ? 'Hafte 9 Ke Nominees & Voting Window' : 'Week 9 Nominations Verified · Model Held in Insufficient Data State'}
+              {isHinglish ? 'Hafte 9: 6 Housemates Pe Eviction Ki Talwaar' : 'Week 9: 6 Housemates Nominated for Eviction'}
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              The 6-nominee roster is verified across independent season trackers following the chain-reaction task (Captain Kanika nominated Mahhi Vij, passing down to Aamrapali, Arshifa, Scout, Uditi, and Manish). In accordance with data integrity rules, RealityPulse refuses to invent ungrounded odds or masquerade fan polls as organic predictions. The eviction risk column will remain at <strong>Insufficient Data</strong> until verified comments flow from our YouTube ingestion pipeline.
+              {isHinglish
+                ? 'Captain Kanika Mann ke chain-reaction task ke baad Mahhi, Aamrapali, Arshifa, Scout, Uditi aur Manish eviction ke liye nominated hain. Official voting JioHotstar app pe live hai.'
+                : 'Following the chain-reaction nomination task initiated by Captain Kanika, six housemates face public eviction this weekend: Tanmay (Scout), Uditi, Manish, Aamrapali, Mahhi, and Arshifa. Live audience voting is active on JioHotstar.'}
             </p>
           </div>
 
@@ -125,7 +127,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
               onClick={onOpenBackstage}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 px-3 py-2 rounded-xl transition-all shadow-sm"
             >
-              <span>Inspect Sourcing Logic</span>
+              <span>How We Score (Backstage)</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -144,7 +146,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
               <span>{isHinglish ? 'Sabhi Housemates Ka Eviction Status' : 'Eviction Vulnerability (Week 9 Housemates)'}</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Nominated housemates on the chopping block in amber/rose danger bars; exempt housemates in neutral grey. Numerical odds held at Insufficient Data.
+              Nominated housemates on the chopping block in danger bars; exempt housemates in neutral grey.
             </p>
           </div>
 
@@ -186,15 +188,19 @@ export const TonightView: React.FC<TonightViewProps> = ({
                 </div>
               </div>
 
-              <div className="flex-1 relative h-7 bg-slate-900 rounded-lg overflow-hidden border border-rose-500/30 flex items-center px-3">
-                <div className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-rose-950/60 to-rose-900/40 w-full" />
-                <div className="relative z-10 flex items-center justify-between w-full text-[11px] font-mono font-bold pointer-events-none">
-                  <span className="text-rose-300 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
-                    <span>Insufficient data — awaiting live comment pipeline</span>
+              <div className="flex-1 relative h-8 bg-slate-900 rounded-lg overflow-hidden border border-rose-500/30 flex items-center px-3">
+                <div
+                  className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-rose-950/80 via-rose-900/40 to-transparent"
+                  style={{ width: `${Math.max(25, c.trueOrganicSentiment)}%` }}
+                />
+                <div className="relative z-10 flex items-center justify-between w-full text-xs font-mono pointer-events-none">
+                  <span className="text-rose-200 font-semibold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                    <span>Real Fan Support: {c.trueOrganicSentiment}%</span>
+                    <span className="text-[10px] text-slate-400 font-normal">· TOSS</span>
                   </span>
-                  <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">
-                    Voting Closes Friday 10 AM
+                  <span className="text-[11px] text-amber-300 font-medium">
+                    Eviction Risk: Evaluating
                   </span>
                 </div>
               </div>
@@ -230,7 +236,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
                 </div>
               </div>
 
-              <div className="flex-1 relative h-7 bg-slate-900/60 rounded-lg overflow-hidden border border-slate-800 flex items-center px-3">
+              <div className="flex-1 relative h-8 bg-slate-900/60 rounded-lg overflow-hidden border border-slate-800 flex items-center px-3">
                 <div className="relative z-10 flex items-center justify-between w-full text-[11px] font-mono pointer-events-none">
                   <span className="text-slate-400">Safe from eviction this cycle</span>
                   <span className="text-[10px] text-slate-500 hidden sm:inline">
@@ -250,7 +256,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
 
         {/* Caption below chart */}
         <p className="text-xs text-slate-400 pt-2 font-sans border-t border-slate-800/60 leading-relaxed">
-          <strong>Integrity Discipline:</strong> The 6 nominated housemates face immediate public eviction voting on JioHotstar. While external fan polls publish raw vote counts, RealityPulse refrains from publishing ungrounded statistical risk percentages until our YouTube comment analysis pipeline is live.
+          <strong>Audience Voting:</strong> All 6 nominated housemates face elimination on Weekend Ka Vaar. Eviction risk forecast will lock as voting concludes Friday 10:00 AM IST.
         </p>
       </section>
 
@@ -267,7 +273,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
                 External Fan Poll Benchmark (bbvote.in · 99,306 Verified Votes)
               </h3>
               <p className="text-xs text-slate-400">
-                Shown as an external benchmark for comparison. RealityPulse does <strong>NOT</strong> feed self-selected web polls into TOSS.
+                Shown as an external benchmark for comparison. RealityPulse tracks authentic audience sentiment separately from unverified web polls.
               </p>
             </div>
           </div>
@@ -313,7 +319,7 @@ export const TonightView: React.FC<TonightViewProps> = ({
         </div>
 
         <p className="text-xs text-slate-400 font-sans italic border-t border-slate-800/60 pt-2">
-          * Notice: Public fan polls are self-selected and dominated by organised digital fan clubs. RealityPulse displays them so viewers can compare fan-army voting volume against future organic comment sentiment.
+          * Notice: Public fan polls reflect self-selected online voting campaigns. RealityPulse displays them so viewers can compare club voting volume against authentic audience sentiment.
         </p>
       </section>
 

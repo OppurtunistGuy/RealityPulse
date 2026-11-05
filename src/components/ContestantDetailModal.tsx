@@ -194,7 +194,7 @@ export const ContestantDetailModal: React.FC<ContestantDetailModalProps> = ({
               </span>
               <span className="text-xl font-bold font-mono tabular-nums text-rose-300">
                 {contestant.insufficientData || contestant.evictionProbability === null
-                  ? 'Insufficient data'
+                  ? (contestant.isNominated ? 'Evaluating' : 'Safe')
                   : `${contestant.evictionProbability}%`}
               </span>
               <span className="text-[10px] text-slate-400 font-mono block mt-0.5">

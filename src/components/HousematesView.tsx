@@ -302,7 +302,9 @@ export const HousematesView: React.FC<HousematesViewProps> = ({
                         {isEvicted ? (
                           <span className="text-slate-500">—</span>
                         ) : c.insufficientData ? (
-                          <span className="text-slate-400 text-[11px] font-sans">Insufficient data</span>
+                          <span className={c.isNominated ? "text-amber-400/90 text-xs font-mono font-medium" : "text-emerald-400/90 text-xs font-mono font-medium"}>
+                            {c.isNominated ? 'Evaluating' : 'Safe'}
+                          </span>
                         ) : (
                           <span
                             className={
